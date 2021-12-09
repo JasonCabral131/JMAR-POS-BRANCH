@@ -115,7 +115,13 @@ export const CounterAreaPay = ({
         });
         dispatch(getProductByBrandOwner());
         handlePrint();
-        setTimeout(() => searchRef.current.blur(), 400);
+        setTimeout(() => {
+          searchRef
+            ? searchRef.current
+              ? searchRef.current.blur()
+              : console.log("")
+            : console.log("");
+        }, 400);
         return;
       }
       Swal.fire({

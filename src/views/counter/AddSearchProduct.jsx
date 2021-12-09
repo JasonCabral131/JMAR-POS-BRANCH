@@ -61,7 +61,13 @@ export const AddSearchProduct = ({
     setQuantity("1");
     setSearch(null);
     searchRef.current.value = "";
-    setTimeout(() => searchRef.current.blur(), 400);
+    setTimeout(() => {
+      searchRef
+        ? searchRef.current
+          ? searchRef.current.blur()
+          : console.log("")
+        : console.log("");
+    }, 400);
   };
   return (
     <Modal

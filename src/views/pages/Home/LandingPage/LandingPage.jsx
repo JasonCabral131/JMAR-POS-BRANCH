@@ -59,37 +59,37 @@ const App = (props) => {
         <Switch>
           <Route
             exact
-            path="/7-eleven/home"
+            path="/JARM/home"
             name="Home Landing Page"
             render={(props) => <Header {...props} />}
           />
           <Route
             exact
-            path="/7-eleven/blog"
+            path="/JARM/blog"
             name="Blog Landing Page"
             render={(props) => <Blog {...props} />}
           />
           <Route
             exact
-            path="/7-eleven/customer"
+            path="/JARM/customer"
             name="Customer Member Landing Page"
             render={(props) => <Member {...props} />}
           />
           <Route
             exact
-            path="/7-eleven/customer/register"
+            path="/JARM/customer/register"
             name="Home"
             render={(props) => <RegisterCustomer {...props} />}
           />
           <Route
             exact
-            path="/7-eleven/sign-in"
+            path="/JARM/sign-in"
             name="Home"
             render={(props) => <Login {...props} />}
           />
           <Route
             exact
-            path="/7-eleven/sign-up"
+            path="/JARM/sign-up"
             name="Home"
             render={(props) => <Register {...props} />}
           />

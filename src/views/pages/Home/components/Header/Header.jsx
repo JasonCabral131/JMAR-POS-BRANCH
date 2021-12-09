@@ -8,7 +8,7 @@ const Header = (props) => {
       <div className="gpt3__header section__padding">
         <div className="gpt3__header-content">
           <h1 className="gradient__text">
-            Let's Build Something About Your 7-Eleven Branch
+            Let's Build Something About Your Modern Gracery Store
           </h1>
           <p>
             7-Eleven, retailer that operates more than 60,000 convenience

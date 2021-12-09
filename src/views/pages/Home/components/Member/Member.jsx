@@ -73,10 +73,10 @@ const MemberCustomer = (props) => {
   const handleRegister = (e) => {
     const { name } = e.target;
     if (name === "register-customer") {
-      history.push("/7-eleven/customer/register");
+      history.push("/JARM/customer/register");
     }
     if (name === "forgot-password") {
-      history.push("/7-eleven/customer/forgot-password");
+      history.push("/JARM/customer/forgot-password");
     }
   };
   const handleKeyDown = async (e) => {
@@ -130,7 +130,7 @@ const MemberCustomer = (props) => {
       <div className="customer_register_header">
         <div className="section__margin customer__register_container">
           <h1 className="gradient_text_green">
-            Be Part Of 7-11 Customer to avail some Promos
+            Be Part Of JARM Customer to avail some Promos
           </h1>
           <p>This can track your purchase via Qrcode</p>
           <div className="d-flex flex-row justify-content-start">

@@ -7,29 +7,25 @@ const Menu = (props) => {
     <>
       <p>
         <Link
-          to="/7-eleven/home"
-          className={
-            props.location.pathname === "/7-eleven/home" ? "active" : ""
-          }
+          to="/JARM/home"
+          className={props.location.pathname === "/JARM/home" ? "active" : ""}
         >
           Home
         </Link>
       </p>
       <p>
         <Link
-          to="/7-eleven/blog"
-          className={
-            props.location.pathname === "/7-eleven/blog" ? "active" : ""
-          }
+          to="/JARM/blog"
+          className={props.location.pathname === "/JARM/log" ? "active" : ""}
         >
           Blog
         </Link>
       </p>
       <p>
         <Link
-          to="/7-eleven/customer"
+          to="/JARM/customer"
           className={
-            props.location.pathname === "/7-eleven/customer" ? "active" : ""
+            props.location.pathname === "/JARM/customer" ? "active" : ""
           }
         >
           Customer
@@ -56,17 +52,15 @@ const Navbar = (props) => {
       <div className="gpt__navbar-sign">
         <p
           className={
-            props.location.pathname === "/7-eleven/sign-in"
-              ? "sign-in-active"
-              : ""
+            props.location.pathname === "/JARM/sign-in" ? "sign-in-active" : ""
           }
           onClick={() => {
-            history.push("/7-eleven/sign-in");
+            history.push("/JARM/sign-in");
           }}
         >
           Sign in
         </p>
-        <button type="button" onClick={() => history.push("/7-eleven/sign-up")}>
+        <button type="button" onClick={() => history.push("/JARM/sign-up")}>
           Sign up
         </button>
       </div>
@@ -91,19 +85,19 @@ const Navbar = (props) => {
               <div className="gpt__navbar-menu_container-links-sign">
                 <p
                   className={
-                    props.location.pathname === "/7-eleven/sign-in"
+                    props.location.pathname === "/JARM/sign-in"
                       ? "sign-in-active"
                       : ""
                   }
                   onClick={() => {
-                    history.push("/7-eleven/sign-in");
+                    history.push("/JARM/sign-in");
                   }}
                 >
                   Sign in
                 </p>
                 <button
                   type="button"
-                  onClick={() => history.push("/7-eleven/sign-up")}
+                  onClick={() => history.push("/JARM/sign-up")}
                 >
                   Sign up
                 </button>

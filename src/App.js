@@ -14,6 +14,7 @@ import { CounterArea } from "./views/counter";
 // Containers
 import TheLayout from "./containers/TheLayout";
 
+import CashierLayout from "./CashierContainer/TheLayout";
 // Pages
 import HomePage from "./views/pages/Home/index";
 
@@ -29,7 +30,6 @@ const App = (props) => {
       if (typeof status !== "undefined") {
         if (status === "owner") {
           dispatch(checkIsStillValidOwner({ token, _id }));
-        } else if (status === "inventoryStaff") {
         } else if (status === "cashier") {
         } else {
           dispatch(logout());
@@ -71,8 +71,8 @@ const App = (props) => {
     <BrowserRouter>
       <Switch>
         <Route
-          path="/7-eleven/"
-          name="7-eleven"
+          path="/JARM/"
+          name="JARM"
           render={(props) => {
             return isAuthenticated ? (
               <Redirect to="/branch/dashboard" {...props} />
@@ -94,7 +94,7 @@ const App = (props) => {
           name="Counter Area"
           render={(props) => {
             return !isAuthenticated ? (
-              <Redirect to="/7-eleven/home" {...props} />
+              <Redirect to="/JARM/home" {...props} />
             ) : (
               <CounterArea {...props} />
             );
@@ -105,9 +105,24 @@ const App = (props) => {
           name="Home"
           render={(props) => {
             return !isAuthenticated ? (
-              <Redirect to="/7-eleven/home" {...props} />
-            ) : (
+              <Redirect to="/JARM/home" {...props} />
+            ) : user && user.status === "owner" ? (
               <TheLayout {...props} />
+            ) : (
+              <Redirect to="/cashier/dashboard" />
+            );
+          }}
+        />
+        <Route
+          path="/cashier/"
+          name="Cashier"
+          render={(props) => {
+            return !isAuthenticated ? (
+              <Redirect to="/JARM/home" {...props} />
+            ) : user && user.status === "cashier" ? (
+              <CashierLayout {...props} />
+            ) : (
+              <Redirect to="/branch/dashboard" />
             );
           }}
         />

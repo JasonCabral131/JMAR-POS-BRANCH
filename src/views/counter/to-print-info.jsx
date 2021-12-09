@@ -44,8 +44,8 @@ const ToPrintContainer = React.forwardRef(
                 {" "}
                 {user
                   ? user.status === "owner"
-                    ? user.branch_name + " Branch"
-                    : user.Owner.branch_name + " Branch"
+                    ? user.branch_name + " Store"
+                    : user.Owner.branch_name + " Store"
                   : null}{" "}
               </h6>
               <h6 id="branch-name">
@@ -53,7 +53,7 @@ const ToPrintContainer = React.forwardRef(
                 {user
                   ? user.status === "owner"
                     ? JSON.parse(user.branch_owner_address).fullAddress
-                    : user.Owner.branch_name + " Branch"
+                    : user.Owner.branch_name + " Store"
                   : null}
                 )
               </h6>
@@ -67,7 +67,7 @@ const ToPrintContainer = React.forwardRef(
                         ? user.branch_owner_fname +
                           " " +
                           user.branch_owner_lname
-                        : user.Owner.branch_name + " Branch"
+                        : user.Owner.branch_name + " Store"
                       : null}
                   </span>
                 </h6>

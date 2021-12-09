@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CounterAreaData } from "./counterAreaData";
 import { CounterAreaPay } from "./counterAreaPay";
-import { CImg } from "@coreui/react";
+
 import { useSelector } from "react-redux";
 import "./counter.scss";
 import { IoMdClose } from "react-icons/io";
@@ -105,12 +105,24 @@ export const CounterArea = (props) => {
       );
       console.log(filterProduct);
       if (filterProduct.length < 1) {
-        setTimeout(() => searchRef.current.blur(), 400);
+        setTimeout(() => {
+          searchRef
+            ? searchRef.current
+              ? searchRef.current.blur()
+              : console.log("")
+            : console.log("");
+        }, 400);
 
         lastScannedBarcode = "";
         return;
       } else {
-        setTimeout(() => searchRef.current.blur(), 400);
+        setTimeout(() => {
+          searchRef
+            ? searchRef.current
+              ? searchRef.current.blur()
+              : console.log("")
+            : console.log("");
+        }, 400);
         const productInfo = { ...filterProduct[0] };
         if (productInfo.quantity === 0) {
           Swal.fire({
@@ -179,19 +191,12 @@ export const CounterArea = (props) => {
         </Link>
 
         <h1 className="brand-information-header">
-          <CImg
-            src="https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1633504263/logo_umwwru.png"
-            className="c-sidebar-brand-full"
-            name="logo"
-            height="35"
-            alt="Logo"
-          />
           <p>
             {" "}
             {user
               ? user.status === "owner"
-                ? user.branch_name + " Branch"
-                : user.Owner.branch_name + " Branch"
+                ? user.branch_name + " Store"
+                : user.Owner.branch_name + " Store"
               : null}{" "}
           </p>
         </h1>
