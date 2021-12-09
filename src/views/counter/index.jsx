@@ -106,6 +106,7 @@ export const CounterArea = (props) => {
       console.log(filterProduct);
       if (filterProduct.length < 1) {
         setTimeout(() => searchRef.current.blur(), 400);
+
         lastScannedBarcode = "";
         return;
       } else {
