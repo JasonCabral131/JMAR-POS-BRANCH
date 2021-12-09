@@ -20,12 +20,14 @@ export const CounterAreaPay = ({
   tax,
   payer,
   setPayer,
+  searchRef,
 }) => {
   const dispatch = useDispatch();
   const componentRef = useRef();
   const { user } = useSelector((state) => state.auth);
   const [salesId, setSalesId] = useState("");
   const [loading, setLoading] = useState(false);
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const isPrinting = useDetectPrint();
   const subTotal = purchase.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue.total;
@@ -101,7 +103,9 @@ export const CounterAreaPay = ({
           };
         }),
       };
+      setPaymentLoading(true);
       const res = await dispatch(cashierPay(transactionObject));
+      setPaymentLoading(false);
       if (res.result) {
         Swal.fire({
           icon: "success",
@@ -109,6 +113,7 @@ export const CounterAreaPay = ({
         });
         dispatch(getProductByBrandOwner());
         handlePrint();
+        setTimeout(() => searchRef.current.blur(), 400);
         return;
       }
       Swal.fire({
@@ -227,16 +232,46 @@ export const CounterAreaPay = ({
         size="lg"
         className="mt-4 w-100 fs-3"
         onClick={() => handlePayment(true)}
+        disabled={paymentLoading}
       >
-        <RiSecurePaymentFill size={25} /> Pay At Counter
+        {paymentLoading ? (
+          <>
+            <span
+              className="spinner-border spinner-border-sm mr-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Loading...
+          </>
+        ) : (
+          <>
+            {" "}
+            <RiSecurePaymentFill size={25} /> Pay At Counter
+          </>
+        )}
       </CButton>
       <CButton
         color="primary"
         size="lg"
         className="mt-4 w-100 fs-3"
         onClick={() => handlePayment(false)}
+        disabled={paymentLoading}
       >
-        <RiQrCodeLine size={25} /> QRCODE PAYMENT
+        {paymentLoading ? (
+          <>
+            <span
+              className="spinner-border spinner-border-sm mr-1"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Loading...
+          </>
+        ) : (
+          <>
+            {" "}
+            <RiQrCodeLine size={25} /> QRCODE PAYMENT
+          </>
+        )}
       </CButton>
       <div className="d-none">
         <ToPrintContainer

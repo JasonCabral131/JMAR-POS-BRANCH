@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CounterAreaData } from "./counterAreaData";
 import { CounterAreaPay } from "./counterAreaPay";
 import { CImg } from "@coreui/react";
@@ -13,6 +13,7 @@ import { AddSearchProduct } from "./AddSearchProduct";
 
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
+  const searchRef = useRef();
   const { user } = useSelector((state) => state.auth);
   const { socket } = useSelector((state) => state.socket);
   const { tax } = useSelector((state) => state.tax);
@@ -104,9 +105,11 @@ export const CounterArea = (props) => {
       );
       console.log(filterProduct);
       if (filterProduct.length < 1) {
+        setTimeout(() => searchRef.current.blur(), 400);
         lastScannedBarcode = "";
         return;
       } else {
+        setTimeout(() => searchRef.current.blur(), 400);
         const productInfo = { ...filterProduct[0] };
         if (productInfo.quantity === 0) {
           Swal.fire({
@@ -203,6 +206,7 @@ export const CounterArea = (props) => {
           setAddPurchaseModal={setAddPurchaseModal}
           search={search}
           setSearch={setSearch}
+          searchRef={searchRef}
         />
         <CounterAreaPay
           tax={tax}
@@ -213,12 +217,14 @@ export const CounterArea = (props) => {
           payment={payment}
           setPayment={setPayment}
           payer={payer}
+          searchRef={searchRef}
           setPayer={setPayer}
         />
         <AddSearchProduct
           addPurchaseModal={addPurchaseModal}
           setAddPurchaseModal={setAddPurchaseModal}
           search={search}
+          searchRef={searchRef}
           setPurchase={setPurchase}
           setSearch={setSearch}
         />

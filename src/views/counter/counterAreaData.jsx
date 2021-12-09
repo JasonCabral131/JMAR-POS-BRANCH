@@ -17,6 +17,7 @@ export const CounterAreaData = ({
   setAddPurchaseModal,
   setSearch,
   products,
+  searchRef,
 }) => {
   const dispatch = useDispatch();
   const [filterProduct, setFilterProduct] = useState({
@@ -44,6 +45,7 @@ export const CounterAreaData = ({
   }, [purchase]);
   useEffect(() => {
     dispatch(getTaxInfo());
+    document.getElementById("searchProduct-counter").blur();
     // eslint-disable-next-line
   }, []);
   const handleKeyDown = (e) => {
@@ -196,6 +198,7 @@ export const CounterAreaData = ({
           <input
             type="number"
             min="0"
+            ref={searchRef}
             name="searchProduct"
             id="searchProduct-counter"
             className=""

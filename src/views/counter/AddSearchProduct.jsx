@@ -9,6 +9,7 @@ export const AddSearchProduct = ({
   setPurchase,
   search,
   setSearch,
+  searchRef,
 }) => {
   const [quantity, setQuantity] = useState("1");
 
@@ -55,10 +56,12 @@ export const AddSearchProduct = ({
         return [...prevstate, purchaseObject];
       }
     });
-    document.getElementById("searchProduct-counter").value = "";
+
     setAddPurchaseModal(false);
     setQuantity("1");
     setSearch(null);
+    searchRef.current.value = "";
+    setTimeout(() => searchRef.current.blur(), 400);
   };
   return (
     <Modal
