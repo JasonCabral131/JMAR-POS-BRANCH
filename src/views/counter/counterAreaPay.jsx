@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { cashierPay } from "src/redux/action";
 
 import LoadingOverlay from "react-loading-overlay";
+import { getProductByBrandOwner } from "src/redux/action/product.action";
 export const CounterAreaPay = ({
   purchase,
   setPurchase,
@@ -106,6 +107,7 @@ export const CounterAreaPay = ({
           icon: "success",
           text: res.message,
         });
+        dispatch(getProductByBrandOwner());
         handlePrint();
         return;
       }

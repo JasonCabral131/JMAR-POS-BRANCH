@@ -61,7 +61,12 @@ export const CounterAreaData = ({
           setSearch(product[0]);
           setAddPurchaseModal(true);
         } else {
-          alert("No Product Found");
+          Swal.fire({
+            icon: "warning",
+            text: "Product Not Found",
+            allowOutsideClick: false,
+          });
+          return;
         }
       }
     }
@@ -195,12 +200,7 @@ export const CounterAreaData = ({
             id="searchProduct-counter"
             className=""
             placeholder="product barcode Id...."
-            onKeyDown={handleKeyDown}
-            onKeyPress={(e) => {
-              if (e.key === "-" || e.key === "E" || e.key === "e") {
-                e.preventDefault();
-              }
-            }}
+            onKeyPress={handleKeyDown}
             onPaste={(e) => {
               const data = e.clipboardData.getData("Text");
               if (!isNaN(data)) {

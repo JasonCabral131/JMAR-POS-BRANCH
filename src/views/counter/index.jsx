@@ -25,9 +25,11 @@ export const CounterArea = (props) => {
   const [payer, setPayer] = useState(null);
   useEffect(() => {
     window.addEventListener("beforeunload", alertUser);
+    window.focus();
     return () => {
       window.removeEventListener("beforeunload", alertUser);
     };
+
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -90,6 +92,81 @@ export const CounterArea = (props) => {
     e.preventDefault();
     e.returnValue = "";
   };
+  let lastScannedBarcode = "";
+  const onGlobalKeyPressed = async (e) => {
+    let charCode = typeof e.which === "number" ? e.which : e.keyCode;
+    if (charCode !== 13) {
+      lastScannedBarcode += String.fromCharCode(charCode);
+    } else {
+      console.log(lastScannedBarcode);
+      const filterProduct = await products.filter(
+        (data) => data.productId === lastScannedBarcode
+      );
+      console.log(filterProduct);
+      if (filterProduct.length < 1) {
+        lastScannedBarcode = "";
+        return;
+      } else {
+        const productInfo = { ...filterProduct[0] };
+        if (productInfo.quantity === 0) {
+          Swal.fire({
+            icon: "warning",
+            text: "Product Inventory Out Of stock",
+            timer: 2500,
+            allowOutsideClick: false,
+          });
+          lastScannedBarcode = "";
+
+          return;
+        } else {
+          const purchaseObject = {
+            _id: productInfo._id,
+            product: productInfo.product,
+            total_quantity: productInfo.quantity,
+            price: parseFloat(productInfo.price),
+            total: parseFloat(productInfo.price * 1),
+            quantity: 1,
+          };
+          setPurchase((prevstate) => {
+            if (prevstate.length > 0) {
+              const purchseExist = prevstate.filter(
+                (val) => val._id === productInfo._id
+              );
+              if (purchseExist.length > 0) {
+                let updateInfo = [];
+                prevstate.map((data) => {
+                  if (data._id === productInfo._id) {
+                    data.quantity =
+                      parseInt(data.quantity) + 1 > data.total_quantity
+                        ? data.total_quantity
+                        : parseInt(data.quantity) + 1;
+                    data.total =
+                      parseInt(data.quantity) * parseFloat(data.price);
+                    updateInfo.push(data);
+                  } else {
+                    updateInfo.push(data);
+                  }
+                  return data;
+                });
+                return updateInfo;
+              } else {
+                return [...prevstate, purchaseObject];
+              }
+            } else {
+              return [...prevstate, purchaseObject];
+            }
+          });
+          lastScannedBarcode = "";
+
+          return;
+        }
+      }
+    }
+  };
+  useEffect(() => {
+    window.onkeypress = onGlobalKeyPressed;
+    // eslint-disable-next-line
+  }, [window.onkeypress]);
   return (
     <div className="counterArea_container">
       <div className="counter-area-header shadow">
@@ -116,6 +193,7 @@ export const CounterArea = (props) => {
         </h1>
       </div>
       <div className="counter-area-body">
+        <h1>{lastScannedBarcode}</h1>
         <CounterAreaData
           tax={tax}
           purchase={purchase}
