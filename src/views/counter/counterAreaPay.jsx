@@ -99,6 +99,8 @@ export const CounterAreaPay = ({
         taxs: await tax.map((data) => {
           return {
             _id: data._id,
+            percentage: data.percentage,
+            tax: data.tax,
             amount: parseFloat(data.percentage / 100) * subTotal,
           };
         }),

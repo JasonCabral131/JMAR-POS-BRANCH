@@ -90,9 +90,9 @@ export const TodaySaleWidget = ({ sales }) => {
             <GrDocumentCsv size="13" className="mb-1 icon" />
           </CSVLink>
         </div>
-        <div className="download-sales">
+        {/* <div className="download-sales">
           <AiOutlineFilePdf size="13" className="mb-1 icon" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -183,9 +183,9 @@ export const WeeklySaleWidget = ({ sales }) => {
             <GrDocumentCsv size="13" className="mb-1 icon" />
           </CSVLink>
         </div>
-        <div className="download-sales">
+        {/* <div className="download-sales">
           <AiOutlineFilePdf size="13" className="mb-1 icon" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -275,9 +275,9 @@ export const MonthlySaleWidget = ({ sales }) => {
             <GrDocumentCsv size="13" className="mb-1 icon" />
           </CSVLink>
         </div>
-        <div className="download-sales">
+        {/* <div className="download-sales">
           <AiOutlineFilePdf size="13" className="mb-1 icon" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -316,9 +316,9 @@ export const YearlySaleWidget = ({ sales }) => {
         <div className="download-sales">
           <GrDocumentCsv size="13" className="mb-1 icon" />
         </div>
-        <div className="download-sales">
+        {/* <div className="download-sales">
           <AiOutlineFilePdf size="13" className="mb-1 icon" />
-        </div>
+        </div> */}
       </div>
     </div>
   );
