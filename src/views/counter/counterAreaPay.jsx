@@ -5,7 +5,7 @@ import { RiSecurePaymentFill, RiQrCodeLine } from "react-icons/ri";
 import boopSfx from "src/assets/ringtunes/windows-error-ringtone.mp3";
 import { useSelector } from "react-redux";
 import ToPrintContainer from "./to-print-info";
-import useDetectPrint from "use-detect-print";
+
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { cashierPay } from "src/redux/action";
@@ -27,7 +27,7 @@ export const CounterAreaPay = ({
   const [salesId, setSalesId] = useState("");
 
   const [paymentLoading, setPaymentLoading] = useState(false);
-  const isPrinting = useDetectPrint();
+
   const subTotal = purchase.reduce(function (accumulator, currentValue) {
     return accumulator + currentValue.total;
   }, 0);
@@ -62,12 +62,6 @@ export const CounterAreaPay = ({
     // eslint-disable-next-line
   }, [purchase]);
 
-  useEffect(() => {
-    if (isPrinting) {
-      alert("is printing");
-    }
-    // eslint-disable-next-line
-  }, [isPrinting]);
   const handlePayment = async (val) => {
     if (val) {
       if (purchase.length < 1) {
