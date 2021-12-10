@@ -1,0 +1,103 @@
+{
+  "name": "JARM",
+  "version": "3.2.1",
+  "description": "JARM",
+  "author": {
+    "name": "JARM"
+  },
+  "homepage": "/",
+  "copyright": "Copyright by capstone project group by cabral, asdilla, aduana, tan",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@coreui/chartjs": "^2.0.0",
+    "@coreui/coreui": "^3.4.0",
+    "@coreui/icons": "^2.0.0",
+    "@coreui/icons-react": "^1.1.0",
+    "@coreui/react": "^3.4.6",
+    "@coreui/react-chartjs": "^1.1.0",
+    "@coreui/utils": "^1.3.1",
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.0",
+    "axios": "^0.22.0",
+    "bootstrap": "^5.1.1",
+    "classnames": "^2.2.6",
+    "core-js": "^3.9.1",
+    "datatables.net": "^1.11.3",
+    "datatables.net-dt": "^1.11.3",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "enzyme": "^3.11.0",
+    "html-to-draftjs": "^1.5.0",
+    "html2canvas": "^1.3.3",
+    "jquery": "^3.6.0",
+    "mgr-pdf-viewer-react": "^1.0.3",
+    "moment": "^2.29.1",
+    "node-sass": "^6.0.1",
+    "phil-reg-prov-mun-brgy": "^1.1.0",
+    "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.1",
+    "react": "^17.0.2",
+    "react-app-polyfill": "^2.0.0",
+    "react-barcodes": "^1.2.0",
+    "react-bootstrap": "^2.0.0-rc.0",
+    "react-countup": "^6.1.0",
+    "react-csv": "^2.0.3",
+    "react-dom": "^17.0.2",
+    "react-draft-wysiwyg": "^1.14.7",
+    "react-google-charts": "^3.0.15",
+    "react-icons": "^4.3.1",
+    "react-images": "^1.2.0-beta.7",
+    "react-loader-spinner": "^4.0.0",
+    "react-qr-reader": "^2.2.1",
+    "react-redux": "^7.2.5",
+    "react-router-dom": "^5.2.0",
+    "react-select": "^5.1.0",
+    "react-to-print": "^2.14.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
+    "sass": "^1.32.8",
+    "shortid": "^2.2.16",
+    "simple-encryptor": "^4.0.0",
+    "socket.io-client": "^4.3.2",
+    "sweetalert2": "^11.1.7",
+    "use-detect-print": "^0.0.2",
+    "zipcodes-ph": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.14",
+    "auto-changelog": "~2.2.1",
+    "react-scripts": "^4.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:cov": "npm test -- --coverage --watchAll=false",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "eject": "react-scripts eject",
+    "changelog": "auto-changelog --starting-version 3.0.0 --commit-limit false --hide-credit"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 10",
+    "not op_mini all"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/*index.js",
+      "!src/serviceWorker.js",
+      "!src/polyfill.js"
+    ]
+  },
+  "engines": {
+    "node": ">=10",
+    "npm": ">=6"
+  }
+}

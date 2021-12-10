@@ -1,0 +1,203 @@
+.customer-membership-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.customer_register_header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.gpt3__header-content__input {
+  width: 100%;
+  margin: 2rem 0 1rem;
+
+  display: flex;
+  flex-direction: column;
+  p {
+    font-family: var(--font-family);
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 27px;
+    color: var(--color-text);
+    text-transform: capitalize;
+  }
+}
+
+.gpt3__header-content__input input {
+  flex: 2;
+  width: 100%;
+  min-height: 50px;
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 28px;
+  background: var(--color-footer);
+  border: 2px solid var(--color-footer);
+  padding: 0 1rem;
+  outline: none;
+
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.customer__register_container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+
+  margin-right: 5rem;
+  h1 {
+    font-family: var(--font-family);
+    font-weight: 800;
+    font-size: 62px;
+    line-height: 75px;
+    letter-spacing: -0.04em;
+  }
+  p {
+    font-family: var(--font-family);
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 27px;
+    color: #ffffff;
+  }
+}
+.customer_header-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    margin-top: 10px;
+    width: 350px;
+    height: 350px;
+    border-radius: 10px;
+  }
+}
+.customer-scanned_purchase_container {
+  h1 {
+    font-family: var(--font-family);
+    font-weight: 500;
+    letter-spacing: 0.15rem;
+    text-transform: capitalize;
+  }
+  .qrcode_ {
+    color: var(--gradient-text);
+  }
+}
+.qrcode_scanner_container {
+  height: 400px;
+  width: 100%;
+  position: relative;
+  .is-scanned-false {
+    position: absolute;
+    top: 18%;
+    left: 20%;
+    width: 220px;
+    height: 220px;
+    border: 3px solid red;
+    border-radius: 10px;
+    z-index: 2;
+  }
+  .is-scanned-true {
+    position: absolute;
+    top: 18%;
+    left: 20%;
+    width: 220px;
+    height: 220px;
+    border: 3px solid rgb(0, 255, 0);
+    border-radius: 10px;
+    z-index: 2;
+  }
+}
+.btn-qrcode {
+  margin: 10%;
+  text-align: center;
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align: center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  moz-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+  &:hover {
+    background-position: 100% 0;
+    moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+.forgot-password-btn {
+  background-image: linear-gradient(
+    to right,
+    #fc6076,
+    #ff9a44,
+    #ef9d43,
+    #e75516
+  );
+  box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+}
+.qrcode-container {
+  background: #ffffff;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.btn-download-qrcode {
+  background-image: linear-gradient(
+    to right,
+    #25aae1,
+    #40e495,
+    #30dd8a,
+    #2bb673
+  );
+  box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+.btn-download-cancel {
+  background-image: linear-gradient(
+    to right,
+    #29323c,
+    #485563,
+    #2b5876,
+    #4e4376
+  );
+  box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+}
+@media screen and (max-width: 550px) {
+  .customer-membership-container {
+    flex-direction: column;
+    height: auto;
+  }
+  .customer_register_header {
+    flex-direction: column;
+  }
+  .customer__register_container {
+    h1 {
+      font-size: 42px;
+      line-height: 4 5px;
+    }
+  }
+  .customer-scanned_purchase_container {
+    h1 {
+      font-size: 15px;
+      line-height: 16px;
+    }
+  }
+}

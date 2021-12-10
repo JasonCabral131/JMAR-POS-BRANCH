@@ -1,0 +1,148 @@
+.sales_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > * {
+    margin: 5px;
+  }
+  .sales {
+    border-bottom: 0.1rem solid rgb(158, 158, 158);
+    height: 150px;
+    width: 300px;
+    background: #ffffff;
+    h1 {
+      font-size: 15px;
+      line-height: 22px;
+      text-transform: uppercase;
+      font-weight: 400;
+      padding: 10px;
+      span {
+        border-bottom: 0.1rem solid rgb(248, 159, 86);
+      }
+    }
+    .sale_container {
+      padding: 10px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .salesx {
+        width: 50%;
+
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .sales-info {
+          font-size: 18px;
+          line-height: 20px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+}
+.download-sales {
+  padding: 3px;
+  width: 35px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background: rgb(209, 208, 208);
+  }
+  .icon {
+    cursor: pointer;
+  }
+}
+.weaklySale_container {
+  display: block;
+  margin: 0 auto;
+  height: 350px;
+  width: 96%;
+  padding: 10px;
+  position: relative;
+  margin-bottom: 10px;
+}
+.informationSale {
+  width: 96%;
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+
+  & > * {
+    margin: 5px;
+  }
+  .info:first-child {
+    width: 70%;
+  }
+}
+.cashier-label {
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: capitalize;
+  font-weight: 600;
+  margin-top: 10px;
+  span {
+    border-bottom: 0.1rem solid rgb(250, 169, 169);
+  }
+}
+.hover {
+  cursor: pointer;
+}
+.cashier-month {
+  font-size: 15px;
+  letter-spacing: 2px;
+  text-transform: capitalize;
+  font-weight: 400;
+  margin-top: 10px;
+}
+.cashier_container_sales {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  img {
+    width: 35px;
+    height: 35px;
+    border-radius: 100%;
+    border: 0.1rem solid rgb(158, 157, 157);
+  }
+  h1 {
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: capitalize;
+    font-weight: 500;
+    display: block;
+    margin-left: 10px;
+    margin-top: auto;
+  }
+}
+#reactgooglegraph-1 {
+  width: 100%;
+  div {
+    position: relative !important;
+    width: 100%;
+    div {
+      position: relative !important;
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 490px) {
+  .sales_container {
+    flex-direction: column;
+    .sales {
+      width: 100%;
+    }
+  }
+}
+@media screen and (max-width: 650px) {
+  .sales_container {
+    flex-direction: column;
+    .sales {
+      width: 100%;
+    }
+  }
+}
