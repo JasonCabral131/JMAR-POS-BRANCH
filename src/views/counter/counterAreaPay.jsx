@@ -10,7 +10,6 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { cashierPay } from "src/redux/action";
 
-import LoadingOverlay from "react-loading-overlay";
 import { getProductByBrandOwner } from "src/redux/action/product.action";
 export const CounterAreaPay = ({
   purchase,
@@ -26,7 +25,7 @@ export const CounterAreaPay = ({
   const componentRef = useRef();
   const { user } = useSelector((state) => state.auth);
   const [salesId, setSalesId] = useState("");
-  const [loading, setLoading] = useState(false);
+
   const [paymentLoading, setPaymentLoading] = useState(false);
   const isPrinting = useDetectPrint();
   const subTotal = purchase.reduce(function (accumulator, currentValue) {
@@ -44,12 +43,10 @@ export const CounterAreaPay = ({
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     onAfterPrint: () => {
-      setLoading(false);
       setPurchase([]);
     },
     onBeforePrint: async (data) => {
       if (await data) {
-        setLoading(true);
       }
     },
   });
@@ -134,13 +131,6 @@ export const CounterAreaPay = ({
 
   return (
     <div className="CounterAreaPay">
-      {loading ? (
-        <LoadingOverlay
-          active={loading}
-          spinner
-          text="Wait printing on process"
-        />
-      ) : null}
       <center>
         {" "}
         <label className="label-name text-center fs-3">Total Amount</label>
