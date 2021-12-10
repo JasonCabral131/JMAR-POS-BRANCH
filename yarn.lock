@@ -12790,11 +12790,6 @@ use-callback-ref@^1.2.3, use-callback-ref@^1.2.5:
   resolved "https://registry.yarnpkg.com/use-callback-ref/-/use-callback-ref-1.2.5.tgz#6115ed242cfbaed5915499c0a9842ca2912f38a5"
   integrity sha512-gN3vgMISAgacF7sqsLPByqoePooY3n2emTH59Ur5d/M8eg4WTWu1xp8i8DHjohftIyEx0S08RiYxbffr4j8Peg==
 
-use-detect-print@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/use-detect-print/-/use-detect-print-0.0.2.tgz#0482f2d63c03c04887ce4b1163be1ce1cf738393"
-  integrity sha512-J0fu46/PNDuuP0qyXkabwi9nJtPPZmOOr6p6KLyEGHOA1fWqREMliS4Bcj7znp9zVrDdq67vpzX55PGJamK+2Q==
-
 use-sidecar@^1.0.1, use-sidecar@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/use-sidecar/-/use-sidecar-1.0.5.tgz#ffff2a17c1df42e348624b699ba6e5c220527f2b"

@@ -62,7 +62,6 @@
     "simple-encryptor": "^4.0.0",
     "socket.io-client": "^4.3.2",
     "sweetalert2": "^11.1.7",
-    "use-detect-print": "^0.0.2",
     "zipcodes-ph": "^1.1.2"
   },
   "devDependencies": {
@@ -97,7 +96,6 @@
     ]
   },
   "engines": {
-    "node": ">=10",
-    "npm": ">=6"
+    "node": ">=10"
   }
 }
