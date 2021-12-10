@@ -130,7 +130,7 @@ const MemberCustomer = (props) => {
       <div className="customer_register_header">
         <div className="section__margin customer__register_container">
           <h1 className="gradient_text_green">
-            Be Part Of JARM Customer to avail some Promos
+            Be Part Of JARM Customer to make purchase anywhere
           </h1>
           <p>This can track your purchase via Qrcode</p>
           <div className="d-flex flex-row justify-content-start">

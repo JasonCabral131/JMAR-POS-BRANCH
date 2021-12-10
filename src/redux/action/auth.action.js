@@ -1,6 +1,7 @@
 import { authConstant } from "./../constant";
 import axiosInstance from "src/helpers/axios";
 import Swal from "sweetalert2";
+import cashierAxios from "src/helpers/cashierAxios";
 
 export const login = (user_info) => {
   return async (dispatch) => {
@@ -62,10 +63,10 @@ export const checkIsStillValidOwner = (data) => {
   };
 };
 
-export const checkIsStillValidInventorycashier = (data) => {
+export const checkIsStillValidcashier = (data) => {
   return async (dispatch) => {
     try {
-      const res = await axiosInstance.post("/is-access-granted", { ...data });
+      const res = await cashierAxios.post("/is-access-granted", { ...data });
       if (res.status === 200) {
         const { user, token } = res.data;
         await dispatch({
@@ -107,6 +108,31 @@ export const checkAuthenicatingPassword = (data) => {
         text: "Invalid Password",
       });
       return false;
+    }
+  };
+};
+
+export const loginCashier = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: authConstant.LOGIN_REQUEST });
+      const res = await cashierAxios.post("/login-store-cashier", data);
+      if (res.status === 200) {
+        const { token, user } = res.data;
+        await dispatch({
+          type: authConstant.LOGIN_SUCCESS,
+          payload: {
+            token,
+            user,
+          },
+        });
+        return { result: true, user };
+      } else {
+        dispatch({ type: authConstant.LOGIN_FAILURE });
+        return { result: false, message: res.data.message };
+      }
+    } catch (e) {
+      return { result: false, message: "Something went wrong" };
     }
   };
 };

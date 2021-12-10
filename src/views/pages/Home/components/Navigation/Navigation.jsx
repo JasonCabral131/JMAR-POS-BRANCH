@@ -16,7 +16,7 @@ const Menu = (props) => {
       <p>
         <Link
           to="/JARM/blog"
-          className={props.location.pathname === "/JARM/log" ? "active" : ""}
+          className={props.location.pathname === "/JARM/blog" ? "active" : ""}
         >
           Blog
         </Link>

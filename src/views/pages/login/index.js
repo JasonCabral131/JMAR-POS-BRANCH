@@ -8,7 +8,7 @@ import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import { EmailValidator } from "src/reusable";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { login } from "src/redux/action";
+import { login, loginCashier } from "src/redux/action";
 import Swal from "sweetalert2";
 const initialState = {
   email: { email: "", valid: false },
@@ -52,16 +52,31 @@ const Login = (props) => {
       password: userInformation.password,
       signInAs: userInformation.loginAs,
     };
-    const result = await dispatch(login(userInfo));
-    setLoading(false);
-    if (!result.result) {
-      Swal.fire({
-        icon: "error",
-        title: "UnSuccessful",
-        text: result.message,
-      });
-      return;
+    console.log(userInformation.loginAs);
+    if (userInformation.loginAs === "branch-owner") {
+      const result = await dispatch(login(userInfo));
+      setLoading(false);
+      if (!result.result) {
+        Swal.fire({
+          icon: "error",
+          title: "UnSuccessful",
+          text: result.message,
+        });
+        return;
+      }
+    } else {
+      const result = await dispatch(loginCashier(userInfo));
+      setLoading(false);
+      if (!result.result) {
+        Swal.fire({
+          icon: "error",
+          title: "UnSuccessful",
+          text: result.message,
+        });
+        return;
+      }
     }
+
     setUserInformation(initialState);
     return;
   };
@@ -173,7 +188,7 @@ const Login = (props) => {
               <Form.Check
                 inline
                 className="text-white"
-                label="Branch Owner"
+                label="Store Owner"
                 name="loginAs"
                 type={"radio"}
                 id={`branch-owner`}
@@ -185,7 +200,7 @@ const Login = (props) => {
               <Form.Check
                 inline
                 className="text-white"
-                label="Branch Cashier"
+                label="Store Cashier"
                 name="loginAs"
                 type={"radio"}
                 id={`branch-cashier`}
