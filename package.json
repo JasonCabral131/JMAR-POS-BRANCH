@@ -1,9 +1,9 @@
 {
-  "name": "7-11-branch",
+  "name": "JARM",
   "version": "3.2.1",
-  "description": "7-11-branch",
+  "description": "JARM",
   "author": {
-    "name": "7-11-branch"
+    "name": "JARM"
   },
   "homepage": "/",
   "copyright": "Copyright by capstone project group by cabral, asdilla, aduana, tan",
@@ -98,7 +98,6 @@
     ]
   },
   "engines": {
-    "node": ">=10",
-    "npm": ">=6"
+    "node": "15.4.0"
   }
 }
