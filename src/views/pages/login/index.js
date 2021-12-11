@@ -60,7 +60,7 @@ const Login = (props) => {
       if (!result.result) {
         Swal.fire({
           icon: "error",
-          title: "UnSuccessful",
+          title: "Failed",
           text: result.message,
         });
         return;
@@ -71,7 +71,7 @@ const Login = (props) => {
       if (!result.result) {
         Swal.fire({
           icon: "error",
-          title: "UnSuccessful",
+          title: "Failed",
           text: result.message,
         });
         return;

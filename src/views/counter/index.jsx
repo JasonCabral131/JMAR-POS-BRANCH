@@ -10,14 +10,14 @@ import { useDispatch } from "react-redux";
 import { getProductByBrandOwner } from "src/redux/action/product.action";
 import Swal from "sweetalert2";
 import { AddSearchProduct } from "./AddSearchProduct";
-
+import { LoaderSpinner } from "src/reusable/";
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
   const searchRef = useRef();
   const { user } = useSelector((state) => state.auth);
   const { socket } = useSelector((state) => state.socket);
   const { tax } = useSelector((state) => state.tax);
-  const { products } = useSelector((state) => state.product);
+  const { products, loading } = useSelector((state) => state.product);
   const [addPurchaseModal, setAddPurchaseModal] = useState(false);
   const [purchase, setPurchase] = useState([]);
   const [paymentMethod, setPaymethod] = useState(true);
@@ -27,6 +27,11 @@ export const CounterArea = (props) => {
   useEffect(() => {
     window.addEventListener("beforeunload", alertUser);
     window.focus();
+    if (user.status === "owner") {
+      dispatch(getProductByBrandOwner());
+      console.log("requesting");
+    }
+
     return () => {
       window.removeEventListener("beforeunload", alertUser);
     };
@@ -34,7 +39,6 @@ export const CounterArea = (props) => {
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    dispatch(getProductByBrandOwner());
     if (socket) {
       socket.on("receiving-to-connected-device", async ({ product }) => {
         console.log(product);
@@ -89,6 +93,7 @@ export const CounterArea = (props) => {
     }
     // eslint-disable-next-line
   }, [socket]);
+
   const alertUser = (e) => {
     e.preventDefault();
     e.returnValue = "";
@@ -196,44 +201,51 @@ export const CounterArea = (props) => {
             {user
               ? user.status === "owner"
                 ? user.branch_name + " Store"
-                : user.Owner.branch_name + " Store"
+                : user.branch.branch_name + " Store"
               : null}{" "}
           </p>
         </h1>
       </div>
       <div className="counter-area-body">
-        <h1>{lastScannedBarcode}</h1>
-        <CounterAreaData
-          tax={tax}
-          purchase={purchase}
-          setPurchase={setPurchase}
-          products={products}
-          addPurchaseModal={addPurchaseModal}
-          setAddPurchaseModal={setAddPurchaseModal}
-          search={search}
-          setSearch={setSearch}
-          searchRef={searchRef}
-        />
-        <CounterAreaPay
-          tax={tax}
-          purchase={purchase}
-          setPurchase={setPurchase}
-          paymentMethod={paymentMethod}
-          setPaymethod={setPaymethod}
-          payment={payment}
-          setPayment={setPayment}
-          payer={payer}
-          searchRef={searchRef}
-          setPayer={setPayer}
-        />
-        <AddSearchProduct
-          addPurchaseModal={addPurchaseModal}
-          setAddPurchaseModal={setAddPurchaseModal}
-          search={search}
-          searchRef={searchRef}
-          setPurchase={setPurchase}
-          setSearch={setSearch}
-        />
+        {loading ? (
+          <div className="w-100 mt-5">
+            <LoaderSpinner height={"400px"} />
+          </div>
+        ) : (
+          <>
+            <CounterAreaData
+              tax={tax}
+              purchase={purchase}
+              setPurchase={setPurchase}
+              products={products}
+              addPurchaseModal={addPurchaseModal}
+              setAddPurchaseModal={setAddPurchaseModal}
+              search={search}
+              setSearch={setSearch}
+              searchRef={searchRef}
+            />
+            <CounterAreaPay
+              tax={tax}
+              purchase={purchase}
+              setPurchase={setPurchase}
+              paymentMethod={paymentMethod}
+              setPaymethod={setPaymethod}
+              payment={payment}
+              setPayment={setPayment}
+              payer={payer}
+              searchRef={searchRef}
+              setPayer={setPayer}
+            />
+            <AddSearchProduct
+              addPurchaseModal={addPurchaseModal}
+              setAddPurchaseModal={setAddPurchaseModal}
+              search={search}
+              searchRef={searchRef}
+              setPurchase={setPurchase}
+              setSearch={setSearch}
+            />
+          </>
+        )}
       </div>
     </div>
   );

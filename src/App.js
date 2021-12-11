@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import "./scss/style.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { checkIsStillValidOwner, logout } from "./redux/action";
+import {
+  checkIsStillValidcashier,
+  checkIsStillValidOwner,
+  logout,
+} from "./redux/action";
 import io from "socket.io-client";
 import { apiConfig } from "./helpers/apiConfig";
 import {
@@ -31,6 +35,7 @@ const App = (props) => {
         if (status === "owner") {
           dispatch(checkIsStillValidOwner({ token, _id }));
         } else if (status === "cashier") {
+          dispatch(checkIsStillValidcashier({ token, _id }));
         } else {
           dispatch(logout());
         }

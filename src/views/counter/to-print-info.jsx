@@ -1,5 +1,7 @@
 import React from "react";
 import { useBarcode } from "react-barcodes";
+import { toCapitalized } from "src/reusable";
+import logo from "./../../assets/icons/Jarm_Logo.svg";
 const BarcodeInformation = ({ salesId }) => {
   const { inputRef } = useBarcode({
     value: salesId === "" ? "Create Sales Info" : salesId,
@@ -33,27 +35,25 @@ const ToPrintContainer = React.forwardRef(
         <thead>
           <tr>
             <th colSpan="3">
-              <img
-                src={
-                  "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1633506044/7-11_tpmbfc.png"
-                }
-                id="logoInfoPrint"
-                alt="logo-alt-information"
-              />
+              <img src={logo} id="logoInfoPrint" alt="logo-alt-information" />
               <h6 id="branch-name">
                 {" "}
                 {user
                   ? user.status === "owner"
                     ? user.branch_name + " Store"
-                    : user.Owner.branch_name + " Store"
+                    : user.branch.branch_name + " Store"
                   : null}{" "}
               </h6>
               <h6 id="branch-name">
                 (
                 {user
                   ? user.status === "owner"
-                    ? JSON.parse(user.branch_owner_address).fullAddress
-                    : user.Owner.branch_name + " Store"
+                    ? toCapitalized(
+                        JSON.parse(user.branch_owner_address).fullAddress
+                      )
+                    : toCapitalized(
+                        JSON.parse(user.branch.branch_owner_address).fullAddress
+                      )
                   : null}
                 )
               </h6>
@@ -67,7 +67,13 @@ const ToPrintContainer = React.forwardRef(
                         ? user.branch_owner_fname +
                           " " +
                           user.branch_owner_lname
-                        : user.Owner.branch_name + " Store"
+                        : toCapitalized(
+                            user.lastname +
+                              ", " +
+                              user.firstname +
+                              " " +
+                              user.middlename
+                          )
                       : null}
                   </span>
                 </h6>

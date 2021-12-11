@@ -1,92 +1,78 @@
-import React from 'react'
+import React from "react";
 import {
   CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
   CDropdownToggle,
-  CImg
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-
+  CImg,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "src/redux/action";
+import { AiOutlineLogout } from "react-icons/ai";
+import { toCapitalized } from "src/reusable";
 const TheHeaderDropdown = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const profile =
+    "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg";
   return (
-    <CDropdown
-      inNav
-      className="c-header-nav-items mx-2"
-      direction="down"
-    >
+    <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={'avatars/6.jpg'}
+            src={
+              user ? (user.profile.url ? user.profile.url : profile) : profile
+            }
+            style={{ width: "35px", height: "35px", borderRadius: "50px" }}
             className="c-avatar-img"
-            alt="admin@bootstrapmaster.com"
+            alt="cashier information"
           />
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem
-          header
-          tag="div"
-          color="light"
-          className="text-center"
-        >
-          <strong>Account</strong>
+        <CDropdownItem header tag="div" color="light" className="text-center">
+          <strong>
+            {" "}
+            {user
+              ? toCapitalized(
+                  user.lastname + ", " + user.firstname + " " + user.middlename
+                )
+              : null}
+          </strong>
+        </CDropdownItem>
+        <CDropdownItem>
+          <CIcon name="cil-user" className="mfe-2" />
+          Profile
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-bell" className="mfe-2" />
           Updates
-          <CBadge color="info" className="mfs-auto">42</CBadge>
+          <CBadge color="info" className="mfs-auto">
+            42
+          </CBadge>
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-envelope-open" className="mfe-2" />
           Messages
-          <CBadge color="success" className="mfs-auto">42</CBadge>
+          <CBadge color="success" className="mfs-auto">
+            42
+          </CBadge>
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-task" className="mfe-2" />
-          Tasks
-          <CBadge color="danger" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-comment-square" className="mfe-2" />
-          Comments
-          <CBadge color="warning" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem
-          header
-          tag="div"
-          color="light"
-          className="text-center"
-        >
-          <strong>Settings</strong>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-user" className="mfe-2" />Profile
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-settings" className="mfe-2" />
-          Settings
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-credit-card" className="mfe-2" />
-          Payments
-          <CBadge color="secondary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-file" className="mfe-2" />
-          Projects
-          <CBadge color="primary" className="mfs-auto">42</CBadge>
-        </CDropdownItem>
+
         <CDropdownItem divider />
-        <CDropdownItem>
-          <CIcon name="cil-lock-locked" className="mfe-2" />
-          Lock Account
+        <CDropdownItem
+          onClick={() => {
+            dispatch(logout());
+          }}
+        >
+          <AiOutlineLogout size="20" className="mfe-2" />
+          Sign out
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>
-  )
-}
+  );
+};
 
-export default TheHeaderDropdown
+export default TheHeaderDropdown;

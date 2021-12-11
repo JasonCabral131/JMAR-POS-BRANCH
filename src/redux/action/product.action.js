@@ -1,4 +1,5 @@
 import axiosInstance from "src/helpers/axios";
+import cashierAxios from "src/helpers/cashierAxios";
 import { logout } from "./auth.action";
 import { productConstant } from "../constant";
 
@@ -122,6 +123,29 @@ export const getArchivedProduct = () => {
     } catch (e) {
       dispatch(logout());
       return { result: false, message: "Something went wrong" };
+    }
+  };
+};
+
+export const getCounterProductByCashier = (data) => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: productConstant.PRODUCT_REQUEST });
+      const res = await cashierAxios.post("/get-product-by-branch", data);
+
+      if (res.status === 200) {
+        dispatch({
+          type: productConstant.GET_PRODUCT_SUCCESS,
+          payload: { products: res.data.products },
+        });
+        return { result: true };
+      }
+      dispatch({ type: productConstant.GET_PRODUCT_FAIL });
+      return { result: false };
+    } catch (e) {
+      dispatch(logout());
+      dispatch({ type: productConstant.GET_PRODUCT_FAIL });
+      return { result: false, message: "Something went Wrong!" };
     }
   };
 };

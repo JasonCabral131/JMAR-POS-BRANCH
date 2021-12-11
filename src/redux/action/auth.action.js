@@ -66,7 +66,9 @@ export const checkIsStillValidOwner = (data) => {
 export const checkIsStillValidcashier = (data) => {
   return async (dispatch) => {
     try {
-      const res = await cashierAxios.post("/is-access-granted", { ...data });
+      const res = await cashierAxios.post("/is-access-granted-cashier", {
+        ...data,
+      });
       if (res.status === 200) {
         const { user, token } = res.data;
         await dispatch({
@@ -132,7 +134,7 @@ export const loginCashier = (data) => {
         return { result: false, message: res.data.message };
       }
     } catch (e) {
-      return { result: false, message: "Something went wrong" };
+      return { result: false, message: e.response.data.message };
     }
   };
 };

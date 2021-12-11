@@ -13,6 +13,8 @@ import { logout } from "src/redux/action";
 const TheHeaderDropdown = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const profile =
+    "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg";
   return (
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
@@ -22,8 +24,8 @@ const TheHeaderDropdown = () => {
               user
                 ? user.branch_owner_profile.profile
                   ? user.branch_owner_profile.profile
-                  : "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg"
-                : "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg"
+                  : profile
+                : profile
             }
             style={{ width: "35px", height: "35px", borderRadius: "50px" }}
             className="c-avatar-img"
