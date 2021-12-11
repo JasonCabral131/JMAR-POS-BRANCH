@@ -10,6 +10,7 @@ import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { login, loginCashier } from "src/redux/action";
 import Swal from "sweetalert2";
+import LoginLogo from "./../Home/assets/Jarm_Logo.svg";
 const initialState = {
   email: { email: "", valid: false },
   password: "",
@@ -93,10 +94,7 @@ const Login = (props) => {
   return (
     <div className="login-component-container">
       <section className="section-container side">
-        <img
-          src="https://www.mcall.com/resizer/kX6RSY5eNYCkiv74xWTenMHe7Zc=/415x634/top/arc-anglerfish-arc2-prod-tronc.s3.amazonaws.com/public/P64LEL27XZDCHLL5OZ324IBMVE.jpg"
-          alt="login  img information "
-        />
+        <img src={LoginLogo} alt="login  img information " />
       </section>
       <section className="section-container main">
         <div className="login-container">

@@ -1,9 +1,8 @@
 {
-  "short_name": "CoreUI-React",
-  "name": "CoreUI-React sample",
+  "short_name": "JARM-React",
+  "name": "JARM MULTI STORE",
   "icons": [
     {
-      "src": "./assets/img/favicon.png",
       "sizes": "100x100",
       "type": "image/png"
     }
