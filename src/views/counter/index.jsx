@@ -7,10 +7,14 @@ import "./counter.scss";
 import { IoMdClose } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getProductByBrandOwner } from "src/redux/action/product.action";
+import {
+  getProductByBrandOwner,
+  getCounterProductByCashier,
+} from "src/redux/action/product.action";
 import Swal from "sweetalert2";
 import { AddSearchProduct } from "./AddSearchProduct";
 import { LoaderSpinner } from "src/reusable/";
+import { getTaxInfo } from "src/redux/action";
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
   const searchRef = useRef();
@@ -27,9 +31,14 @@ export const CounterArea = (props) => {
   useEffect(() => {
     window.addEventListener("beforeunload", alertUser);
     window.focus();
-    if (user.status === "owner") {
-      dispatch(getProductByBrandOwner());
-      console.log("requesting");
+    if (user) {
+      if (user.status === "owner") {
+        dispatch(getProductByBrandOwner());
+        dispatch(getTaxInfo());
+        console.log("requesting");
+      } else if (user.status === "cashier") {
+        dispatch(getCounterProductByCashier({ branch_id: user.branch._id }));
+      }
     }
 
     return () => {

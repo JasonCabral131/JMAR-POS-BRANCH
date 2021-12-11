@@ -1,7 +1,7 @@
 import axiosInstance from "src/helpers/axios";
 import cashierAxios from "src/helpers/cashierAxios";
 import { logout } from "./auth.action";
-import { productConstant } from "../constant";
+import { productConstant, taxConstant } from "../constant";
 
 export const createProductInfo = (data) => {
   return async (dispatch) => {
@@ -36,6 +36,10 @@ export const getProductByBrandOwner = () => {
         dispatch({
           type: productConstant.GET_PRODUCT_SUCCESS,
           payload: { products: res.data.products },
+        });
+        dispatch({
+          type: taxConstant.GET_ARCHIVED_TAX_SUCCESS,
+          payload: { governmentTax: res.data.taxs },
         });
         return { result: true };
       }

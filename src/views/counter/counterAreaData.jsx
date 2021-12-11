@@ -1,7 +1,6 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getTaxInfo } from "src/redux/action";
+
 import {
   IoTrash,
   IoAddOutline,
@@ -19,7 +18,6 @@ export const CounterAreaData = ({
   products,
   searchRef,
 }) => {
-  const dispatch = useDispatch();
   const [filterProduct, setFilterProduct] = useState({
     product: "",
     hastoShow: false,
@@ -44,7 +42,6 @@ export const CounterAreaData = ({
     // eslint-disable-next-line
   }, [purchase]);
   useEffect(() => {
-    dispatch(getTaxInfo());
     document.getElementById("searchProduct-counter").blur();
     // eslint-disable-next-line
   }, []);
