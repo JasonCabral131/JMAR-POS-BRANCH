@@ -50,27 +50,29 @@ export const CounterAreaData = ({
   }, []);
   const handleKeyDown = (e) => {
     const { name, value } = e.target;
-    if (e.key === "Enter") {
-      if (name === "filterProduct") {
-        const hastoShow = purchase.filter((data) => data.product === value);
-        setFilterProduct({
-          product: value,
-          hastoShow: hastoShow.length > 0 ? true : false,
-        });
-      } else if (name === "searchProduct") {
-        const product = products.filter((data) => data.productId === value);
-        if (product.length > 0) {
-          setSearch(product[0]);
-          setAddPurchaseModal(true);
-        } else {
-          Swal.fire({
-            icon: "warning",
-            text: "Product Not Found",
-            allowOutsideClick: false,
-          });
-          return;
-        }
-      }
+    if (name === "filterProduct") {
+      const hastoShow = purchase.filter((data) => data.product === value);
+      setFilterProduct({
+        product: value,
+        hastoShow: hastoShow.length > 0 ? true : false,
+      });
+    } else if (name === "searchProduct") {
+    }
+  };
+  const searchProduct = (e) => {
+    const product = products.filter(
+      (data) => data.productId === searchRef.current.value
+    );
+    if (product.length > 0) {
+      setSearch(product[0]);
+      setAddPurchaseModal(true);
+    } else {
+      Swal.fire({
+        icon: "warning",
+        text: "Product Not Found",
+        allowOutsideClick: false,
+      });
+      return;
     }
   };
   const ToFilter = ({ data, index }) => {
@@ -200,11 +202,9 @@ export const CounterAreaData = ({
               type="number"
               min="0"
               ref={searchRef}
-              name="searchProduct"
               id="searchProduct-counter"
               className="icon-no-right no-capitalized"
               placeholder="Product barcode"
-              onKeyPress={handleKeyDown}
               onPaste={(e) => {
                 const data = e.clipboardData.getData("Text");
                 if (!isNaN(data)) {
@@ -216,7 +216,12 @@ export const CounterAreaData = ({
                 }
               }}
             />
-            <IoSearchOutline className="home-signup-iconx" size={25} />
+            <IoSearchOutline
+              className="home-signup-iconx hover"
+              name="searchProduct"
+              size={25}
+              onClick={searchProduct}
+            />
           </div>
         </div>
         <div className="col-md-8  d-flex  justify-content-between">
@@ -234,7 +239,7 @@ export const CounterAreaData = ({
       </div>
 
       <div className="data-information-counter card shadow p-2">
-        {purchase.length > 5 ? (
+        {purchase.length > 4 ? (
           <div className="col-md-3">
             <div className="percent-container">
               <input

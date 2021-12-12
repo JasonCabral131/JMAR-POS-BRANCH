@@ -149,6 +149,7 @@
   .CounterAreaData {
     width: 100%;
     border-right: none;
+    position: relative;
   }
   .counter-area-body {
     display: flex;
@@ -157,6 +158,7 @@
   .CounterAreaPay {
     width: 100%;
     border-right: none;
+    position: relative;
   }
   .counterArea_container {
     margin-top: 50px;
@@ -174,6 +176,7 @@
     }
   }
 }
+
 @media print {
   html,
   body {

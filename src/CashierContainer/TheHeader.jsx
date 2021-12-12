@@ -6,16 +6,14 @@ import {
   CHeaderNav,
   CSubheader,
   CBreadcrumbRouter,
-  CLink,
+  CHeaderBrand,
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
 
 // routes config
-import routes from "../routes";
+import routes from "../cashier.routes";
 import TheHeaderDropdown from "./TheHeaderDropdown";
 import TheHeaderDropdownMssg from "./TheHeaderDropdownMssg";
 import TheHeaderDropdownNotif from "./TheHeaderDropdownNotif";
-import TheHeaderDropdownTasks from "./TheHeaderDropdownTasks";
 // import {
 //   TheHeaderDropdown,
 //   TheHeaderDropdownMssg,
@@ -53,7 +51,24 @@ const TheHeader = () => {
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
       />
-
+      <CHeaderBrand className="mx-auto d-lg-none mr-auto m-3" to="/">
+        <h4 className="brand-information-header">
+          <p>
+            {" "}
+            {user
+              ? user.status === "owner"
+                ? user.branch_name + " Store"
+                : user.branch.branch_name + " Store"
+              : null}{" "}
+          </p>
+          <img
+            alt={"store"}
+            src={storelogo}
+            className="ml-2"
+            style={{ width: "40px", height: "40px" }}
+          />
+        </h4>
+      </CHeaderBrand>
       <CHeaderNav className="d-md-down-none mr-auto m-3">
         <h4 className="brand-information-header">
           <p>
@@ -75,7 +90,6 @@ const TheHeader = () => {
 
       <CHeaderNav className="px-3">
         <TheHeaderDropdownNotif />
-        <TheHeaderDropdownTasks />
         <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
       </CHeaderNav>
@@ -85,23 +99,6 @@ const TheHeader = () => {
           className="border-0 c-subheader-nav m-0 px-0 px-md-3"
           routes={routes}
         />
-        <div className="d-md-down-none mfe-2 c-subheader-nav">
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-speech" alt="Settings" />
-          </CLink>
-          <CLink
-            className="c-subheader-nav-link"
-            aria-current="page"
-            to="/dashboard"
-          >
-            <CIcon name="cil-graph" alt="Dashboard" />
-            &nbsp;Dashboard
-          </CLink>
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-settings" alt="Settings" />
-            &nbsp;Settings
-          </CLink>
-        </div>
       </CSubheader>
     </CHeader>
   );
