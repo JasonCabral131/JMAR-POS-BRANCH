@@ -12,8 +12,7 @@ import {
   CSidebarNavItem,
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
-
+import TheLogo from "./../assets/icons/Jarm_Logo.svg";
 // sidebar nav config
 import navigation from "./nav";
 
@@ -27,14 +26,16 @@ const TheSidebar = () => {
       onShowChange={(val) => dispatch({ type: "set", sidebarShow: val })}
     >
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CIcon
+        <img
+          src={TheLogo}
           className="c-sidebar-brand-full"
-          name="logo-negative"
+          alt="logo-negative"
           height={35}
         />
-        <CIcon
+        <img
+          src={TheLogo}
           className="c-sidebar-brand-minimized"
-          name="sygnet"
+          alt="logo-negative"
           height={35}
         />
       </CSidebarBrand>

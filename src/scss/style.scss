@@ -32,7 +32,42 @@
     font-weight: bold;
   }
 }
-
+.brand-information-header {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  text-align: center;
+  height: 60px !important;
+  border-left: 5px solid rgb(252, 162, 177);
+  padding-left: 10px;
+  margin-left: 20px;
+  p {
+    background: #489ecf;
+    background: -webkit-radial-gradient(
+      circle farthest-side at top right,
+      #489ecf 22%,
+      #c889cf 50%
+    );
+    background: -moz-radial-gradient(
+      circle farthest-side at top right,
+      #489ecf 22%,
+      #c889cf 50%
+    );
+    background: radial-gradient(
+      circle farthest-side at top right,
+      #489ecf 22%,
+      #c889cf 50%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: capitalize;
+    font-size: 30px;
+    margin-top: auto;
+    letter-spacing: 3px;
+    font-weight: 700;
+  }
+}
 .header-card-information span {
   margin-left: 10px;
   border-bottom: 3px solid lightblue;
