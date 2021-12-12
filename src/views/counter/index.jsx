@@ -18,7 +18,7 @@ import { getTaxInfo } from "src/redux/action";
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
   const searchRef = useRef();
-  const { user } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth);
   const { socket } = useSelector((state) => state.socket);
   const { tax } = useSelector((state) => state.tax);
   const { products, loading } = useSelector((state) => state.product);
@@ -37,7 +37,9 @@ export const CounterArea = (props) => {
         dispatch(getTaxInfo());
         console.log("requesting");
       } else if (user.status === "cashier") {
-        dispatch(getCounterProductByCashier({ branch_id: user.branch._id }));
+        dispatch(
+          getCounterProductByCashier({ branch_id: user.branch._id, token })
+        );
       }
     }
 

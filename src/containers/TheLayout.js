@@ -9,11 +9,9 @@ import { getBrandByBranchOwner } from "src/redux/action/brand.action";
 import { getProductByBrandOwner } from "src/redux/action/product.action";
 import { getSubcategoryInfo } from "src/redux/action/subcategory.action";
 import { TheContent, TheSidebar, TheFooter, TheHeader } from "./index";
-import shortid from "shortid";
+
 const TheLayout = () => {
   const { user } = useSelector((state) => state.auth);
-
-  const { socket } = useSelector((state) => state.socket);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBrandByBranchOwner());
@@ -24,14 +22,6 @@ const TheLayout = () => {
     dispatch(getSales());
     // eslint-disable-next-line
   }, []);
-  if (user) {
-    if (socket) {
-      if (!window.location.hash) {
-        window.location = window.location + `#${shortid.generate()}`;
-        window.location.reload();
-      }
-    }
-  }
   return (
     <div className="c-app c-default-layout">
       {user && user.status === "owner" ? <TheSidebar /> : null}

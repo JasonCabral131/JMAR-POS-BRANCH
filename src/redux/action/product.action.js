@@ -1,7 +1,8 @@
 import axiosInstance from "src/helpers/axios";
-import cashierAxios from "src/helpers/cashierAxios";
+//import cashierAxios from "src/helpers/cashierAxios";
 import { logout } from "./auth.action";
 import { productConstant, taxConstant } from "../constant";
+import axios from "axios";
 
 export const createProductInfo = (data) => {
   return async (dispatch) => {
@@ -36,10 +37,6 @@ export const getProductByBrandOwner = () => {
         dispatch({
           type: productConstant.GET_PRODUCT_SUCCESS,
           payload: { products: res.data.products },
-        });
-        dispatch({
-          type: taxConstant.GET_ARCHIVED_TAX_SUCCESS,
-          payload: { governmentTax: res.data.taxs },
         });
         return { result: true };
       }
@@ -134,20 +131,29 @@ export const getArchivedProduct = () => {
 export const getCounterProductByCashier = (data) => {
   return async (dispatch) => {
     try {
+      const { token } = data;
       dispatch({ type: productConstant.PRODUCT_REQUEST });
-      const res = await cashierAxios.post("/get-product-by-branch", data);
+      const res = await axios({
+        method: "post",
+        url: `http://localhost:8000/api-jarm-cashier/get-product-by-branch`,
+        data: data,
+        headers: { authorization: token ? `Bearer ${token}` : "" },
+      });
 
       if (res.status === 200) {
         dispatch({
           type: productConstant.GET_PRODUCT_SUCCESS,
           payload: { products: res.data.products },
         });
+        dispatch({
+          type: taxConstant.GET_ARCHIVED_TAX_SUCCESS,
+          payload: { governmentTax: res.data.taxs },
+        });
         return { result: true };
       }
       dispatch({ type: productConstant.GET_PRODUCT_FAIL });
       return { result: false };
     } catch (e) {
-      dispatch(logout());
       dispatch({ type: productConstant.GET_PRODUCT_FAIL });
       return { result: false, message: "Something went Wrong!" };
     }

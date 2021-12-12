@@ -9,20 +9,8 @@ import TheSidebar from "./TheSidebar";
 //   TheFooter,
 //   TheHeader
 // } from './index'
-import { useSelector } from "react-redux";
-import shortid from "shortid";
-const TheLayout = () => {
-  const { user } = useSelector((state) => state.auth);
 
-  const { socket } = useSelector((state) => state.socket);
-  if (user) {
-    if (socket) {
-      if (!window.location.hash) {
-        window.location = window.location + `#${shortid.generate()}`;
-        window.location.reload();
-      }
-    }
-  }
+const TheLayout = () => {
   return (
     <div className="c-app c-default-layout">
       <TheSidebar />
