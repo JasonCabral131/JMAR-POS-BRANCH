@@ -15,6 +15,7 @@ import Swal from "sweetalert2";
 import { AddSearchProduct } from "./AddSearchProduct";
 import { LoaderSpinner } from "src/reusable/";
 import { getTaxInfo } from "src/redux/action";
+import storelogo from "./../../assets/icons/store.jpg";
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
   const searchRef = useRef();
@@ -203,7 +204,7 @@ export const CounterArea = (props) => {
     <div className="counterArea_container">
       <div className="counter-area-header shadow">
         <Link to="/branch/dashboard">
-          <IoMdClose size={50} className="back-to-main shadow" />
+          <IoMdClose size={30} className="back-to-main shadow" />
         </Link>
 
         <h1 className="brand-information-header">
@@ -216,10 +217,11 @@ export const CounterArea = (props) => {
               : null}{" "}
           </p>
         </h1>
+        <img alt={"store"} src={storelogo} className="ml-2" />
       </div>
       <div className="counter-area-body">
         {loading ? (
-          <div className="w-100 mt-5">
+          <div className="w-100" style={{ marginTop: "62px" }}>
             <LoaderSpinner height={"400px"} />
           </div>
         ) : (

@@ -2,7 +2,8 @@ import axiosInstance from "src/helpers/axios";
 //import cashierAxios from "src/helpers/cashierAxios";
 import { logout } from "./auth.action";
 import { productConstant, taxConstant } from "../constant";
-import axios from "axios";
+
+import cashierAxios from "src/helpers/cashierAxios";
 
 export const createProductInfo = (data) => {
   return async (dispatch) => {
@@ -131,14 +132,8 @@ export const getArchivedProduct = () => {
 export const getCounterProductByCashier = (data) => {
   return async (dispatch) => {
     try {
-      const { token } = data;
       dispatch({ type: productConstant.PRODUCT_REQUEST });
-      const res = await axios({
-        method: "post",
-        url: `http://localhost:8000/api-jarm-cashier/get-product-by-branch`,
-        data: data,
-        headers: { authorization: token ? `Bearer ${token}` : "" },
-      });
+      const res = await cashierAxios.post("/get-product-by-branch", data);
 
       if (res.status === 200) {
         dispatch({
@@ -146,7 +141,7 @@ export const getCounterProductByCashier = (data) => {
           payload: { products: res.data.products },
         });
         dispatch({
-          type: taxConstant.GET_ARCHIVED_TAX_SUCCESS,
+          type: taxConstant.GET_TAX_SUCCESS,
           payload: { governmentTax: res.data.taxs },
         });
         return { result: true };

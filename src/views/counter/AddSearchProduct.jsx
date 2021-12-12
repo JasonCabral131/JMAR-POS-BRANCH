@@ -178,6 +178,14 @@ export const AddSearchProduct = ({
           onClick={() => {
             setQuantity("1");
             setAddPurchaseModal(false);
+            searchRef.current.value = "";
+            setTimeout(() => {
+              searchRef
+                ? searchRef.current
+                  ? searchRef.current.blur()
+                  : console.log("")
+                : console.log("");
+            }, 400);
           }}
         >
           Cancel

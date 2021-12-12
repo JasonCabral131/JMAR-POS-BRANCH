@@ -1,4 +1,6 @@
 import axiosInstance from "src/helpers/axios";
+import cashierAxios from "src/helpers/cashierAxios";
+import Swal from "sweetalert2";
 import { salesConstant } from "../constant";
 
 export const cashierPay = (data) => {
@@ -32,6 +34,22 @@ export const getSales = () => {
     } catch (e) {
       dispatch({ type: salesConstant.GET_SALES_FAIL });
       return { result: false };
+    }
+  };
+};
+export const cashierCounter = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await cashierAxios.post("/cashier-counter-pay", data);
+      if (res.status === 200) {
+        Swal.fire("Success", res.data.message, "success");
+        return true;
+      }
+      Swal.fire("Warning", res.data.message, "warning");
+      return false;
+    } catch (e) {
+      Swal.fire("Warning", e.response.data.message, "error");
+      return false;
     }
   };
 };

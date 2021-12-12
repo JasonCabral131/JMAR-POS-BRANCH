@@ -8,7 +8,7 @@ import ToPrintContainer from "./to-print-info";
 import useDetectPrint from "use-detect-print";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { cashierPay } from "src/redux/action";
+import { cashierPay, logout } from "src/redux/action";
 
 import { getProductByBrandOwner } from "src/redux/action/product.action";
 export const CounterAreaPay = ({
@@ -102,30 +102,36 @@ export const CounterAreaPay = ({
           };
         }),
       };
-      setPaymentLoading(true);
-      const res = await dispatch(cashierPay(transactionObject));
-      setPaymentLoading(false);
-      if (res.result) {
+      if (user.status === "owner") {
+        setPaymentLoading(true);
+        const res = await dispatch(cashierPay(transactionObject));
+        setPaymentLoading(false);
+        if (res.result) {
+          Swal.fire({
+            icon: "success",
+            text: res.message,
+          });
+          dispatch(getProductByBrandOwner());
+          handlePrint();
+          setTimeout(() => {
+            searchRef
+              ? searchRef.current
+                ? searchRef.current.blur()
+                : console.log("")
+              : console.log("");
+          }, 400);
+          return;
+        }
         Swal.fire({
-          icon: "success",
+          icon: "warning",
           text: res.message,
         });
-        dispatch(getProductByBrandOwner());
-        handlePrint();
-        setTimeout(() => {
-          searchRef
-            ? searchRef.current
-              ? searchRef.current.blur()
-              : console.log("")
-            : console.log("");
-        }, 400);
         return;
+      } else if (user.status === "cashier") {
+      } else {
+        dispatch(logout());
+        Swal.fire("Warning", "Wrong Type Of User Detected", "warning");
       }
-      Swal.fire({
-        icon: "warning",
-        text: res.message,
-      });
-      return;
     }
   };
 

@@ -35,7 +35,9 @@ const App = (props) => {
         if (status === "owner") {
           dispatch(checkIsStillValidOwner({ token, _id }));
         } else if (status === "cashier") {
-          dispatch(checkIsStillValidcashier({ token, _id }));
+          dispatch(
+            checkIsStillValidcashier({ token, _id, dateNow: new Date() })
+          );
         } else {
           dispatch(logout());
         }

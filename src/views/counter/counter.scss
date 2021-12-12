@@ -4,22 +4,23 @@
   width: 100%;
   padding: 0;
   margin: 0;
-  height: 100vh !important;
+
   box-sizing: border-box;
   font-family: "Roboto Mono", monospace;
   position: relative;
-
+  height: 100vh !important;
   background: #ffffff;
 }
 .counter-area-header {
   top: 0;
   z-index: 1;
   margin: 0;
-  padding: 0;
+  padding: 10px;
   height: 60px !important;
   width: 100%;
   display: flex;
   background-color: #ffffff;
+  position: fixed;
   .back-to-main {
     border: 0.09rem solid grey;
     border-radius: 100%;
@@ -38,10 +39,30 @@
     align-content: center;
     align-items: center;
     text-align: center;
-    margin-left: 10px;
     height: 100%;
+    border-left: 5px solid rgb(252, 162, 177);
+    padding-left: 10px;
+    margin-left: 20px;
     p {
-      color: sandybrown;
+      background: #489ecf;
+      background: -webkit-radial-gradient(
+        circle farthest-side at top right,
+        #489ecf 22%,
+        #c889cf 50%
+      );
+      background: -moz-radial-gradient(
+        circle farthest-side at top right,
+        #489ecf 22%,
+        #c889cf 50%
+      );
+      background: radial-gradient(
+        circle farthest-side at top right,
+        #489ecf 22%,
+        #c889cf 50%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: capitalize;
       font-size: 30px;
       margin-top: auto;
       letter-spacing: 3px;
@@ -54,16 +75,38 @@
   display: flex;
   height: 100%;
   position: relative;
+  margin-top: 62px;
 }
 .CounterAreaData {
   width: 75%;
   background-color: #ffffff;
   height: 100%;
   padding: 10px;
+  position: fixed;
   border-right: 0.1rem solid grey;
+  .tableFixHead {
+    overflow: auto;
+    height: 510px;
+  }
+  .tableFixHead thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  /* Just common table stuff. Really. */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th,
+  td {
+    padding: 8px 16px;
+  }
 
   table {
     margin-top: 10px;
+    width: 100% !important;
   }
   .data-information-counter {
     width: 100%;
@@ -75,6 +118,8 @@
   height: 100%;
   width: 25%;
   padding: 5px;
+  position: fixed;
+  right: 0;
 }
 .total-amount-container {
   width: 100%;
@@ -153,7 +198,6 @@
     margin-top: 50px;
     height: auto;
     overflow: visible;
-    background-color: #ffffff;
   }
   .counter-area-header {
     position: fixed;

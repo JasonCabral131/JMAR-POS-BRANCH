@@ -52,6 +52,10 @@ const Login = (props) => {
       email: userInformation.email.email,
       password: userInformation.password,
       signInAs: userInformation.loginAs,
+      dateNow: new Date(),
+      localeTime: new Date()
+        .toLocaleString({ hour: "numeric", minute: "numeric", hour12: true })
+        .split(",")[1],
     };
     console.log(userInformation.loginAs);
     if (userInformation.loginAs === "branch-owner") {

@@ -6,9 +6,12 @@ import {
   IoAddOutline,
   IoRemoveOutline,
   IoPencilOutline,
+  IoSearchOutline,
 } from "react-icons/io5";
 import { Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
+import SalePng from "src/assets/icons/sell.gif";
+import Sale2Png from "src/assets/icons/sales2.gif";
 export const CounterAreaData = ({
   tax,
   purchase,
@@ -187,162 +190,189 @@ export const CounterAreaData = ({
   };
   return (
     <div className="CounterAreaData">
-      <div className=" w-100 row ">
-        <div className="col-md-6 form-group d-flex flex-column percent-container">
+      <div className=" w-100 row fixed-heading-data">
+        <div className="col-md-4 form-group d-flex flex-column">
           <label className="label-name text-left">
             Search Product Barcode ID
           </label>
-          <input
-            type="number"
-            min="0"
-            ref={searchRef}
-            name="searchProduct"
-            id="searchProduct-counter"
-            className=""
-            placeholder="product barcode Id...."
-            onKeyPress={handleKeyDown}
-            onPaste={(e) => {
-              const data = e.clipboardData.getData("Text");
-              if (!isNaN(data)) {
-                if (data < 0) {
+          <div className="percent-container">
+            <input
+              type="number"
+              min="0"
+              ref={searchRef}
+              name="searchProduct"
+              id="searchProduct-counter"
+              className="icon-no-right no-capitalized"
+              placeholder="Product barcode"
+              onKeyPress={handleKeyDown}
+              onPaste={(e) => {
+                const data = e.clipboardData.getData("Text");
+                if (!isNaN(data)) {
+                  if (data < 0) {
+                    e.preventDefault();
+                  }
+                } else {
                   e.preventDefault();
                 }
-              } else {
-                e.preventDefault();
-              }
-            }}
-          />
+              }}
+            />
+            <IoSearchOutline className="home-signup-iconx" size={25} />
+          </div>
         </div>
-        <div className="col-md-6 form-group d-flex flex-column justify-content-end  percent-container">
-          <label className="label-name text-left">Filter Product</label>
-          <input
-            type="text"
-            name="filterProduct"
-            className="filter-input"
-            placeholder="product name"
-            onKeyDown={handleKeyDown}
-            value={filterProduct.product}
-            onChange={(e) => {
-              const { value } = e.target;
-              const hastoShow = purchase.filter((data) =>
-                data.product.toUpperCase().includes(value.toUpperCase())
-              );
-              console.log(hastoShow);
-              setFilterProduct({
-                product: value,
-                hastoShow: hastoShow.length > 0 ? true : false,
-              });
-            }}
-            disabled={purchase.length > 0 ? false : true}
-            style={{ cursor: purchase.length > 0 ? "text" : "not-allowed" }}
+        <div className="col-md-8  d-flex  justify-content-between">
+          <img
+            alt="sales"
+            src={Sale2Png}
+            style={{ height: "100px", width: "150px" }}
           />
-          {purchase.length < 1 ? (
-            <small className="text-danger toshow-data">No Data Available</small>
-          ) : null}
+          <img
+            alt="sales"
+            src={SalePng}
+            style={{ height: "90px", width: "300px" }}
+          />
         </div>
       </div>
+
       <div className="data-information-counter card shadow p-2">
-        <table className="table table-borderless">
-          <thead>
-            <tr>
-              <th className="text-left">Product</th>
-              <th className="text-center">Price</th>
-              <th className="text-center">Quantity</th>
-              <th className="text-center">Amount</th>
-              <th className="text-center"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {purchase.length > 0
-              ? purchase.map((data, index) => {
-                  if (filterProduct.product !== "") {
-                    if (
-                      data.product
-                        .toLowerCase()
-                        .includes(filterProduct.product.toLowerCase())
-                    ) {
+        {purchase.length > 5 ? (
+          <div className="col-md-3">
+            <div className="percent-container">
+              <input
+                type="text"
+                name="filterProduct"
+                className="icon-no-right no-capitalized"
+                placeholder="Filter product"
+                onKeyDown={handleKeyDown}
+                value={filterProduct.product}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  const hastoShow = purchase.filter((data) =>
+                    data.product.toUpperCase().includes(value.toUpperCase())
+                  );
+                  console.log(hastoShow);
+                  setFilterProduct({
+                    product: value,
+                    hastoShow: hastoShow.length > 0 ? true : false,
+                  });
+                }}
+                disabled={purchase.length > 0 ? false : true}
+                style={{ cursor: purchase.length > 0 ? "text" : "not-allowed" }}
+              />
+              <IoSearchOutline className="home-signup-iconx" size={15} />
+            </div>
+            {purchase.length < 1 ? (
+              <small className="text-danger toshow-data">
+                No Data Available
+              </small>
+            ) : null}
+          </div>
+        ) : null}
+        <div className="tableFixHead table-responsive">
+          <table className="table table-borderless  table-fixed">
+            <thead>
+              <tr>
+                <th className="text-left">Product</th>
+                <th className="text-center">Price</th>
+                <th className="text-center">Quantity</th>
+                <th className="text-center">Amount</th>
+                <th className="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {purchase.length > 0
+                ? purchase.map((data, index) => {
+                    if (filterProduct.product !== "") {
+                      if (
+                        data.product
+                          .toLowerCase()
+                          .includes(filterProduct.product.toLowerCase())
+                      ) {
+                        return (
+                          <ToFilter data={data} index={index} key={data._id} />
+                        );
+                      }
+                      return null;
+                    } else {
                       return (
                         <ToFilter data={data} index={index} key={data._id} />
                       );
                     }
-                    return null;
-                  } else {
-                    return (
-                      <ToFilter data={data} index={index} key={data._id} />
-                    );
-                  }
-                })
-              : null}
-            {purchase.length > 0 ? (
-              filterProduct.product !== "" ? (
-                filterProduct.hastoShow ? null : (
-                  <tr>
-                    <td colSpan="6">
-                      <div className="w-100 d-block no-data-purchase">
-                        <p className="text-center fs-2"> No Data Found !!!</p>
-                      </div>
-                    </td>
-                  </tr>
-                )
-              ) : null
-            ) : null}
-            {purchase.length > 0 ? (
-              <>
-                <tr>
-                  <th colSpan="4" className="text-right fs-6">
-                    <span className="mt-1">SubTotal :</span>
-                  </th>
-                  <th className="text-left fs-5">{`₱ ${new Intl.NumberFormat().format(
-                    purchase.reduce(function (accumulator, currentValue) {
-                      return accumulator + currentValue.total;
-                    }, 0)
-                  )}`}</th>
-                </tr>
-
-                <tr>
-                  <th colSpan="2" className="text-left fs-6 text-dark">
-                    Tax
-                  </th>
-                  <th className="fs-6 text-dark text-center"></th>
-                  <th className="fs-6 text-dark text-center">Amount</th>
-                </tr>
-              </>
-            ) : (
-              <tr>
-                <td colSpan="5">
-                  <div className="w-100 d-block no-data-purchase">
-                    <p className="text-center fs-2"> No Data Available !!!</p>
-                  </div>
-                </td>
-              </tr>
-            )}
-
-            {purchase.length > 0
-              ? tax.length > 0
-                ? tax.map((data, key) => {
-                    return (
-                      <tr key={key}>
-                        <td colSpan="2" className="text-left fs-6">
-                          {data.tax}
-                        </td>
-                        <td className="fs-6 text-left"> {data.percentage} %</td>
-                        <td className="fs-6 text-center">{`₱ ${parseFloat(
-                          parseFloat(data.percentage / 100) *
-                            purchase.reduce(function (
-                              accumulator,
-                              currentValue
-                            ) {
-                              return accumulator + currentValue.total;
-                            },
-                            0)
-                        ).toFixed(2)} `}</td>
-                      </tr>
-                    );
                   })
-                : null
-              : null}
-          </tbody>
-        </table>
+                : null}
+              {purchase.length > 0 ? (
+                filterProduct.product !== "" ? (
+                  filterProduct.hastoShow ? null : (
+                    <tr>
+                      <td colSpan="6">
+                        <div className="w-100 d-block no-data-purchase">
+                          <p className="text-center fs-2"> No Data Found !!!</p>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                ) : null
+              ) : null}
+              {purchase.length > 0 ? (
+                <>
+                  <tr>
+                    <th colSpan="4" className="text-right fs-6">
+                      <span className="mt-1">SubTotal :</span>
+                    </th>
+                    <th className="text-left fs-5">{`₱ ${new Intl.NumberFormat().format(
+                      purchase.reduce(function (accumulator, currentValue) {
+                        return accumulator + currentValue.total;
+                      }, 0)
+                    )}`}</th>
+                  </tr>
+
+                  <tr>
+                    <th colSpan="2" className="text-left fs-6 text-dark">
+                      Tax
+                    </th>
+                    <th className="fs-6 text-dark text-center"></th>
+                    <th className="fs-6 text-dark text-center">Amount</th>
+                  </tr>
+                </>
+              ) : (
+                <tr>
+                  <td colSpan="5">
+                    <div className="w-100 d-block no-data-purchase">
+                      <p className="text-center fs-2"> No Data Available !!!</p>
+                    </div>
+                  </td>
+                </tr>
+              )}
+
+              {purchase.length > 0
+                ? tax.length > 0
+                  ? tax.map((data, key) => {
+                      return (
+                        <tr key={key}>
+                          <td colSpan="2" className="text-left fs-6">
+                            {data.tax}
+                          </td>
+                          <td className="fs-6 text-left">
+                            {" "}
+                            {data.percentage} %
+                          </td>
+                          <td className="fs-6 text-center">{`₱ ${parseFloat(
+                            parseFloat(data.percentage / 100) *
+                              purchase.reduce(function (
+                                accumulator,
+                                currentValue
+                              ) {
+                                return accumulator + currentValue.total;
+                              },
+                              0)
+                          ).toFixed(2)} `}</td>
+                        </tr>
+                      );
+                    })
+                  : null
+                : null}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Modal
         show={showModal}
@@ -382,7 +412,10 @@ export const CounterAreaData = ({
                           type="text"
                           name="searchProduct"
                           className="inputvalue"
-                          placeholder="product"
+                          value={
+                            parseFloat(data.price) * parseFloat(data.quantity)
+                          }
+                          placeholder="total"
                           disabled={true}
                         />
                       </div>
