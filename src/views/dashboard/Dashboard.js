@@ -9,7 +9,7 @@ import { MonthlySaleWidget } from "./SalesWidget";
 import { YearlySaleWidget } from "./SalesWidget";
 import { TodaySaleWidget } from "./SalesWidget";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
-import { handleTodaysMonth, numberFormat } from "src/reusable";
+import { handleTodaysMonth, numberFormat, toCapitalized } from "src/reusable";
 import moment from "moment";
 import { InformationTransact } from "./SalesWidget";
 const fields = [
@@ -75,7 +75,7 @@ const Dashboard = () => {
               items={sales ? sales.salesByDay : []}
               fields={fields}
               footer
-              itemsPerPageSelect={false}
+              itemsPerPageSelect={true}
               itemsPerPage={5}
               hover
               sorter
@@ -181,25 +181,46 @@ const Dashboard = () => {
             <table className="table ">
               <thead>
                 <tr>
-                  <td></td>
+                  <td>Name</td>
                   <td className="text-right">Sales</td>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>
-                    <div className="d-flex cashier_container_sales">
-                      <img
-                        alt="cashier-profile"
-                        src={
-                          "https://www.nj.com/resizer/zovGSasCaR41h_yUGYHXbVTQW2A=/1280x0/smart/cloudfront-us-east-1.images.arcpublishing.com/advancelocal/SJGKVE5UNVESVCW7BBOHKQCZVE.jpg"
-                        }
-                      />
-                      <h1>Jason P. Cabral</h1>
-                    </div>
-                  </td>
-                  <td className="text-right"> ₱. &nbsp;&nbsp; {237}</td>
-                </tr>
+                {sales
+                  ? Array.isArray(sales.CashierSale)
+                    ? sales.CashierSale.map((data) => {
+                        return (
+                          <tr key={data._id}>
+                            <td>
+                              <div className="d-flex cashier_container_sales">
+                                <img
+                                  alt="cashier-profile"
+                                  src={data.profile.url}
+                                />
+                                <h1>
+                                  {toCapitalized(
+                                    data.firstname +
+                                      " " +
+                                      data.middlename +
+                                      " " +
+                                      data.lastname
+                                  )}
+                                </h1>
+                              </div>
+                            </td>
+                            <td className="text-right">
+                              {" "}
+                              ₱. &nbsp;&nbsp;{" "}
+                              {data.salesByMonth.reduce(
+                                (accum, item) => accum + item.total,
+                                0
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    : null
+                  : null}
               </tbody>
             </table>
           </div>

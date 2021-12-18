@@ -20,7 +20,7 @@ const _nav = [
   {
     _tag: "CSidebarNavItem",
     name: "Blogs",
-    to: "/theme/colors",
+    to: "/branch/BlogPosting",
     icon: <SiBloglovin size="20" className="c-sidebar-nav-icon" />,
     badge: {
       color: "info",

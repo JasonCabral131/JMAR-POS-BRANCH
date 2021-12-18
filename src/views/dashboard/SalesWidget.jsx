@@ -326,7 +326,7 @@ export const YearlySaleWidget = ({ sales }) => {
 
 export const InformationTransact = ({ item }) => {
   const handleInformation = () => {
-    if (item.customer) {
+    if (item.cashier) {
       return {
         name: toCapitalized(
           item.cashier.lastname +
@@ -362,7 +362,11 @@ export const InformationTransact = ({ item }) => {
       />
       <div className="d-flex  ml-2">
         <p>{handleInformation().name}</p>
-        <p className="badge badge-pill p-2 bg-success ml-2">
+        <p
+          className={`badge badge-pill p-2 bg-${
+            handleInformation().type === "owner" ? "success" : "warning"
+          } ml-2`}
+        >
           {" "}
           {handleInformation().type}
         </p>

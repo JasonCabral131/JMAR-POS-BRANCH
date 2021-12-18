@@ -16,9 +16,16 @@ import DepositHistory from "./views/deposit/DepositHistory";
 import ScheduleCashier from "./views/cashier/schedule";
 import RolesPermission from "./views/roles_permission";
 import ReportInformation from "./views/Report";
+import BlogPosting from "./views/Blog";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
+  {
+    exact: true,
+    path: "/branch/BlogPosting",
+    name: "Blog",
+    component: BlogPosting,
+  },
   {
     exact: true,
     path: "/branch/inventory-item/brand",

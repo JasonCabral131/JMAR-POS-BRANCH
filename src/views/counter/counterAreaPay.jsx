@@ -8,9 +8,12 @@ import ToPrintContainer from "./to-print-info";
 import useDetectPrint from "use-detect-print";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { cashierPay, logout } from "src/redux/action";
+import { cashierCounter, cashierPay, logout } from "src/redux/action";
 
-import { getProductByBrandOwner } from "src/redux/action/product.action";
+import {
+  getCounterProductByCashier,
+  getProductByBrandOwner,
+} from "src/redux/action/product.action";
 export const CounterAreaPay = ({
   purchase,
   setPurchase,
@@ -23,7 +26,7 @@ export const CounterAreaPay = ({
 }) => {
   const dispatch = useDispatch();
   const componentRef = useRef();
-  const { user } = useSelector((state) => state.auth);
+  const { user, token } = useSelector((state) => state.auth);
   const [salesId, setSalesId] = useState("");
 
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -111,8 +114,9 @@ export const CounterAreaPay = ({
             icon: "success",
             text: res.message,
           });
-          dispatch(getProductByBrandOwner());
           handlePrint();
+          dispatch(getProductByBrandOwner());
+
           setTimeout(() => {
             searchRef
               ? searchRef.current
@@ -128,9 +132,28 @@ export const CounterAreaPay = ({
         });
         return;
       } else if (user.status === "cashier") {
+        setPaymentLoading(true);
+        const res = await dispatch(
+          cashierCounter({ ...transactionObject, branch_id: user.branch._id })
+        );
+        setPaymentLoading(false);
+        if (res) {
+          handlePrint();
+          dispatch(
+            getCounterProductByCashier({ branch_id: user.branch._id, token })
+          );
+
+          setTimeout(() => {
+            searchRef
+              ? searchRef.current
+                ? searchRef.current.blur()
+                : console.log("")
+              : console.log("");
+          }, 400);
+          return;
+        }
       } else {
         dispatch(logout());
-        Swal.fire("Warning", "Wrong Type Of User Detected", "warning");
       }
     }
   };

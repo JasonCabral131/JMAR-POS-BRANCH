@@ -15,7 +15,8 @@ import {
 
 // sidebar nav config
 import navigation from "./_nav";
-
+import FullWidthLogo from "./../assets/icons/hamburger_logo_expand.png";
+import MinimizeLogo from "./../assets/icons/Jarm_Logo.svg";
 const TheSidebar = () => {
   const dispatch = useDispatch();
   const show = useSelector((state) => state.coreUiState.sidebarShow);
@@ -27,13 +28,13 @@ const TheSidebar = () => {
     >
       <CSidebarBrand className="d-md-down-none" to="/">
         <CImg
-          src="https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1633504263/logo_umwwru.png"
+          src={FullWidthLogo}
           className="c-sidebar-brand-full"
           name="logo-negative"
           height={35}
         />
         <CImg
-          src="https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1633506044/7-11_tpmbfc.png"
+          src={MinimizeLogo}
           className="c-sidebar-brand-minimized"
           name="sygnet"
           height={35}

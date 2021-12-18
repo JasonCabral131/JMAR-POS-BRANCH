@@ -709,7 +709,7 @@ const handleTodaysMonth = () => {
   );
 };
 const dashboardInfo = (item) => {
-  if (item.customer) {
+  if (item.cashier) {
     return {
       name: toCapitalized(
         item.cashier.lastname +

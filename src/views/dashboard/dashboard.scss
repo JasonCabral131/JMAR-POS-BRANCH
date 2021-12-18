@@ -71,12 +71,12 @@
   position: relative;
   margin: 0 auto;
   display: flex;
-
+  flex-direction: column;
   & > * {
     margin: 5px;
   }
-  .info:first-child {
-    width: 70%;
+  .info {
+    width: 100%;
   }
 }
 .cashier-label {

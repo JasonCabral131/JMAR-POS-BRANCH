@@ -17,6 +17,12 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Sale History",
+    to: "/counter-area",
+    icon: <RiSecurePaymentFill size="20" className="c-sidebar-nav-icon" />,
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Reports",
     to: "/branch/report-information",
     icon: <IoDocumentTextOutline className="c-sidebar-nav-icon " />,

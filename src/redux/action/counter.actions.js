@@ -48,8 +48,32 @@ export const cashierCounter = (data) => {
       Swal.fire("Warning", res.data.message, "warning");
       return false;
     } catch (e) {
-      Swal.fire("Warning", e.response.data.message, "error");
+      if (e.response.status === 400) {
+        Swal.fire("Warning", e.response.data.message, "error");
+        return false;
+      }
+      Swal.fire("Warning", e, "error");
       return false;
+    }
+  };
+};
+export const getCashierSales = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: salesConstant.SALES_REQUEST });
+      const res = await cashierAxios.get("/get-cashier-sale");
+      if (res.status === 200) {
+        dispatch({
+          type: salesConstant.GET_SALES_SUCCESS,
+          payload: res.data.POS,
+        });
+        return { result: true, POS: res.data.POS };
+      }
+      dispatch({ type: salesConstant.GET_SALES_FAIL });
+      return { result: false };
+    } catch (e) {
+      dispatch({ type: salesConstant.GET_SALES_FAIL });
+      return { result: false };
     }
   };
 };

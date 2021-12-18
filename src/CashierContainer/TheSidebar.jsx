@@ -13,6 +13,7 @@ import {
 } from "@coreui/react";
 
 import TheLogo from "./../assets/icons/Jarm_Logo.svg";
+import TheLogoFullWidth from "./../assets/icons/hamburger_logo_expand.png";
 // sidebar nav config
 import navigation from "./nav";
 
@@ -27,7 +28,7 @@ const TheSidebar = () => {
     >
       <CSidebarBrand className="d-md-down-none" to="/">
         <img
-          src={TheLogo}
+          src={TheLogoFullWidth}
           className="c-sidebar-brand-full"
           alt="logo-negative"
           height={35}

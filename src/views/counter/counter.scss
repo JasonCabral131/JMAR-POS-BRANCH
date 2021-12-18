@@ -34,6 +34,11 @@
     }
   }
 }
+
+.hover :hover {
+  color: rgb(247, 126, 126);
+  border: 0.09rem solid rgb(190, 130, 130);
+}
 .counter-area-body {
   padding: 5px;
   display: flex;

@@ -225,6 +225,7 @@ const TheProduct = (props) => {
             cacheOptions
             placeholder={"Filter By Brands..."}
             onChange={(e) => handleFilterByBrand(e)}
+            menuPortalTarget={document.body}
           />
         </div>
 
