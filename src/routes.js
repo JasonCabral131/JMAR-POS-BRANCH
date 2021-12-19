@@ -17,6 +17,7 @@ import ScheduleCashier from "./views/cashier/schedule";
 import RolesPermission from "./views/roles_permission";
 import ReportInformation from "./views/Report";
 import BlogPosting from "./views/Blog";
+import RemittedTax from "./views/tax/RemittedTax";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -120,6 +121,12 @@ const routes = [
     path: "/branch/report-information",
     name: "Report Information",
     component: ReportInformation,
+  },
+  {
+    exact: true,
+    path: "/branch/tax/tax-remitted",
+    name: "Government Remitting Tax",
+    component: RemittedTax,
   },
 ];
 

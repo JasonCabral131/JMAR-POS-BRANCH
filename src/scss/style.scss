@@ -856,3 +856,12 @@
     height: 350px;
   }
 }
+@media print {
+  html,
+  body {
+    height: initial !important;
+    overflow: initial !important;
+    -webkit-print-color-adjust: exact;
+    padding: 10px;
+  }
+}

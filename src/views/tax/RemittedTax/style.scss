@@ -1,0 +1,28 @@
+@media print {
+  .brand-information-header-x {
+    display: flex;
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    text-align: flex-start;
+    padding-left: 10px;
+    margin-left: 20px;
+    p {
+      color: rgb(150, 69, 116);
+      text-transform: capitalize;
+      font-size: 30px;
+      margin-top: auto;
+      letter-spacing: 3px;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+  }
+  .signatureOverPrintedName {
+    padding: 20px;
+    width: 400px;
+
+    position: absolute;
+    left: 5px;
+    bottom: 10px;
+  }
+}

@@ -8,8 +8,9 @@ import {
 } from "react-icons/ri";
 import { MdSecurity, MdOutlineInventory } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
-import { FaHistory, FaPeopleCarry } from "react-icons/fa";
+import { FaPeopleCarry } from "react-icons/fa";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { FcPositiveDynamic } from "react-icons/fc";
 const _nav = [
   {
     _tag: "CSidebarNavItem",
@@ -79,7 +80,7 @@ const _nav = [
       {
         _tag: "CSidebarNavItem",
         name: "Tax Remitted",
-        to: "/icons/flags",
+        to: "/branch/tax/tax-remitted",
       },
     ],
   },
@@ -128,9 +129,9 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "History",
-    to: "/branch/history-transactions",
-    icon: <FaHistory className="c-sidebar-nav-icon" />,
+    name: "Sales",
+    to: "/branch/sales-information",
+    icon: <FcPositiveDynamic className="c-sidebar-nav-icon" color="#FFFFFF" />,
   },
 
   {

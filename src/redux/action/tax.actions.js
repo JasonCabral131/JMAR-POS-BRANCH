@@ -138,3 +138,17 @@ export const getArchivedTaxInfo = () => {
     }
   };
 };
+
+export const getRemittedTax = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.get("/get-to-remit-tax-information");
+      if (res.status === 200) {
+        return { result: true, data: res.data.tax };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

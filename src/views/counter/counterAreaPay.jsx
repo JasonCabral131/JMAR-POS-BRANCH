@@ -91,70 +91,89 @@ export const CounterAreaPay = ({
       const salesId = Math.floor(Math.random() * 999999999999999);
       setSalesId(salesId);
 
-      let transactionObject = {
-        salesId,
-        payment: payment.payment,
-        customer: payer ? payer : null,
-        products: purchase,
-        taxs: await tax.map((data) => {
-          return {
-            _id: data._id,
-            percentage: data.percentage,
-            tax: data.tax,
-            amount: parseFloat(data.percentage / 100) * subTotal,
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You Wont Revert this Action",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, proceed to payment",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+        allowOutsideClick: false,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          let transactionObject = {
+            salesId,
+            payment: payment.payment,
+            customer: payer ? payer : null,
+            products: purchase,
+            taxs: await tax.map((data) => {
+              return {
+                _id: data._id,
+                percentage: data.percentage,
+                tax: data.tax,
+                amount: parseFloat(data.percentage / 100) * subTotal,
+              };
+            }),
           };
-        }),
-      };
-      if (user.status === "owner") {
-        setPaymentLoading(true);
-        const res = await dispatch(cashierPay(transactionObject));
-        setPaymentLoading(false);
-        if (res.result) {
-          Swal.fire({
-            icon: "success",
-            text: res.message,
-          });
-          handlePrint();
-          dispatch(getProductByBrandOwner());
+          if (user.status === "owner") {
+            setPaymentLoading(true);
+            const res = await dispatch(cashierPay(transactionObject));
+            setPaymentLoading(false);
+            if (res.result) {
+              Swal.fire({
+                icon: "success",
+                text: res.message,
+              });
+              handlePrint();
+              dispatch(getProductByBrandOwner());
 
-          setTimeout(() => {
-            searchRef
-              ? searchRef.current
-                ? searchRef.current.blur()
-                : console.log("")
-              : console.log("");
-          }, 400);
-          return;
-        }
-        Swal.fire({
-          icon: "warning",
-          text: res.message,
-        });
-        return;
-      } else if (user.status === "cashier") {
-        setPaymentLoading(true);
-        const res = await dispatch(
-          cashierCounter({ ...transactionObject, branch_id: user.branch._id })
-        );
-        setPaymentLoading(false);
-        if (res) {
-          handlePrint();
-          dispatch(
-            getCounterProductByCashier({ branch_id: user.branch._id, token })
-          );
+              setTimeout(() => {
+                searchRef
+                  ? searchRef.current
+                    ? searchRef.current.blur()
+                    : console.log("")
+                  : console.log("");
+              }, 400);
+              return;
+            }
+            Swal.fire({
+              icon: "warning",
+              text: res.message,
+            });
+            return;
+          } else if (user.status === "cashier") {
+            setPaymentLoading(true);
+            const res = await dispatch(
+              cashierCounter({
+                ...transactionObject,
+                branch_id: user.branch._id,
+              })
+            );
+            setPaymentLoading(false);
+            if (res) {
+              handlePrint();
+              dispatch(
+                getCounterProductByCashier({
+                  branch_id: user.branch._id,
+                  token,
+                })
+              );
 
-          setTimeout(() => {
-            searchRef
-              ? searchRef.current
-                ? searchRef.current.blur()
-                : console.log("")
-              : console.log("");
-          }, 400);
-          return;
+              setTimeout(() => {
+                searchRef
+                  ? searchRef.current
+                    ? searchRef.current.blur()
+                    : console.log("")
+                  : console.log("");
+              }, 400);
+              return;
+            }
+          } else {
+            dispatch(logout());
+          }
         }
-      } else {
-        dispatch(logout());
-      }
+      });
     }
   };
 
