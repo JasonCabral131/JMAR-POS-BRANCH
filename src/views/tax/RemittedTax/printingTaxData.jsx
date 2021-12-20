@@ -33,7 +33,7 @@ const PrintingTax = React.forwardRef(({ tax, user }, ref) => {
       <h4>{user.branch_address.fullAddress} </h4>
       <br />
       <br />
-      <table class="table">
+      <table className="table">
         <thead>
           <tr>
             <th scope="col">#</th>

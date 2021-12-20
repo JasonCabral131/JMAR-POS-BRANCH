@@ -35,6 +35,7 @@
     "jquery": "^3.6.0",
     "mgr-pdf-viewer-react": "^1.0.3",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "node-sass": "^6.0.1",
     "phil-reg-prov-mun-brgy": "^1.1.0",
     "prop-types": "^15.7.2",

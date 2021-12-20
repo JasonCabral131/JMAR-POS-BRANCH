@@ -152,3 +152,25 @@ export const getRemittedTax = () => {
     }
   };
 };
+export const remitTaxCollection = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post("/remit-tax-collection", data);
+      if (res.status === 200) {
+        Swal.fire({ icon: "success", text: "Successfully Remitted" });
+        return { result: true };
+      }
+      Swal.fire({
+        icon: "error",
+        text: res.data.msg,
+      });
+      return { result: false };
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        text: e.response.data.msg,
+      });
+      return { result: false };
+    }
+  };
+};

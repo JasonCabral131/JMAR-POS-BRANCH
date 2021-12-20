@@ -15,11 +15,14 @@ export const TodaySaleWidget = ({ sales }) => {
     if (sales) {
       if (sales.salesByDay) {
         daily += parseFloat(
-          sales.salesByDay.reduce((accum, item) => accum + item.total, 0)
+          sales.salesByDay.reduce(
+            (accum, item) => accum + parseFloat(item.total),
+            0
+          )
         );
       }
     }
-    return daily;
+    return parseFloat(daily);
   };
 
   useEffect(() => {
