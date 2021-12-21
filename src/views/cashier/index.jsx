@@ -148,7 +148,12 @@ const CashierInformation = (props) => {
                       </Tooltip>
                     }
                   >
-                    <p> {item.name}</p>
+                    <Link
+                      to={`/branch/branch-cashier-information/${item._id}`}
+                      className="a-link-none"
+                    >
+                      {item.name}
+                    </Link>
                   </OverlayTrigger>
                 </div>
                 <div className="small text-muted text-center">

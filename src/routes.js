@@ -18,6 +18,7 @@ import RolesPermission from "./views/roles_permission";
 import ReportInformation from "./views/Report";
 import BlogPosting from "./views/Blog";
 import RemittedTax from "./views/tax/RemittedTax";
+import CashierSales from "./views/cashier/cashierSales";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -70,6 +71,12 @@ const routes = [
     path: "/branch/inventory-item/government-tax/government-tax-archived",
     name: "Archived Government Tax",
     component: ArchivedTax,
+  },
+  {
+    exact: true,
+    path: "/branch/branch-cashier-information/:cashierId",
+    name: "Cashier Sales Information",
+    component: CashierSales,
   },
   {
     exact: true,

@@ -275,20 +275,13 @@ export const CounterAreaPay = ({
       )}
       <CButton
         color="info"
-        size="lg"
+        size="sm"
         className="mt-4 w-100 fs-3"
         onClick={() => handlePayment(true)}
         disabled={paymentLoading}
       >
         {paymentLoading ? (
-          <>
-            <span
-              className="spinner-border spinner-border-sm mr-1"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Loading...
-          </>
+          <div className="w-100">Loading...</div>
         ) : (
           <>
             {" "}
@@ -304,14 +297,7 @@ export const CounterAreaPay = ({
         disabled={paymentLoading}
       >
         {paymentLoading ? (
-          <>
-            <span
-              className="spinner-border spinner-border-sm mr-1"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Loading...
-          </>
+          <>Loading...</>
         ) : (
           <>
             {" "}

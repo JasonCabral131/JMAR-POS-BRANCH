@@ -22,6 +22,7 @@ export const TodaySaleWidget = ({ sales }) => {
         );
       }
     }
+
     return parseFloat(daily);
   };
 

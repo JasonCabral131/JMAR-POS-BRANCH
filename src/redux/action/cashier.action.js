@@ -151,7 +151,22 @@ export const removeCashierBranch = (data) => {
     }
   };
 };
-
+export const getCashierSale = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post(
+        "/get-cashier-sales-information",
+        data
+      );
+      if (res.status === 200) {
+        return { result: true, POS: res.data.POS, cashier: res.data.cashier };
+      }
+      return { result: false, data: null };
+    } catch (e) {
+      return { result: false, data: null };
+    }
+  };
+};
 export const UpdateSchedule = (data) => {
   return async (dispatch) => {
     try {
