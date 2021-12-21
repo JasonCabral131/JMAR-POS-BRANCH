@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 import { AiOutlineDown, AiOutlineUp, AiOutlinePrinter } from "react-icons/ai";
 import { dailyFields } from "../salesWidget";
-const DailySaleInfo = ({ sales, loading }) => {
+import { useReactToPrint } from "react-to-print";
+import { useSelector } from "react-redux";
+import AllDataDaily from "../Printing/Daily/AllData";
+
+const DailySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
   const [dP, setDP] = useState([]);
+  const { user } = useSelector((state) => state.auth);
+  const allDataRef = useRef();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -25,7 +31,10 @@ const DailySaleInfo = ({ sales, loading }) => {
     }
     setDP(newDetails);
   };
-  const handlePrintAllDailySaleData = () => {};
+  const handlePrintAllDailySaleData = useReactToPrint({
+    content: () => allDataRef.current,
+  });
+
   return (
     <div className="card shadow p-3" style={{ position: "relative" }}>
       <div className="card-header">
@@ -104,18 +113,7 @@ const DailySaleInfo = ({ sales, loading }) => {
                   <CCardBody className={"p-2"}>
                     <div className=" card shadow p-2">
                       <h4 className="ml-2">{item.date + " List Of Data"}</h4>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "flex-end",
-                          alignItems: "flex-end",
-                          position: "absolute",
-                          right: 10,
-                          top: 20,
-                        }}
-                      >
-                        <AiOutlinePrinter size="25" className="hover" />
-                      </div>
+
                       <div className="card-body ">
                         <CDataTable
                           items={[...item.data]}
@@ -208,6 +206,14 @@ const DailySaleInfo = ({ sales, loading }) => {
               );
             },
           }}
+        />
+      </div>
+      <div style={{ display: "none" }}>
+        <AllDataDaily
+          ref={allDataRef}
+          user={user}
+          cinfo={cinfo}
+          sales={sales}
         />
       </div>
     </div>

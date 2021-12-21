@@ -79,7 +79,7 @@ const CashierSales = (props) => {
           </div>
         </div>
       ) : null}
-      <DailySaleInfo sales={sales} loading={loading} />
+      <DailySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
       <WeeklySaleInfo sales={sales} loading={loading} />
       <MonthlySaleInfo sales={sales} loading={loading} />
       <YearlySaleInfo sales={sales} loading={loading} />
