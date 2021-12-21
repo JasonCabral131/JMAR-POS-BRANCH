@@ -1,16 +1,24 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 import { AiOutlineDown, AiOutlineUp, AiOutlinePrinter } from "react-icons/ai";
 import { dailyFields } from "../salesWidget";
 import { useReactToPrint } from "react-to-print";
 import { useSelector } from "react-redux";
 import AllDataDaily from "../Printing/Daily/AllData";
+import SelectDay from "../Printing/Daily/SelectDay";
+import TransactDaily from "../Printing/Daily/TransactionDaily";
 
 const DailySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
   const [dP, setDP] = useState([]);
+  const [SDate, setSelectDate] = useState(null);
+  const [strigger, setStrigger] = useState("");
+  const [tTriger, setTrigger] = useState("");
+  const [tData, setTData] = useState(null);
   const { user } = useSelector((state) => state.auth);
   const allDataRef = useRef();
+  const selectedRef = useRef();
+  const tRef = useRef();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -27,14 +35,31 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
     if (position !== -1) {
       newDetails.splice(position, 1);
     } else {
-      newDetails = [...details, index];
+      newDetails = [...dP, index];
     }
     setDP(newDetails);
   };
   const handlePrintAllDailySaleData = useReactToPrint({
     content: () => allDataRef.current,
   });
-
+  const handlePrintSelectedDate = useReactToPrint({
+    content: () => selectedRef.current,
+  });
+  const handlePrintTransaction = useReactToPrint({
+    content: () => tRef.current,
+  });
+  useEffect(() => {
+    if (SDate) {
+      handlePrintSelectedDate();
+    }
+    // eslint-disable-next-line
+  }, [SDate, strigger]);
+  useEffect(() => {
+    if (tData) {
+      handlePrintTransaction();
+    }
+    // eslint-disable-next-line
+  }, [tData, tTriger]);
   return (
     <div className="card shadow p-3" style={{ position: "relative" }}>
       <div className="card-header">
@@ -88,7 +113,14 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
             show_details: (item, index) => (
               <td>
                 <div className="d-flex justify-content-center">
-                  <AiOutlinePrinter size="20" className="hover" />
+                  <AiOutlinePrinter
+                    size="20"
+                    className="hover"
+                    onClick={() => {
+                      setSelectDate(item);
+                      setStrigger(Math.random());
+                    }}
+                  />
                   {details.includes(index) ? (
                     <AiOutlineDown
                       onClick={() => {
@@ -142,6 +174,10 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
                                   <AiOutlinePrinter
                                     size="20"
                                     className="hover"
+                                    onClick={() => {
+                                      setTData(item);
+                                      setTrigger(Math.random());
+                                    }}
                                   />
                                   {dP.includes(index) ? (
                                     <AiOutlineDown
@@ -215,6 +251,8 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
           cinfo={cinfo}
           sales={sales}
         />
+        <SelectDay ref={selectedRef} user={user} cinfo={cinfo} sales={SDate} />
+        <TransactDaily ref={tRef} user={user} cinfo={cinfo} sales={tData} />
       </div>
     </div>
   );
@@ -223,7 +261,7 @@ export default DailySaleInfo;
 
 const fieldsDaily = [
   { key: "salesId", label: "Transaction ID", _style: { width: "45%" } },
-  { key: "total", label: "Total Amount", _style: { width: "45%" } },
+  { key: "total", label: "Sales", _style: { width: "45%" } },
 
   {
     key: "show_details",

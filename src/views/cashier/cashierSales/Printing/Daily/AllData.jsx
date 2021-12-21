@@ -65,7 +65,7 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
                     <thead className="border border-bottom-1">
                       <tr>
                         <th className="text-left">Date</th>
-                        <th className="text-left">Total Amount</th>
+                        <th className="text-left">Sales</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -79,7 +79,7 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
                     <thead className="border border-bottom-1 mt-1">
                       <tr>
                         <th className="text-left">Transaction ID</th>
-                        <th className="text-left">Total Amount</th>
+                        <th className="text-left">Sales</th>
                       </tr>
                     </thead>
                     <tbody>

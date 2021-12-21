@@ -351,7 +351,7 @@ export const CashierYearlySale = ({ sales }) => {
 };
 export const dailyFields = [
   { key: "date", label: "Date", _style: { width: "45%" } },
-  { key: "totalAmount", label: "Total Amount", _style: { width: "45%" } },
+  { key: "totalAmount", label: "Sales", _style: { width: "45%" } },
   {
     key: "show_details",
     label: "",
