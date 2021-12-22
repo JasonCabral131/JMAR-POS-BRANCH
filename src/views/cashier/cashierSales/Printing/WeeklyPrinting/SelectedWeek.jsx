@@ -1,9 +1,8 @@
 import React from "react";
-
 import Logo from "src/assets/icons/hamburger_logo_expand.png";
 import storelogo from "src/assets/icons/store.jpg";
 import { toCapitalized } from "src/reusable";
-const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
+const SelectedWeek = React.forwardRef(({ sales, cinfo, user }, ref) => {
   return (
     <div
       className="w-100 p-2"
@@ -53,12 +52,23 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
           </div>
         </div>
       ) : null}
-      <h4 className="text-left mt-1">Daily Sale</h4>
+      <h3>
+        Date:{" "}
+        <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+          {" "}
+          {sales ? sales.date : null}{" "}
+        </span>
+      </h3>
+      <h3>
+        Sales:{"₱. "}
+        <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+          {sales ? sales.totalAmount : null}{" "}
+        </span>
+      </h3>
       <hr />
-
       {sales
-        ? Array.isArray(sales.salesByDay)
-          ? sales.salesByDay.map((data) => {
+        ? Array.isArray(sales.data)
+          ? sales.data.map((data) => {
               return (
                 <div className="w-100 p-2 border mt-2">
                   <h3>
@@ -74,7 +84,7 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
                       {sales ? data.totalAmount : null}{" "}
                     </span>
                   </h3>
-                  <table className="table table-borderless mt-2">
+                  <table className="mt-2 table">
                     <thead className="border border-bottom-1 mt-1">
                       <tr>
                         <th className="text-left">Transaction ID</th>
@@ -134,4 +144,5 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
     </div>
   );
 });
-export default AllDataDaily;
+
+export default SelectedWeek;

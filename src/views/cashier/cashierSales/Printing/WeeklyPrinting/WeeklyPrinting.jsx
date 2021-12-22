@@ -3,7 +3,7 @@ import React from "react";
 import Logo from "src/assets/icons/hamburger_logo_expand.png";
 import storelogo from "src/assets/icons/store.jpg";
 import { toCapitalized } from "src/reusable";
-const WeeklyPrinting = React.forwardRef(({ sales, cinfo, user }, ref) => {
+const AllWeeklyPrinting = React.forwardRef(({ sales, cinfo, user }, ref) => {
   return (
     <div
       className="w-100 p-2"
@@ -55,7 +55,121 @@ const WeeklyPrinting = React.forwardRef(({ sales, cinfo, user }, ref) => {
       ) : null}
       <h4 className="text-left mt-1">Weekly Sales Information</h4>
       <hr />
+      {sales
+        ? Array.isArray(sales)
+          ? sales.map((data) => {
+              return (
+                <div className="w-100 p-2 border mt-2">
+                  <h3>
+                    Date:{" "}
+                    <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+                      {" "}
+                      {sales ? data.date : null}{" "}
+                    </span>
+                  </h3>
+                  <h3>
+                    Sales:{" ₱. "}
+                    <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+                      {sales ? data.totalAmount : null}{" "}
+                    </span>
+                  </h3>
+
+                  {data.data.map((wData) => {
+                    return (
+                      <div className="w-100 p-2 mt-1">
+                        <table className="table">
+                          <thead className="border-bottom-1">
+                            <tr>
+                              <th className="text-left">Date</th>
+                              <th className="text-left">Sales</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr className="mt-1">
+                              <th className="text-left">
+                                {" "}
+                                {sales ? wData.date : null}{" "}
+                              </th>
+                              <th className="text-left">
+                                {" ₱. "}
+                                {sales ? wData.totalAmount : null}{" "}
+                              </th>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <table className="mt-2 table">
+                          <thead className="border border-bottom-1 mt-1">
+                            <tr>
+                              <th className="text-left">Transaction ID</th>
+                              <th className="text-left">Sales</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Array.isArray(wData.data)
+                              ? wData.data.map((tdata) => {
+                                  return (
+                                    <>
+                                      <tr className="mt-1">
+                                        <th className="text-left">
+                                          {tdata.salesId}
+                                        </th>
+                                        <th className="text-left">
+                                          {tdata.total}
+                                        </th>
+                                      </tr>
+                                      <table className="table table-borderless mt-2">
+                                        <thead className="border border-bottom-1 mt-1">
+                                          <tr>
+                                            <th className="text-left">
+                                              Product
+                                            </th>
+                                            <th className="text-left">Price</th>
+                                            <th className="text-left">
+                                              Quantity
+                                            </th>
+                                            <th className="text-left">
+                                              {" "}
+                                              Amount
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {tdata.product.map((PData) => {
+                                            return (
+                                              <tr className="border-bottom mt-1">
+                                                <th className="text-left">
+                                                  {PData.product.product}
+                                                </th>
+                                                <th className="text-left">
+                                                  {PData.price}
+                                                </th>
+                                                <th className="text-left">
+                                                  {PData.quantity}
+                                                </th>
+                                                <th className="text-left">
+                                                  {PData.amount}
+                                                </th>
+                                              </tr>
+                                            );
+                                          })}
+                                        </tbody>
+                                      </table>
+                                    </>
+                                  );
+                                })
+                              : null}
+                          </tbody>
+                        </table>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })
+          : null
+        : null}
     </div>
   );
 });
-export default WeeklyPrinting;
+export default AllWeeklyPrinting;

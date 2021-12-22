@@ -703,7 +703,7 @@ const handleTodaysMonth = () => {
   return (
     monthNames[date.getMonth()] +
     " " +
-    date.getDay() +
+    date.getDate() +
     ", " +
     date.getFullYear()
   );

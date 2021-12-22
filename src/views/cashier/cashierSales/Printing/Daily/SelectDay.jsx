@@ -70,44 +70,45 @@ const SelectDay = React.forwardRef(({ sales, cinfo, user }, ref) => {
         ? Array.isArray(sales.data)
           ? sales.data.map((tdata) => {
               return (
-                <table className="table table-borderless mt-1">
-                  <thead className="border border-bottom-1">
-                    <tr>
-                      <th className="text-left">Transaction ID</th>
-                      <th className="text-left">Sales</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="mt-1">
-                      <th className="text-left">{tdata.salesId}</th>
-                      <th className="text-left">{tdata.total}</th>
-                    </tr>
-                    <table className="table table-borderless mt-2">
-                      <thead className="border border-bottom-1 mt-1">
-                        <tr>
-                          <th className="text-left">Product</th>
-                          <th className="text-left">Price</th>
-                          <th className="text-left">Quantity</th>
-                          <th className="text-left"> Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {tdata.product.map((PData) => {
-                          return (
-                            <tr className="border-bottom mt-1">
-                              <th className="text-left">
-                                {PData.product.product}
-                              </th>
-                              <th className="text-left">{PData.price}</th>
-                              <th className="text-left">{PData.quantity}</th>
-                              <th className="text-left">{PData.amount}</th>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </tbody>
-                </table>
+                <div className="w-100 p-2 border mt-2">
+                  <h3>
+                    Transaction Id:{" "}
+                    <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+                      {" "}
+                      {sales ? tdata.salesId : null}{" "}
+                    </span>
+                  </h3>
+                  <h3>
+                    Sales:{" ₱. "}
+                    <span style={{ letterSpacing: 2, color: "#5c5c5c" }}>
+                      {sales ? tdata.total : null}{" "}
+                    </span>
+                  </h3>
+                  <table className="table table-borderless mt-2">
+                    <thead className="border border-bottom-1 mt-1">
+                      <tr>
+                        <th className="text-left">Product</th>
+                        <th className="text-left">Price</th>
+                        <th className="text-left">Quantity</th>
+                        <th className="text-left"> Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tdata.product.map((PData) => {
+                        return (
+                          <tr className="border-bottom mt-1">
+                            <th className="text-left">
+                              {PData.product.product}
+                            </th>
+                            <th className="text-left">{PData.price}</th>
+                            <th className="text-left">{PData.quantity}</th>
+                            <th className="text-left">{PData.amount}</th>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               );
             })
           : null
