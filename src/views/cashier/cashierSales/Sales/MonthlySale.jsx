@@ -1,12 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 import { AiOutlineDown, AiOutlineUp, AiOutlinePrinter } from "react-icons/ai";
 import { MonthlyFields } from "../salesWidget";
 import Sale2Png from "src/assets/icons/sell.gif";
-const MonthlySaleInfo = ({ sales, loading }) => {
+import AllWeeklyPrinting from "./../Printing/WeeklyPrinting/WeeklyPrinting";
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import SelectedWeek from "../Printing/WeeklyPrinting/SelectedWeek";
+import SelectDay from "../Printing/Daily/SelectDay";
+import TransactDaily from "../Printing/Daily/TransactionDaily";
+const MonthlySaleInfo = ({ sales, loading, cinfo }) => {
+  const { user } = useSelector((state) => state.auth);
   const [details, setDetails] = useState([]);
   const [dailydetails, setDailyDetails] = useState([]);
   const [transactDetials, setTransactDetails] = useState([]);
+  const [sWeek, setSWeek] = useState(null);
+  const [sWTrigger, setSWTrigger] = useState("");
+  const [SDate, setSelectDate] = useState(null);
+  const [strigger, setStrigger] = useState("");
+  const [tTriger, setTrigger] = useState("");
+  const [tData, setTData] = useState(null);
+  const allDataRef = useRef();
+  const wSelectDataRef = useRef();
+  const selectedRef = useRef();
+  const tRef = useRef();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -38,6 +55,38 @@ const MonthlySaleInfo = ({ sales, loading }) => {
     }
     setTransactDetails(newDetails);
   };
+  const handlePrintAllDailySaleData = useReactToPrint({
+    content: () => allDataRef.current,
+  });
+  const handlePrintingSelectWeek = useReactToPrint({
+    content: () => wSelectDataRef.current,
+  });
+  const handlePrintSelectedDate = useReactToPrint({
+    content: () => selectedRef.current,
+  });
+  const handlePrintTransaction = useReactToPrint({
+    content: () => tRef.current,
+  });
+
+  useEffect(() => {
+    if (sWeek) {
+      handlePrintingSelectWeek();
+    }
+    // eslint-disable-next-line
+  }, [sWeek, sWTrigger]);
+
+  useEffect(() => {
+    if (SDate) {
+      handlePrintSelectedDate();
+    }
+    // eslint-disable-next-line
+  }, [SDate, strigger]);
+  useEffect(() => {
+    if (tData) {
+      handlePrintTransaction();
+    }
+    // eslint-disable-next-line
+  }, [tData, tTriger]);
   return (
     <>
       <h1 className="header-card-information mt-5">
@@ -59,7 +108,11 @@ const MonthlySaleInfo = ({ sales, loading }) => {
             top: 20,
           }}
         >
-          <AiOutlinePrinter size="25" className="hover" />
+          <AiOutlinePrinter
+            size="25"
+            className="hover"
+            onClick={handlePrintAllDailySaleData}
+          />
         </div>
 
         <div className="card-body mt-2">
@@ -79,7 +132,14 @@ const MonthlySaleInfo = ({ sales, loading }) => {
               show_details: (item, index) => (
                 <td>
                   <div className="d-flex justify-content-center">
-                    <AiOutlinePrinter size="20" className="hover" />
+                    <AiOutlinePrinter
+                      size="20"
+                      className="hover"
+                      onClick={() => {
+                        setSWeek(item);
+                        setSWTrigger(Math.random());
+                      }}
+                    />
                     {details.includes(index) ? (
                       <AiOutlineDown
                         onClick={() => {
@@ -131,7 +191,10 @@ const MonthlySaleInfo = ({ sales, loading }) => {
                                   <AiOutlinePrinter
                                     size="20"
                                     className="hover"
-                                    onClick={() => {}}
+                                    onClick={() => {
+                                      setSelectDate(item);
+                                      setStrigger(Math.random());
+                                    }}
                                   />
                                   {dailydetails.includes(index) ? (
                                     <AiOutlineDown
@@ -190,7 +253,10 @@ const MonthlySaleInfo = ({ sales, loading }) => {
                                                 <AiOutlinePrinter
                                                   size="20"
                                                   className="hover"
-                                                  onClick={() => {}}
+                                                  onClick={() => {
+                                                    setTData(item);
+                                                    setTrigger(Math.random());
+                                                  }}
                                                 />
                                                 {transactDetials.includes(
                                                   index
@@ -274,6 +340,28 @@ const MonthlySaleInfo = ({ sales, loading }) => {
               },
             }}
           />
+        </div>
+        <div style={{ display: "none" }}>
+          <AllWeeklyPrinting
+            ref={allDataRef}
+            user={user}
+            cinfo={cinfo}
+            sales={sales ? sales.salesbyMonth : null}
+            type={"Monthly Sales Information"}
+          />
+          <SelectedWeek
+            ref={wSelectDataRef}
+            sales={sWeek}
+            cinfo={cinfo}
+            user={user}
+          />
+          <SelectDay
+            ref={selectedRef}
+            user={user}
+            cinfo={cinfo}
+            sales={SDate}
+          />
+          <TransactDaily ref={tRef} user={user} cinfo={cinfo} sales={tData} />
         </div>
       </div>
     </>

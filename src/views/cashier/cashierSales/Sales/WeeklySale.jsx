@@ -345,6 +345,7 @@ const WeeklySaleInfo = ({ sales, loading, cinfo }) => {
               user={user}
               cinfo={cinfo}
               sales={sales ? sales.salesByWeek : null}
+              type={"Weekly Sales Information"}
             />
             <SelectedWeek
               ref={wSelectDataRef}
