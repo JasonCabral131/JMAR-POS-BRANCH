@@ -11,6 +11,10 @@ import {
 } from "./salesWidget";
 import "./style.scss";
 import DailySaleInfo from "./Sales/DailySales";
+import dLogo from "src/assets/icons/Daily.gif";
+import wLogo from "src/assets/icons/wlogo.gif";
+import mLogo from "src/assets/icons/Monthly.gif";
+import yLogo from "src/assets/icons/yearly.gif";
 import WeeklySaleInfo from "./Sales/WeeklySale";
 import MonthlySaleInfo from "./Sales/MonthlySale";
 import YearlySaleInfo from "./Sales/YearlySale";
@@ -20,7 +24,12 @@ const CashierSales = (props) => {
   const [cinfo, setCashierInfo] = useState(null);
   const [sales, setSales] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [sData, setSData] = useState({
+    daily: true,
+    weekly: false,
+    monthly: false,
+    yearly: false,
+  });
   const handleGetCashier = async () => {
     setLoading(true);
     const res = await dispatch(getCashierSale({ cashier: cashierId }));
@@ -79,10 +88,84 @@ const CashierSales = (props) => {
           </div>
         </div>
       ) : null}
-      <DailySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
-      <WeeklySaleInfo sales={sales} loading={loading} />
-      <MonthlySaleInfo sales={sales} loading={loading} />
-      <YearlySaleInfo sales={sales} loading={loading} />
+      <div className="row mt-2">
+        <div className="col-md-3 p-1  d-flex justify-content-center">
+          <img
+            alt="d logo"
+            src={dLogo}
+            style={{ width: "95%", height: "150px" }}
+            className={` hover-red shadow ${sData.daily ? "a-s-f" : ""}`}
+            onClick={() => {
+              setSData({
+                daily: true,
+                weekly: false,
+                monthly: false,
+                yearly: false,
+              });
+            }}
+          />
+        </div>
+        <div className="col-md-3 p-1  d-flex justify-content-center">
+          <img
+            alt="w logo"
+            src={wLogo}
+            style={{ width: "95%", height: "150px" }}
+            className={` hover-red shadow ${sData.weekly ? "a-s-f" : ""}`}
+            onClick={() => {
+              setSData({
+                daily: false,
+                weekly: true,
+                monthly: false,
+                yearly: false,
+              });
+            }}
+          />
+        </div>
+        <div className="col-md-3 p-1  d-flex justify-content-center">
+          <img
+            alt="m logo"
+            src={mLogo}
+            style={{ width: "95%", height: "150px" }}
+            className={` hover-red shadow ${sData.monthly ? "a-s-f" : ""}`}
+            onClick={() => {
+              setSData({
+                daily: false,
+                weekly: false,
+                monthly: true,
+                yearly: false,
+              });
+            }}
+          />
+        </div>
+        <div className="col-md-3 p-1  d-flex justify-content-center">
+          <img
+            alt="y logo"
+            src={yLogo}
+            style={{ width: "95%", height: "150px" }}
+            className={` hover-red shadow ${sData.yearly ? "a-s-f" : ""}`}
+            onClick={() => {
+              setSData({
+                daily: false,
+                weekly: false,
+                monthly: false,
+                yearly: true,
+              });
+            }}
+          />
+        </div>
+      </div>
+      {sData.daily ? (
+        <DailySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
+      ) : null}
+      {sData.weekly ? (
+        <WeeklySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
+      ) : null}
+      {sData.monthly ? (
+        <MonthlySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
+      ) : null}
+      {sData.yearly ? (
+        <YearlySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
+      ) : null}
     </div>
   );
 };

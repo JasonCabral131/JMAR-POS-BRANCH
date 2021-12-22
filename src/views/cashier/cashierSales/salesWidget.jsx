@@ -107,11 +107,11 @@ export const CashierWeeklySale = ({ sales }) => {
     if (sales) {
       if (sales.salesByWeek) {
         const WeekSale = sales.salesByWeek.filter(
-          (data) => data.week === getWeekOfMonth(new Date())
+          (data) => data.date === getWeekOfMonth(new Date())
         );
 
         if (WeekSale.length > 0) {
-          for (let sale of WeekSale[0].data) {
+          for (let sale of WeekSale[0].datax) {
             setCsv((prev) => {
               const space = ["", ""];
               const transaction = ["Transaction ID", sale.salesId];
@@ -173,7 +173,9 @@ export const CashierWeeklySale = ({ sales }) => {
             data={csv}
             filename={`Weekly Sale ( ${handleTodaysMonth()} ).csv`}
           >
-            <GrDocumentCsv size="13" className="mb-1 icon" />
+            {csv.length > 1 ? (
+              <GrDocumentCsv size="13" className="mb-1 icon" />
+            ) : null}
           </CSVLink>
         </div>
         {/* <div className="download-sales">
@@ -195,8 +197,8 @@ export const CashierMonthlySale = ({ sales }) => {
             `${monthNames[new Date().getMonth()]}/${new Date().getFullYear()}`
         );
         if (month.length > 0) {
-          setTotal(month[0].total);
-          for (let sale of month[0].data) {
+          setTotal(month[0].totalAmount);
+          for (let sale of month[0].datax) {
             setCsv((prev) => {
               const space = ["", ""];
               const transaction = ["Transaction ID", sale.salesId];
@@ -257,7 +259,9 @@ export const CashierMonthlySale = ({ sales }) => {
             data={csv}
             filename={`Monthly Sale ( ${handleTodaysMonth()} ).csv`}
           >
-            <GrDocumentCsv size="13" className="mb-1 icon" />
+            {csv.length > 1 ? (
+              <GrDocumentCsv size="13" className="mb-1 icon" />
+            ) : null}
           </CSVLink>
         </div>
         {/* <div className="download-sales">
@@ -277,7 +281,7 @@ export const CashierYearlySale = ({ sales }) => {
           (data) => data.date === `${new Date().getFullYear()}`
         );
         if (yearly.length > 0) {
-          for (let sale of yearly[0].data) {
+          for (let sale of yearly[0].datax) {
             setCsv((prev) => {
               const space = ["", ""];
               const transaction = ["Transaction ID", sale.salesId];
@@ -308,7 +312,7 @@ export const CashierYearlySale = ({ sales }) => {
               ];
             });
           }
-          setTotal(yearly[0].total);
+          setTotal(yearly[0].totalAmount);
           return;
         }
       }
@@ -339,7 +343,9 @@ export const CashierYearlySale = ({ sales }) => {
             data={csv}
             filename={`Yearly Sale ( ${handleTodaysMonth()} ).csv`}
           >
-            <GrDocumentCsv size="13" className="mb-1 icon" />
+            {csv.length > 1 ? (
+              <GrDocumentCsv size="13" className="mb-1 icon" />
+            ) : null}
           </CSVLink>
         </div>
         {/* <div className="download-sales">
@@ -361,7 +367,7 @@ export const dailyFields = [
   },
 ];
 export const WeeklyFields = [
-  { key: "week", label: "Weekly", _style: { width: "45%" } },
+  { key: "date", label: "Weekly", _style: { width: "45%" } },
   { key: "totalAmount", label: "Total Amount", _style: { width: "45%" } },
   {
     key: "show_details",
@@ -373,7 +379,7 @@ export const WeeklyFields = [
 ];
 export const MonthlyFields = [
   { key: "date", label: "Monthly Sale", _style: { width: "45%" } },
-  { key: "total", label: "Total Amount", _style: { width: "45%" } },
+  { key: "totalAmount", label: "Total Amount", _style: { width: "45%" } },
   {
     key: "show_details",
     label: "",
@@ -384,7 +390,7 @@ export const MonthlyFields = [
 ];
 export const YearlyFields = [
   { key: "date", label: "Yearly Sale", _style: { width: "45%" } },
-  { key: "total", label: "Total Amount", _style: { width: "45%" } },
+  { key: "totalAmount", label: "Total Amount", _style: { width: "45%" } },
   {
     key: "show_details",
     label: "",

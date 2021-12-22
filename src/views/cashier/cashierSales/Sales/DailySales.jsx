@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import AllDataDaily from "../Printing/Daily/AllData";
 import SelectDay from "../Printing/Daily/SelectDay";
 import TransactDaily from "../Printing/Daily/TransactionDaily";
-
+import Sale2Png from "src/assets/icons/sell.gif";
 const DailySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
   const [dP, setDP] = useState([]);
@@ -61,11 +61,16 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
     // eslint-disable-next-line
   }, [tData, tTriger]);
   return (
-    <div className="card shadow p-3" style={{ position: "relative" }}>
-      <div className="card-header">
-        <h1 className="header-card-information">
-          <span>Daily Sale Information</span>
-        </h1>
+    <>
+      <h1 className="header-card-information mt-5">
+        <img
+          alt="sales"
+          src={Sale2Png}
+          style={{ height: "80px", width: "250px" }}
+        />
+        <span>Daily Sale Information</span>
+      </h1>
+      <div className="card  mt-4 p-3" style={{ position: "relative" }}>
         <div
           style={{
             display: "flex",
@@ -88,173 +93,181 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
             ) : null
           ) : null}
         </div>
-      </div>
-      <div className="card-body">
-        <CDataTable
-          items={sales ? (sales.salesByDay ? sales.salesByDay : []) : []}
-          fields={dailyFields}
-          columnFilter={false}
-          tableFilterValue={null}
-          tableFilter={{ placeholder: "search information..." }}
-          itemsPerPageSelect={true}
-          itemsPerPage={5}
-          hover
-          sorter
-          pagination
-          loading={loading}
-          scopedSlots={{
-            totalAmount: (item) => (
-              <td className="fw-bolder">
-                {`₱ ${new Intl.NumberFormat().format(
-                  Math.round((item.totalAmount + Number.EPSILON) * 100) / 100
-                )}`}
-              </td>
-            ),
-            show_details: (item, index) => (
-              <td>
-                <div className="d-flex justify-content-center">
-                  <AiOutlinePrinter
-                    size="20"
-                    className="hover"
-                    onClick={() => {
-                      setSelectDate(item);
-                      setStrigger(Math.random());
-                    }}
-                  />
-                  {details.includes(index) ? (
-                    <AiOutlineDown
-                      onClick={() => {
-                        toggleDetails(index);
-                      }}
-                      className="hover mt-1 ml-4"
-                    />
-                  ) : (
-                    <AiOutlineUp
-                      onClick={() => {
-                        toggleDetails(index);
-                      }}
-                      className="hover mt-1 ml-4"
-                    />
-                  )}
-                </div>
-              </td>
-            ),
-            details: (item, index) => {
-              return (
-                <CCollapse show={details.includes(index)}>
-                  <CCardBody className={"p-2"}>
-                    <div className=" card shadow p-2">
-                      <h4 className="ml-2">{item.date + " List Of Data"}</h4>
 
-                      <div className="card-body ">
-                        <CDataTable
-                          items={[...item.data]}
-                          fields={fieldsDaily}
-                          columnFilter={false}
-                          tableFilter={{ placeholder: "search information.." }}
-                          footer={false}
-                          itemsPerPageSelect={true}
-                          itemsPerPage={5}
-                          hover
-                          sorter
-                          pagination
-                          scopedSlots={{
-                            total: (item) => (
-                              <td className="fw-bolder">
-                                {`₱ ${new Intl.NumberFormat().format(
-                                  Math.round(
-                                    (item.total + Number.EPSILON) * 100
-                                  ) / 100
-                                )}`}
-                              </td>
-                            ),
-                            show_details: (item, index) => (
-                              <td>
-                                <div className="d-flex justify-content-center">
-                                  <AiOutlinePrinter
-                                    size="20"
-                                    className="hover"
-                                    onClick={() => {
-                                      setTData(item);
-                                      setTrigger(Math.random());
-                                    }}
-                                  />
-                                  {dP.includes(index) ? (
-                                    <AiOutlineDown
+        <div className="card-body mt-2">
+          <CDataTable
+            items={sales ? (sales.salesByDay ? sales.salesByDay : []) : []}
+            fields={dailyFields}
+            columnFilter={false}
+            tableFilterValue={null}
+            tableFilter={{ placeholder: "date (ex: 12/10/2022)" }}
+            itemsPerPageSelect={true}
+            itemsPerPage={5}
+            hover
+            sorter
+            pagination
+            loading={loading}
+            scopedSlots={{
+              totalAmount: (item) => (
+                <td className="fw-bolder">
+                  {`₱ ${new Intl.NumberFormat().format(
+                    Math.round((item.totalAmount + Number.EPSILON) * 100) / 100
+                  )}`}
+                </td>
+              ),
+              show_details: (item, index) => (
+                <td>
+                  <div className="d-flex justify-content-center">
+                    <AiOutlinePrinter
+                      size="20"
+                      className="hover"
+                      onClick={() => {
+                        setSelectDate(item);
+                        setStrigger(Math.random());
+                      }}
+                    />
+                    {details.includes(index) ? (
+                      <AiOutlineDown
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    ) : (
+                      <AiOutlineUp
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    )}
+                  </div>
+                </td>
+              ),
+              details: (item, index) => {
+                return (
+                  <CCollapse show={details.includes(index)}>
+                    <CCardBody className={"p-2"}>
+                      <div className=" card shadow p-2">
+                        <h4 className="ml-2">{item.date + " List Of Data"}</h4>
+
+                        <div className="card-body ">
+                          <CDataTable
+                            items={[...item.data]}
+                            fields={fieldsDaily}
+                            columnFilter={false}
+                            tableFilter={{
+                              placeholder: "transaction id",
+                            }}
+                            footer={false}
+                            itemsPerPageSelect={true}
+                            itemsPerPage={5}
+                            hover
+                            sorter
+                            pagination
+                            scopedSlots={{
+                              total: (item) => (
+                                <td className="fw-bolder">
+                                  {`₱ ${new Intl.NumberFormat().format(
+                                    Math.round(
+                                      (item.total + Number.EPSILON) * 100
+                                    ) / 100
+                                  )}`}
+                                </td>
+                              ),
+                              show_details: (item, index) => (
+                                <td>
+                                  <div className="d-flex justify-content-center">
+                                    <AiOutlinePrinter
+                                      size="20"
+                                      className="hover"
                                       onClick={() => {
-                                        toggleDownProduct(index);
+                                        setTData(item);
+                                        setTrigger(Math.random());
                                       }}
-                                      className="hover mt-1 ml-4"
                                     />
-                                  ) : (
-                                    <AiOutlineUp
-                                      onClick={() => {
-                                        toggleDownProduct(index);
-                                      }}
-                                      className="hover mt-1 ml-4"
-                                    />
-                                  )}
-                                </div>
-                              </td>
-                            ),
-                            details: (item, index) => {
-                              return (
-                                <CCollapse show={dP.includes(index)}>
-                                  <CCardBody className={"p-2"}>
-                                    <div className=" card shadow p-2">
-                                      <h4 className="ml-2">
-                                        <span
-                                          style={{
-                                            color: "#adadad",
-                                            letterSpacing: 3,
-                                          }}
-                                        >
-                                          Product List
-                                        </span>
-                                      </h4>
-                                      <CDataTable
-                                        items={[
-                                          ...handleShowProduct(item.product),
-                                        ]}
-                                        fields={productFields}
-                                        columnFilter={false}
-                                        tableFilter={{
-                                          placeholder: "search product..",
+                                    {dP.includes(index) ? (
+                                      <AiOutlineDown
+                                        onClick={() => {
+                                          toggleDownProduct(index);
                                         }}
-                                        footer={false}
-                                        itemsPerPageSelect={true}
-                                        itemsPerPage={5}
-                                        hover
-                                        sorter
-                                        pagination
+                                        className="hover mt-1 ml-4"
                                       />
-                                    </div>
-                                  </CCardBody>
-                                </CCollapse>
-                              );
-                            },
-                          }}
-                        />
+                                    ) : (
+                                      <AiOutlineUp
+                                        onClick={() => {
+                                          toggleDownProduct(index);
+                                        }}
+                                        className="hover mt-1 ml-4"
+                                      />
+                                    )}
+                                  </div>
+                                </td>
+                              ),
+                              details: (item, index) => {
+                                return (
+                                  <CCollapse show={dP.includes(index)}>
+                                    <CCardBody className={"p-2"}>
+                                      <div className=" card shadow p-2">
+                                        <h4 className="ml-2">
+                                          <span
+                                            style={{
+                                              color: "#adadad",
+                                              letterSpacing: 3,
+                                            }}
+                                          >
+                                            Product List
+                                          </span>
+                                        </h4>
+                                        <CDataTable
+                                          items={[
+                                            ...handleShowProduct(item.product),
+                                          ]}
+                                          fields={productFields}
+                                          columnFilter={false}
+                                          tableFilter={{
+                                            placeholder: "product",
+                                          }}
+                                          footer={false}
+                                          itemsPerPageSelect={true}
+                                          itemsPerPage={5}
+                                          hover
+                                          sorter
+                                          pagination
+                                        />
+                                      </div>
+                                    </CCardBody>
+                                  </CCollapse>
+                                );
+                              },
+                            }}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </CCardBody>
-                </CCollapse>
-              );
-            },
-          }}
-        />
+                    </CCardBody>
+                  </CCollapse>
+                );
+              },
+            }}
+          />
+        </div>
+        <div style={{ display: "none" }}>
+          <AllDataDaily
+            ref={allDataRef}
+            user={user}
+            cinfo={cinfo}
+            sales={sales}
+          />
+          <SelectDay
+            ref={selectedRef}
+            user={user}
+            cinfo={cinfo}
+            sales={SDate}
+          />
+          <TransactDaily ref={tRef} user={user} cinfo={cinfo} sales={tData} />
+        </div>
       </div>
-      <div style={{ display: "none" }}>
-        <AllDataDaily
-          ref={allDataRef}
-          user={user}
-          cinfo={cinfo}
-          sales={sales}
-        />
-        <SelectDay ref={selectedRef} user={user} cinfo={cinfo} sales={SDate} />
-        <TransactDaily ref={tRef} user={user} cinfo={cinfo} sales={tData} />
-      </div>
-    </div>
+    </>
   );
 };
 export default DailySaleInfo;

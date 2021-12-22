@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { CDataTable } from "@coreui/react";
 import { AiOutlineDown, AiOutlineUp, AiOutlinePrinter } from "react-icons/ai";
 import { WeeklyFields } from "../salesWidget";
-const WeeklySaleInfo = ({ sales, loading }) => {
+import Sale2Png from "src/assets/icons/sell.gif";
+const WeeklySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
+
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -14,12 +16,18 @@ const WeeklySaleInfo = ({ sales, loading }) => {
     }
     setDetails(newDetails);
   };
+
   return (
-    <div className="card shadow p-3 mt-2" style={{ position: "relative" }}>
-      <div className="card-header">
-        <h1 className="header-card-information">
-          <span>Weekly Sale Information</span>
-        </h1>
+    <>
+      <h1 className="header-card-information mt-5">
+        <img
+          alt="sales"
+          src={Sale2Png}
+          style={{ height: "80px", width: "250px" }}
+        />
+        <span>Weekly Sale Information</span>
+      </h1>
+      <div className="card  mt-4 p-3" style={{ position: "relative" }}>
         <div
           style={{
             display: "flex",
@@ -30,49 +38,78 @@ const WeeklySaleInfo = ({ sales, loading }) => {
             top: 20,
           }}
         >
-          <AiOutlinePrinter size="25" className="hover" />
+          <AiOutlinePrinter size="25" className="hover" onClick={() => {}} />
+        </div>
+
+        <div className="card-body mt-2">
+          <CDataTable
+            items={sales ? (sales.salesByWeek ? sales.salesByWeek : []) : []}
+            fields={WeeklyFields}
+            columnFilter={false}
+            tableFilterValue={null}
+            tableFilter={{ placeholder: "search information..." }}
+            itemsPerPageSelect={true}
+            itemsPerPage={5}
+            hover
+            sorter
+            pagination
+            loading={loading}
+            scopedSlots={{
+              show_details: (item, index) => (
+                <td>
+                  <div className="d-flex justify-content-center">
+                    <AiOutlinePrinter
+                      size="20"
+                      className="hover"
+                      onClick={() => {}}
+                    />
+                    {details.includes(index) ? (
+                      <AiOutlineDown
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    ) : (
+                      <AiOutlineUp
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    )}
+                  </div>
+                </td>
+              ),
+            }}
+          />
+          <div style={{ display: "none" }}></div>
         </div>
       </div>
-      <div className="card-body">
-        <CDataTable
-          items={sales ? (sales.salesByWeek ? sales.salesByWeek : []) : []}
-          fields={WeeklyFields}
-          columnFilter={false}
-          tableFilterValue={null}
-          tableFilter={{ placeholder: "search information..." }}
-          itemsPerPageSelect={true}
-          itemsPerPage={5}
-          hover
-          sorter
-          pagination
-          loading={loading}
-          scopedSlots={{
-            show_details: (item, index) => (
-              <td>
-                <div className="d-flex justify-content-center">
-                  <AiOutlinePrinter size="20" className="hover" />
-                  {details.includes(index) ? (
-                    <AiOutlineDown
-                      onClick={() => {
-                        toggleDetails(index);
-                      }}
-                      className="hover mt-1 ml-4"
-                    />
-                  ) : (
-                    <AiOutlineUp
-                      onClick={() => {
-                        toggleDetails(index);
-                      }}
-                      className="hover mt-1 ml-4"
-                    />
-                  )}
-                </div>
-              </td>
-            ),
-          }}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 export default WeeklySaleInfo;
+export const fieldsDaily = [
+  { key: "salesId", label: "Transaction ID", _style: { width: "45%" } },
+  { key: "total", label: "Sales", _style: { width: "45%" } },
+
+  {
+    key: "show_details",
+    label: "",
+    _style: { width: "10%" },
+    sorter: false,
+    filter: false,
+  },
+];
+export const productFields = [
+  { key: "product", label: "Product" },
+  { key: "price", label: "Price" },
+  { key: "quantity", label: "Quantity" },
+  { key: "amount", label: "Amount" },
+];
+export const handleShowProduct = (item) => {
+  return item.map((data) => {
+    return { ...data, product: data.product.product };
+  });
+};
