@@ -8,16 +8,29 @@ import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import YearlySale from "../Printing/Yearly/AllYearly";
 import SelectYearly from "../Printing/Yearly/SelectYearly";
+import SelectedWeek from "../Printing/WeeklyPrinting/SelectedWeek";
+import SelectDay from "../Printing/Daily/SelectDay";
+import TransactDaily from "../Printing/Daily/TransactionDaily";
 const YearlySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
+  const { user } = useSelector((state) => state.auth);
   const [monthlyDetails, setMonthlyDetails] = useState([]);
   const [dailydetails, setDailyDetails] = useState([]);
   const [transactDetials, setTransactDetails] = useState([]);
   const [yData, setYData] = useState(null);
   const [yTrigger, setYTrigger] = useState("");
-  const { user } = useSelector((state) => state.auth);
+  const [sWeek, setSWeek] = useState(null);
+  const [sWTrigger, setSWTrigger] = useState("");
+  const [SDate, setSelectDate] = useState(null);
+  const [strigger, setStrigger] = useState("");
+  const [tTriger, setTrigger] = useState("");
+  const [tData, setTData] = useState(null);
+
   const yearlyRef = useRef();
   const sYearlyRef = useRef();
+  const wSelectDataRef = useRef();
+  const selectedRef = useRef();
+  const tRef = useRef();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -65,13 +78,40 @@ const YearlySaleInfo = ({ sales, loading, cinfo }) => {
   const handleSelectYearly = useReactToPrint({
     content: () => sYearlyRef.current,
   });
-
+  const handlePrintingSelectWeek = useReactToPrint({
+    content: () => wSelectDataRef.current,
+  });
+  const handlePrintSelectedDate = useReactToPrint({
+    content: () => selectedRef.current,
+  });
+  const handlePrintTransaction = useReactToPrint({
+    content: () => tRef.current,
+  });
   useEffect(() => {
     if (yData) {
       handleSelectYearly();
     }
     // eslint-disable-next-line
   }, [yData, yTrigger]);
+  useEffect(() => {
+    if (sWeek) {
+      handlePrintingSelectWeek();
+    }
+    // eslint-disable-next-line
+  }, [sWeek, sWTrigger]);
+
+  useEffect(() => {
+    if (SDate) {
+      handlePrintSelectedDate();
+    }
+    // eslint-disable-next-line
+  }, [SDate, strigger]);
+  useEffect(() => {
+    if (tData) {
+      handlePrintTransaction();
+    }
+    // eslint-disable-next-line
+  }, [tData, tTriger]);
   return (
     <>
       <h1 className="header-card-information mt-5">
@@ -172,6 +212,10 @@ const YearlySaleInfo = ({ sales, loading, cinfo }) => {
                                   <AiOutlinePrinter
                                     size="20"
                                     className="hover"
+                                    onClick={() => {
+                                      setSWeek(item);
+                                      setSWTrigger(Math.random());
+                                    }}
                                   />
                                   {monthlyDetails.includes(index) ? (
                                     <AiOutlineDown
@@ -232,7 +276,10 @@ const YearlySaleInfo = ({ sales, loading, cinfo }) => {
                                                 <AiOutlinePrinter
                                                   size="20"
                                                   className="hover"
-                                                  onClick={() => {}}
+                                                  onClick={() => {
+                                                    setSelectDate(item);
+                                                    setStrigger(Math.random());
+                                                  }}
                                                 />
                                                 {dailydetails.includes(
                                                   index
@@ -302,7 +349,14 @@ const YearlySaleInfo = ({ sales, loading, cinfo }) => {
                                                               <AiOutlinePrinter
                                                                 size="20"
                                                                 className="hover"
-                                                                onClick={() => {}}
+                                                                onClick={() => {
+                                                                  setTData(
+                                                                    item
+                                                                  );
+                                                                  setTrigger(
+                                                                    Math.random()
+                                                                  );
+                                                                }}
                                                               />
                                                               {transactDetials.includes(
                                                                 index
@@ -427,6 +481,19 @@ const YearlySaleInfo = ({ sales, loading, cinfo }) => {
             cinfo={cinfo}
             user={user}
           />
+          <SelectedWeek
+            ref={wSelectDataRef}
+            sales={sWeek}
+            cinfo={cinfo}
+            user={user}
+          />
+          <SelectDay
+            ref={selectedRef}
+            user={user}
+            cinfo={cinfo}
+            sales={SDate}
+          />
+          <TransactDaily ref={tRef} user={user} cinfo={cinfo} sales={tData} />
         </div>
       </div>
     </>
