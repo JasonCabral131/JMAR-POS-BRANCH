@@ -56,38 +56,37 @@ const CashierSales = (props) => {
     <div className="w-100 p-4 mt-5">
       <LoaderSpinner height={"400px"} />
     </div>
-  ) : (
+  ) : cinfo ? (
     <div style={{ position: "relative", width: "100%" }}>
-      {cinfo ? (
-        <div className="row">
-          <div className="col-md-2">
-            <div className="w-100 p-2 d-flex justify-content-center flex-column align-items-center">
-              <img
-                alt="profile"
-                src={cinfo.profile.url}
-                style={{
-                  width: "120px",
-                  height: "120px",
-                  borderRadius: "100%",
-                }}
-              />
-              <h6 className="mt-2 text-center" style={{ color: "#b0b0b0" }}>
-                {toCapitalized(
-                  `${cinfo.firstname} ${cinfo.middlename} ${cinfo.lastname}`
-                )}
-              </h6>
-            </div>
-          </div>
-          <div className="col-md-10">
-            <div className="sales_container">
-              <CashieryTodaySale sales={sales} />
-              <CashierWeeklySale sales={sales} />
-              <CashierMonthlySale sales={sales} />
-              <CashierYearlySale sales={sales} />
-            </div>
+      <div className="row">
+        <div className="col-md-2">
+          <div className="w-100 p-2 d-flex justify-content-center flex-column align-items-center">
+            <img
+              alt="profile"
+              src={cinfo.profile.url}
+              style={{
+                width: "120px",
+                height: "120px",
+                borderRadius: "100%",
+              }}
+            />
+            <h6 className="mt-2 text-center" style={{ color: "#b0b0b0" }}>
+              {toCapitalized(
+                `${cinfo.firstname} ${cinfo.middlename} ${cinfo.lastname}`
+              )}
+            </h6>
           </div>
         </div>
-      ) : null}
+        <div className="col-md-10">
+          <div className="sales_container">
+            <CashieryTodaySale sales={sales} />
+            <CashierWeeklySale sales={sales} />
+            <CashierMonthlySale sales={sales} />
+            <CashierYearlySale sales={sales} />
+          </div>
+        </div>
+      </div>
+
       <div className="row mt-2">
         <div className="col-md-3 p-1  d-flex justify-content-center">
           <img
@@ -166,6 +165,10 @@ const CashierSales = (props) => {
       {sData.yearly ? (
         <YearlySaleInfo sales={sales} loading={loading} cinfo={cinfo} />
       ) : null}
+    </div>
+  ) : (
+    <div className="mt-5">
+      <h1 className="text-center text-danger">No Data Available</h1>
     </div>
   );
 };

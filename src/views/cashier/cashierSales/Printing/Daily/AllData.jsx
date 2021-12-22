@@ -61,7 +61,7 @@ const AllDataDaily = React.forwardRef(({ sales, cinfo, user }, ref) => {
           ? sales.salesByDay.map((data) => {
               return (
                 <>
-                  <table className="table table-borderless mt-2">
+                  <table className="table table-borderless mt-2 border">
                     <thead className="border border-bottom-1">
                       <tr>
                         <th className="text-left">Date</th>

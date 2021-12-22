@@ -148,9 +148,8 @@ const DailySaleInfo = ({ sales, loading, cinfo }) => {
                 return (
                   <CCollapse show={details.includes(index)}>
                     <CCardBody className={"p-2"}>
+                      <h4 className="ml-2">{item.date + " List Of Sales"}</h4>
                       <div className=" card shadow p-2">
-                        <h4 className="ml-2">{item.date + " List Of Data"}</h4>
-
                         <div className="card-body ">
                           <CDataTable
                             items={[...item.data]}
@@ -290,7 +289,7 @@ const productFields = [
   { key: "quantity", label: "Quantity" },
   { key: "amount", label: "Amount" },
 ];
-const handleShowProduct = (item) => {
+export const handleShowProduct = (item) => {
   return item.map((data) => {
     return { ...data, product: data.product.product };
   });
