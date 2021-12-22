@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import SelectedWeek from "../Printing/WeeklyPrinting/SelectedWeek";
 import SelectDay from "../Printing/Daily/SelectDay";
 import TransactDaily from "../Printing/Daily/TransactionDaily";
+
 const WeeklySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
   const [dailydetails, setDailyDetails] = useState([]);
@@ -44,12 +45,6 @@ const WeeklySaleInfo = ({ sales, loading, cinfo }) => {
     }
     setDailyDetails(newDetails);
   };
-  const handlePrintAllDailySaleData = useReactToPrint({
-    content: () => allDataRef.current,
-  });
-  const handlePrintingSelectWeek = useReactToPrint({
-    content: () => wSelectDataRef.current,
-  });
   const toggleTransactionDetails = (index) => {
     const position = transactDetials.indexOf(index);
     let newDetails = transactDetials.slice();
@@ -60,18 +55,26 @@ const WeeklySaleInfo = ({ sales, loading, cinfo }) => {
     }
     setTransactDetails(newDetails);
   };
-  useEffect(() => {
-    if (sWeek) {
-      handlePrintingSelectWeek();
-    }
-    // eslint-disable-next-line
-  }, [sWeek, sWTrigger]);
+  const handlePrintAllDailySaleData = useReactToPrint({
+    content: () => allDataRef.current,
+  });
+  const handlePrintingSelectWeek = useReactToPrint({
+    content: () => wSelectDataRef.current,
+  });
   const handlePrintSelectedDate = useReactToPrint({
     content: () => selectedRef.current,
   });
   const handlePrintTransaction = useReactToPrint({
     content: () => tRef.current,
   });
+
+  useEffect(() => {
+    if (sWeek) {
+      handlePrintingSelectWeek();
+    }
+    // eslint-disable-next-line
+  }, [sWeek, sWTrigger]);
+
   useEffect(() => {
     if (SDate) {
       handlePrintSelectedDate();

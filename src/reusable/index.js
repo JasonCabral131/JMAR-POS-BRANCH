@@ -745,11 +745,11 @@ const getWeekOfMonth = (dit) => {
     // let prefixes = ["0", "1", "2", "3", "4", "5"];
     // return parseInt(prefixes[0 | (adjustedDate / 7)]);
     const prefixex = [
-      "1st_Week",
-      "2nd_Week",
-      "3rd_Week",
-      "4th_Week",
-      "5th_Week",
+      "1st-Week",
+      "2nd-Week",
+      "3rd-Week",
+      "4th-Week",
+      "5th-Week",
     ];
     var weekOfMonth = Math.ceil((date - 1 - day) / 7);
 

@@ -1,14 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 import { AiOutlineDown, AiOutlineUp, AiOutlinePrinter } from "react-icons/ai";
 import { YearlyFields } from "../salesWidget";
 import Sale2Png from "src/assets/icons/sell.gif";
 import { MonthlyFields } from "../salesWidget";
-const YearlySaleInfo = ({ sales, loading }) => {
+import { useSelector } from "react-redux";
+import { useReactToPrint } from "react-to-print";
+import YearlySale from "../Printing/Yearly/AllYearly";
+import SelectYearly from "../Printing/Yearly/SelectYearly";
+const YearlySaleInfo = ({ sales, loading, cinfo }) => {
   const [details, setDetails] = useState([]);
   const [monthlyDetails, setMonthlyDetails] = useState([]);
   const [dailydetails, setDailyDetails] = useState([]);
   const [transactDetials, setTransactDetails] = useState([]);
+  const [yData, setYData] = useState(null);
+  const [yTrigger, setYTrigger] = useState("");
+  const { user } = useSelector((state) => state.auth);
+  const yearlyRef = useRef();
+  const sYearlyRef = useRef();
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -50,6 +59,19 @@ const YearlySaleInfo = ({ sales, loading }) => {
     }
     setTransactDetails(newDetails);
   };
+  const handleYearlyPrint = useReactToPrint({
+    content: () => yearlyRef.current,
+  });
+  const handleSelectYearly = useReactToPrint({
+    content: () => sYearlyRef.current,
+  });
+
+  useEffect(() => {
+    if (yData) {
+      handleSelectYearly();
+    }
+    // eslint-disable-next-line
+  }, [yData, yTrigger]);
   return (
     <>
       <h1 className="header-card-information mt-5">
@@ -71,7 +93,11 @@ const YearlySaleInfo = ({ sales, loading }) => {
             top: 20,
           }}
         >
-          <AiOutlinePrinter size="25" className="hover" />
+          <AiOutlinePrinter
+            size="25"
+            className="hover"
+            onClick={handleYearlyPrint}
+          />
         </div>
 
         <div className="card-body mt-2">
@@ -93,7 +119,14 @@ const YearlySaleInfo = ({ sales, loading }) => {
               show_details: (item, index) => (
                 <td>
                   <div className="d-flex justify-content-center">
-                    <AiOutlinePrinter size="20" className="hover" />
+                    <AiOutlinePrinter
+                      size="20"
+                      className="hover"
+                      onClick={() => {
+                        setYData(item);
+                        setYTrigger(Math.random());
+                      }}
+                    />
                     {details.includes(index) ? (
                       <AiOutlineDown
                         onClick={() => {
@@ -379,6 +412,20 @@ const YearlySaleInfo = ({ sales, loading }) => {
                 );
               },
             }}
+          />
+        </div>
+        <div style={{ display: "none" }}>
+          <YearlySale
+            ref={yearlyRef}
+            user={user}
+            cinfo={cinfo}
+            sales={sales ? sales.salesbyYearly : null}
+          />
+          <SelectYearly
+            ref={sYearlyRef}
+            sales={yData}
+            cinfo={cinfo}
+            user={user}
           />
         </div>
       </div>
