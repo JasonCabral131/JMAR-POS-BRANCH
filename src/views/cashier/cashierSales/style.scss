@@ -5,7 +5,14 @@
 .a-s-f {
   border: 3px solid rgb(241, 81, 81);
 }
-
+.print-left-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
 .sales_container {
   display: flex;
   justify-content: center;

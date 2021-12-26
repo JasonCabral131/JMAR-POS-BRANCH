@@ -11,6 +11,10 @@
 
 // If you want to add something do it here
 @import "custom";
+
+.margin-all > * {
+  margin: 5px !important;
+}
 .label-name-bar {
   width: 38px;
   height: 4px;

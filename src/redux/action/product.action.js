@@ -154,3 +154,21 @@ export const getCounterProductByCashier = (data) => {
     }
   };
 };
+
+export const getProductSalesInfo = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post(
+        "/get-product-sales-information",
+        data
+      );
+      if (res.status === 200) {
+        const { POS, product } = res.data;
+        return { result: true, POS, product };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};
