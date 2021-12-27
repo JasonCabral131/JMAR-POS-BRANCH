@@ -20,6 +20,7 @@ import BlogPosting from "./views/Blog";
 import RemittedTax from "./views/tax/RemittedTax";
 import CashierSales from "./views/cashier/cashierSales";
 import ProductSalesInformation from "./views/product/Sales";
+import SubSales from "./views/sub-brand/Sales";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -39,6 +40,12 @@ const routes = [
     path: "/branch/inventory-item/brand/archived-brand",
     name: "Archived Brand",
     component: DeletedBrand,
+  },
+  {
+    exact: true,
+    path: "/branch/inventory-item/sub-brand/:subBrandId",
+    name: "Brand Subcategory Sales",
+    component: SubSales,
   },
   {
     exact: true,

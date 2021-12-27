@@ -1,7 +1,7 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 
-export const ProductCarouselInfo = ({ product }) => {
+export const SubCategoryCarouselInfo = ({ product }) => {
   return product ? (
     <Carousel className="w-100">
       {product.images.map((data) => {
@@ -10,7 +10,7 @@ export const ProductCarouselInfo = ({ product }) => {
             <img
               className="d-block w-100"
               src={data.img}
-              alt={product.product}
+              alt={product.subcategory}
               style={{ height: "450px" }}
             />
             <Carousel.Caption>

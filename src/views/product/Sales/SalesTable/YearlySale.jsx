@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CDataTable } from "@coreui/react";
 import Sale2Png from "src/assets/icons/sell.gif";
 import { AiOutlinePrinter } from "react-icons/ai";
-
+import { useReactToPrint } from "react-to-print";
+import PrintingProduct from "../Printing/PrintInformation";
 import { Chart } from "react-google-charts";
-const ProductYearlySale = ({ sales, loading, user }) => {
+const ProductYearlySale = ({ sales, loading, user, product }) => {
   const [search, setSearch] = useState({ month: "", year: "" });
   const [salesInfo, setSalesInfo] = useState([]);
   const [chartState, setChartState] = useState([]);
-  const Print = () => {};
+  const printRef = useRef();
+  const Print = useReactToPrint({
+    content: () => printRef.current,
+  });
   const handleGetYear = () => {
     const year = [{ value: "", label: "All" }];
     if (user) {
@@ -114,6 +118,15 @@ const ProductYearlySale = ({ sales, loading, user }) => {
             sorter
             pagination
             loading={loading}
+          />
+        </div>
+        <div style={{ display: "none" }}>
+          <PrintingProduct
+            sales={salesInfo}
+            user={user}
+            product={product}
+            ref={printRef}
+            chartState={chartState}
           />
         </div>
       </div>

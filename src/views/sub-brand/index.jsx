@@ -483,7 +483,12 @@ const SubBrand = (props) => {
                     </Tooltip>
                   }
                 >
-                  <p> {item.subcategory}</p>
+                  <Link
+                    to={`/branch/inventory-item/sub-brand/${item._id}`}
+                    className="a-link-none"
+                  >
+                    {item.subcategory}
+                  </Link>
                 </OverlayTrigger>
               </td>
             ),

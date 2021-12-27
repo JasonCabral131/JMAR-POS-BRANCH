@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getProductSalesInfo } from "src/redux/action/product.action";
-import { LoaderSpinner, toCapitalized } from "src/reusable";
-import { ProductCarouselInfo } from "./sales.widget";
+import { getSubCatSales } from "src/redux/action/subcategory.action";
+import { toCapitalized, LoaderSpinner } from "src/reusable";
+import { SubCategoryCarouselInfo } from "./SubCategoryInfo";
 import dLogo from "src/assets/icons/Daily.gif";
 import wLogo from "src/assets/icons/wlogo.gif";
 import mLogo from "src/assets/icons/Monthly.gif";
 import yLogo from "src/assets/icons/yearly.gif";
-import { ProductDailySale } from "./SalesTable/dailySale";
-import { useSelector } from "react-redux";
-import ProductWeeklySale from "./SalesTable/weeklySale";
-import ProductMonthlySale from "./SalesTable/MonthlySale";
-import ProductYearlySale from "./SalesTable/YearlySale";
-const ProductSalesInformation = (props) => {
+import SubDailySale from "./SalesTable/SubDailySale";
+import SubWeeklySale from "./SalesTable/SubWeeklySale";
+import SubYearlySale from "./SalesTable/SubYearlySale";
+import SubMonthlySale from "./SalesTable/SubMonthlySale";
+const SubSales = (props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { productId } = useParams();
+  const { subBrandId } = useParams();
   const [sales, setSales] = useState(null);
-  const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [product, setProduct] = useState(null);
   const [sData, setSData] = useState({
     daily: true,
     weekly: false,
@@ -28,21 +27,21 @@ const ProductSalesInformation = (props) => {
   });
   const handleGetData = async () => {
     setLoading(true);
-    const res = await dispatch(getProductSalesInfo({ productId }));
+    const res = await dispatch(getSubCatSales({ subBrandId }));
     setLoading(false);
     if (res.result) {
-      const { POS, product } = res;
+      const { POS, subBrand } = res;
       setSales(POS);
-      setProduct(product);
+      setProduct(subBrand);
       const element = document.querySelector("ol.breadcrumb > li.active");
-      element.innerHTML = toCapitalized(`${product.product} Sales `);
+      element.innerHTML = toCapitalized(`${subBrand.subcategory} Sales `);
       return;
     }
   };
   useEffect(() => {
     handleGetData();
     // eslint-disable-next-line
-  }, [productId]);
+  }, [subBrandId]);
   useEffect(() => {
     handleGetData();
     // eslint-disable-next-line
@@ -53,7 +52,7 @@ const ProductSalesInformation = (props) => {
     </div>
   ) : product ? (
     <div className="w-100">
-      <ProductCarouselInfo product={product} />
+      <SubCategoryCarouselInfo product={product} />
       <div className="row mt-2">
         <div className="col-md-3 p-1  d-flex justify-content-center">
           <img
@@ -121,42 +120,39 @@ const ProductSalesInformation = (props) => {
         </div>
       </div>
       {sData.daily ? (
-        <ProductDailySale
-          sales={sales ? sales.salesByDay : []}
-          loading={loading}
+        <SubDailySale
           user={user}
+          sales={sales}
+          loading={loading}
           product={product}
         />
       ) : null}
       {sData.weekly ? (
-        <ProductWeeklySale
-          sales={sales ? sales.salesByWeek : []}
-          loading={loading}
+        <SubWeeklySale
           user={user}
+          sales={sales}
+          loading={loading}
           product={product}
         />
       ) : null}
       {sData.monthly ? (
-        <ProductMonthlySale
-          sales={sales ? sales.salesbyMonth : []}
-          loading={loading}
+        <SubMonthlySale
           user={user}
+          sales={sales}
+          loading={loading}
           product={product}
         />
       ) : null}
       {sData.yearly ? (
-        <ProductYearlySale
-          sales={sales ? sales.salesbyYearly : []}
-          loading={loading}
+        <SubYearlySale
           user={user}
+          sales={sales}
+          loading={loading}
           product={product}
         />
       ) : null}
     </div>
-  ) : (
-    <div className="mt-5">
-      <h1 className="text-center text-danger">No Data Available</h1>
-    </div>
-  );
+  ) : null;
 };
-export default ProductSalesInformation;
+
+export default SubSales;

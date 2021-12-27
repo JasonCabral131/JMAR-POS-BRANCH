@@ -108,3 +108,19 @@ export const getArchivedSubcategoryInfo = () => {
     }
   };
 };
+export const getSubCatSales = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post(
+        "/get-sub-brand-sales-information",
+        data
+      );
+      if (res.status === 200) {
+        return { result: true, POS: res.data.POS, subBrand: res.data.subBrand };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

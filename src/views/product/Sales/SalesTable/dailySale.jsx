@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CDataTable } from "@coreui/react";
 import Sale2Png from "src/assets/icons/sell.gif";
 import { AiOutlinePrinter } from "react-icons/ai";
 import { monthNames } from "src/reusable";
 import { Chart } from "react-google-charts";
-
-export const ProductDailySale = ({ sales, loading, user }) => {
+import { useReactToPrint } from "react-to-print";
+import PrintingProduct from "../Printing/PrintInformation";
+export const ProductDailySale = ({ sales, loading, user, product }) => {
   const [search, setSearch] = useState({ month: "", year: "" });
   const [salesInfo, setSalesInfo] = useState([]);
   const [chartState, setChartState] = useState([]);
-  const Print = () => {};
   const handleGetYear = () => {
     const year = [{ value: "", label: "All" }];
     if (user) {
@@ -20,6 +20,10 @@ export const ProductDailySale = ({ sales, loading, user }) => {
     }
     return year;
   };
+  const printRef = useRef();
+  const Print = useReactToPrint({
+    content: () => printRef.current,
+  });
   const handlegetDataInChart = () => {
     let salex = [];
     let salei = [];
@@ -66,7 +70,9 @@ export const ProductDailySale = ({ sales, loading, user }) => {
       </h1>
       <div className="card shadow p-2 mt-2">
         <div className="print-left-info">
-          <AiOutlinePrinter size="25" className="hover" onClick={Print} />
+          {chartState.length > 1 ? (
+            <AiOutlinePrinter size="25" className="hover" onClick={Print} />
+          ) : null}
         </div>
         <div className="row ml-2 mb-3">
           <div className="col-md-2 percent-container">
@@ -111,7 +117,7 @@ export const ProductDailySale = ({ sales, loading, user }) => {
             options={{
               // Material design options
               chart: {
-                title: "Daily Sale",
+                title: "Daily Sale Product Performance",
               },
               vAxis: {
                 title: "Daily Sale",
@@ -137,6 +143,15 @@ export const ProductDailySale = ({ sales, loading, user }) => {
             sorter
             pagination
             loading={loading}
+          />
+        </div>
+        <div style={{ display: "none" }}>
+          <PrintingProduct
+            sales={salesInfo}
+            user={user}
+            product={product}
+            ref={printRef}
+            chartState={chartState}
           />
         </div>
       </div>
