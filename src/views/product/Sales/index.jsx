@@ -11,6 +11,8 @@ import yLogo from "src/assets/icons/yearly.gif";
 import { ProductDailySale } from "./SalesTable/dailySale";
 import { useSelector } from "react-redux";
 import ProductWeeklySale from "./SalesTable/weeklySale";
+import ProductMonthlySale from "./SalesTable/MonthlySale";
+import ProductYearlySale from "./SalesTable/YearlySale";
 const ProductSalesInformation = (props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
@@ -128,6 +130,20 @@ const ProductSalesInformation = (props) => {
       {sData.weekly ? (
         <ProductWeeklySale
           sales={sales ? sales.salesByWeek : []}
+          loading={loading}
+          user={user}
+        />
+      ) : null}
+      {sData.monthly ? (
+        <ProductMonthlySale
+          sales={sales ? sales.salesbyMonth : []}
+          loading={loading}
+          user={user}
+        />
+      ) : null}
+      {sData.yearly ? (
+        <ProductYearlySale
+          sales={sales ? sales.salesbyYearly : []}
           loading={loading}
           user={user}
         />

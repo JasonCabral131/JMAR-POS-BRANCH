@@ -100,7 +100,7 @@ const ProductWeeklySale = ({ sales, loading, user }) => {
             </select>
           </div>
         </div>
-        {chartState.length > 2 ? (
+        {chartState.length > 1 ? (
           <Chart
             width="100%"
             height="100%"
@@ -109,11 +109,11 @@ const ProductWeeklySale = ({ sales, loading, user }) => {
             legendToggle
             options={{
               // Material design options
-              chart: {
-                title: "Daily Sale",
-              },
+
+              title: "Weekly Sale Performance",
+
               vAxis: {
-                title: "Daily Sale",
+                title: "Weekly Sale ",
               },
               series: {
                 0: { curveType: "function" },

@@ -119,7 +119,7 @@ const ImageGallery = ({ images, setImages }) => {
             imageRef.current.click();
           }}
         >
-          <FcUpload size={20} /> <span> Upload new image</span>
+          <FcUpload size={20} /> <span> Upload new Photos</span>
         </p>
       </div>
       <div className="image-gallery-lists">

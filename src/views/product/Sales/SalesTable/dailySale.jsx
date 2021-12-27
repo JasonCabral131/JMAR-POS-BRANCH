@@ -101,7 +101,7 @@ export const ProductDailySale = ({ sales, loading, user }) => {
             </select>
           </div>
         </div>
-        {chartState.length > 2 ? (
+        {chartState.length > 1 ? (
           <Chart
             width="100%"
             height="100%"
