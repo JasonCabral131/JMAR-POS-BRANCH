@@ -122,7 +122,7 @@ const SubSales = (props) => {
       {sData.daily ? (
         <SubDailySale
           user={user}
-          sales={sales}
+          sales={sales ? sales.salesByDay : []}
           loading={loading}
           product={product}
         />
