@@ -130,7 +130,7 @@ const SubSales = (props) => {
       {sData.weekly ? (
         <SubWeeklySale
           user={user}
-          sales={sales}
+          sales={sales ? sales.salesByWeek : []}
           loading={loading}
           product={product}
         />
@@ -138,7 +138,7 @@ const SubSales = (props) => {
       {sData.monthly ? (
         <SubMonthlySale
           user={user}
-          sales={sales}
+          sales={sales ? sales.salesbyMonth : []}
           loading={loading}
           product={product}
         />
@@ -146,7 +146,7 @@ const SubSales = (props) => {
       {sData.yearly ? (
         <SubYearlySale
           user={user}
-          sales={sales}
+          sales={sales ? sales.salesbyYearly : []}
           loading={loading}
           product={product}
         />

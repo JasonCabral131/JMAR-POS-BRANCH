@@ -1,13 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Sale2Png from "src/assets/icons/sell.gif";
-import { AiOutlinePrinter } from "react-icons/ai";
+import { AiOutlinePrinter, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { monthNames } from "src/reusable";
 import { Chart } from "react-google-charts";
-import { CDataTable } from "@coreui/react";
+import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
+import { useReactToPrint } from "react-to-print";
+
+import SubBrandPrinting from "../Printing/SubBrandPrinting";
 const SubDailySale = ({ sales, loading, user, product }) => {
   const [salesInfo, setSalesInfo] = useState([]);
+  const [details, setDetails] = useState([]);
   const [search, setSearch] = useState({ month: "", year: "" });
   const [chartState, setChartState] = useState([]);
+  const printRef = useRef();
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index);
+    let newDetails = details.slice();
+    if (position !== -1) {
+      newDetails.splice(position, 1);
+    } else {
+      newDetails = [...details, index];
+    }
+    setDetails(newDetails);
+  };
   const handleGetYear = () => {
     const year = [{ value: "", label: "All" }];
     if (user) {
@@ -18,7 +33,9 @@ const SubDailySale = ({ sales, loading, user, product }) => {
     }
     return year;
   };
-  const Print = () => {};
+  const Print = useReactToPrint({
+    content: () => printRef.current,
+  });
   const handlegetDataInChart = () => {
     let salex = [];
     let salei = [];
@@ -139,6 +156,71 @@ const SubDailySale = ({ sales, loading, user, product }) => {
             sorter
             pagination
             loading={loading}
+            scopedSlots={{
+              show_details: (item, index) => (
+                <td>
+                  <div className="d-flex justify-content-center">
+                    {details.includes(index) ? (
+                      <AiOutlineDown
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    ) : (
+                      <AiOutlineUp
+                        onClick={() => {
+                          toggleDetails(index);
+                        }}
+                        className="hover mt-1 ml-4"
+                      />
+                    )}
+                  </div>
+                </td>
+              ),
+              details: (item, index) => {
+                return (
+                  <CCollapse show={details.includes(index)}>
+                    <CCardBody className={"p-2"}>
+                      <h4 className="ml-2">{item.date + " List Of Sales"}</h4>
+                      <div className=" card shadow p-2">
+                        <div className="card-body ">
+                          <table className="table table-stripe">
+                            <thead>
+                              <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {item.products.map((prod) => {
+                                return (
+                                  <tr>
+                                    <th>{prod.product}</th>
+                                    <th>{prod.quantity}</th>
+                                    <th>{prod.amount}</th>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </CCardBody>
+                  </CCollapse>
+                );
+              },
+            }}
+          />
+        </div>
+        <div style={{ display: "none" }}>
+          <SubBrandPrinting
+            sales={salesInfo}
+            user={user}
+            product={product}
+            ref={printRef}
+            chartState={chartState}
           />
         </div>
       </div>
@@ -150,4 +232,5 @@ export default SubDailySale;
 const productFields = [
   { key: "date", label: "Date" },
   { key: "totalAmount", label: "Total Amount" },
+  { key: "show_details", label: "", _style: { width: "3%" } },
 ];
