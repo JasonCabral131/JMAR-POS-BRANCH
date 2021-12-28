@@ -86,7 +86,7 @@ const CreateBlogInfo = ({ createBlogModal, setCreateBlog, user }) => {
         {loading ? (
           <>
             <Skeleton height={50} />
-            <Skeleton height={250} />
+            <Skeleton height={450} />
             <Skeleton height={40} />
             <Skeleton height={60} />
           </>

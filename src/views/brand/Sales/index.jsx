@@ -9,6 +9,9 @@ import wLogo from "src/assets/icons/wlogo.gif";
 import mLogo from "src/assets/icons/Monthly.gif";
 import yLogo from "src/assets/icons/yearly.gif";
 import BrandDailySale from "./SalesTable/BrandDailySale";
+import BrandWeeklySale from "./SalesTable/BrandWeeklySale";
+import BrandMontlySale from "./SalesTable/BrandMontlySale";
+import BrandYearlySale from "./SalesTable/BrandYearlySale";
 const BrandSalesinfo = (props) => {
   const dispatch = useDispatch();
   const { brandId } = useParams();
@@ -119,6 +122,30 @@ const BrandSalesinfo = (props) => {
         <BrandDailySale
           user={user}
           sales={sales ? sales.salesByDay : []}
+          loading={loading}
+          brand={brand}
+        />
+      ) : null}
+      {sData.weekly ? (
+        <BrandWeeklySale
+          user={user}
+          sales={sales ? sales.salesByWeek : []}
+          loading={loading}
+          brand={brand}
+        />
+      ) : null}
+      {sData.monthly ? (
+        <BrandMontlySale
+          user={user}
+          sales={sales ? sales.salesbyMonth : []}
+          loading={loading}
+          brand={brand}
+        />
+      ) : null}
+      {sData.yearly ? (
+        <BrandYearlySale
+          user={user}
+          sales={sales ? sales.salesbyYearly : []}
           loading={loading}
           brand={brand}
         />
