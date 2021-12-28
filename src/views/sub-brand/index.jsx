@@ -414,6 +414,7 @@ const SubBrand = (props) => {
               onChange={(e) => handleFilterByBrand(e)}
               cacheOptions
               placeholder={"All Brands"}
+              menuPortalTarget={document.body}
             />
           </div>
         </div>

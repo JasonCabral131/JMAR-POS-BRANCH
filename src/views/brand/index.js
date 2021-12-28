@@ -412,7 +412,12 @@ const Brand = (props) => {
                     </Tooltip>
                   }
                 >
-                  <p> {item.brand}</p>
+                  <Link
+                    to={`/branch/inventory-item/brand/${item._id}`}
+                    className="a-link-none"
+                  >
+                    {item.brand}
+                  </Link>
                 </OverlayTrigger>
               </td>
             ),

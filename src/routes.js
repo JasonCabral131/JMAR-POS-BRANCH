@@ -21,6 +21,7 @@ import RemittedTax from "./views/tax/RemittedTax";
 import CashierSales from "./views/cashier/cashierSales";
 import ProductSalesInformation from "./views/product/Sales";
 import SubSales from "./views/sub-brand/Sales";
+import BrandSalesinfo from "./views/brand/Sales";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -32,14 +33,27 @@ const routes = [
   },
   {
     exact: true,
+    path: "/branch/inventory-item/brand/archived-brand",
+    name: "Archived Brand",
+    component: DeletedBrand,
+  },
+  {
+    exact: true,
+    path: "/branch/inventory-item/brand/:brandId",
+    name: "Brand Sales",
+    component: BrandSalesinfo,
+  },
+  {
+    exact: true,
     path: "/branch/inventory-item/brand",
     name: "Brand",
     component: Brand,
   },
   {
-    path: "/branch/inventory-item/brand/archived-brand",
-    name: "Archived Brand",
-    component: DeletedBrand,
+    exact: true,
+    path: "/branch/inventory-item/sub-brand/archived-brand-sub",
+    name: "Archived Brand Subcategory",
+    component: ArchivedSubcategory,
   },
   {
     exact: true,
@@ -54,9 +68,10 @@ const routes = [
     component: SubBrand,
   },
   {
-    path: "/branch/inventory-item/sub-brand/archived-brand-sub",
+    exact: true,
+    path: "/branch/inventory-item/product/archived-product",
     name: "Archived Brand Subcategory",
-    component: ArchivedSubcategory,
+    component: ArchivedProductDataInformation,
   },
   {
     exact: true,
@@ -70,11 +85,7 @@ const routes = [
     name: "Product",
     component: TheProduct,
   },
-  {
-    path: "/branch/inventory-item/product/archived-product",
-    name: "Archived Brand Subcategory",
-    component: ArchivedProductDataInformation,
-  },
+
   {
     exact: true,
     path: "/branch/inventory-item/government-tax",
@@ -82,9 +93,16 @@ const routes = [
     component: GovernmentTaxInfo,
   },
   {
+    exact: true,
     path: "/branch/inventory-item/government-tax/government-tax-archived",
     name: "Archived Government Tax",
     component: ArchivedTax,
+  },
+  {
+    exact: true,
+    path: "/branch/branch-cashier-information/arhived-branch-cashier-information",
+    name: "Archived Branch Cashier",
+    component: ArchivedBranchCashier,
   },
   {
     exact: true,
@@ -98,11 +116,7 @@ const routes = [
     name: "Branch Cashier",
     component: CashierInformation,
   },
-  {
-    path: "/branch/branch-cashier-information/arhived-branch-cashier-information",
-    name: "Archived Branch Cashier",
-    component: ArchivedBranchCashier,
-  },
+
   {
     path: "/branch/branch-cashier-information/scheduling",
     name: "Archived Branch Cashier",

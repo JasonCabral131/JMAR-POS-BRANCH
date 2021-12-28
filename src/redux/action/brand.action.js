@@ -110,3 +110,19 @@ export const getDeleteBrandInfo = () => {
     }
   };
 };
+export const getBrandSalesInfo = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post(
+        "/get-brand-sales-information",
+        data
+      );
+      if (res.status === 200) {
+        return { result: true, POS: res.data.POS, brand: res.data.brand };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

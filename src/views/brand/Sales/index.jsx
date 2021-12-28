@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { getSubCatSales } from "src/redux/action/subcategory.action";
-import { toCapitalized, LoaderSpinner } from "src/reusable";
-import { SubCategoryCarouselInfo } from "./SubCategoryInfo";
+import { getBrandSalesInfo } from "src/redux/action/brand.action";
+import { LoaderSpinner, toCapitalized } from "src/reusable";
+import BrandCarousel from "./BrandCarousel";
 import dLogo from "src/assets/icons/Daily.gif";
 import wLogo from "src/assets/icons/wlogo.gif";
 import mLogo from "src/assets/icons/Monthly.gif";
 import yLogo from "src/assets/icons/yearly.gif";
-import SubDailySale from "./SalesTable/SubDailySale";
-import SubWeeklySale from "./SalesTable/SubWeeklySale";
-import SubYearlySale from "./SalesTable/SubYearlySale";
-import SubMonthlySale from "./SalesTable/SubMonthlySale";
-const SubSales = (props) => {
+import BrandDailySale from "./SalesTable/BrandDailySale";
+const BrandSalesinfo = (props) => {
   const dispatch = useDispatch();
+  const { brandId } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { subBrandId } = useParams();
   const [sales, setSales] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState(null);
+  const [brand, setBrand] = useState(null);
   const [sData, setSData] = useState({
     daily: true,
     weekly: false,
@@ -27,21 +24,20 @@ const SubSales = (props) => {
   });
   const handleGetData = async () => {
     setLoading(true);
-    const res = await dispatch(getSubCatSales({ subBrandId }));
+    const res = await dispatch(getBrandSalesInfo({ brandId }));
     setLoading(false);
     if (res.result) {
-      const { POS, subBrand } = res;
+      const { POS } = res;
+      setBrand(res.brand);
       setSales(POS);
-      setProduct(subBrand);
       const element = document.querySelector("ol.breadcrumb > li.active");
-      element.innerHTML = toCapitalized(`${subBrand.subcategory} Sales `);
-      return;
+      element.innerHTML = toCapitalized(`${res.brand.brand} Sales `);
     }
   };
   useEffect(() => {
     handleGetData();
     // eslint-disable-next-line
-  }, [subBrandId]);
+  }, [brandId]);
   useEffect(() => {
     handleGetData();
     // eslint-disable-next-line
@@ -50,9 +46,9 @@ const SubSales = (props) => {
     <div className="w-100 p-4 mt-5">
       <LoaderSpinner height={"400px"} />
     </div>
-  ) : product ? (
+  ) : brand ? (
     <div className="w-100">
-      <SubCategoryCarouselInfo product={product} />
+      <BrandCarousel brand={brand} />
       <div className="row mt-2">
         <div className="col-md-3 p-1  d-flex justify-content-center">
           <img
@@ -120,35 +116,11 @@ const SubSales = (props) => {
         </div>
       </div>
       {sData.daily ? (
-        <SubDailySale
+        <BrandDailySale
           user={user}
           sales={sales ? sales.salesByDay : []}
           loading={loading}
-          product={product}
-        />
-      ) : null}
-      {sData.weekly ? (
-        <SubWeeklySale
-          user={user}
-          sales={sales ? sales.salesByWeek : []}
-          loading={loading}
-          product={product}
-        />
-      ) : null}
-      {sData.monthly ? (
-        <SubMonthlySale
-          user={user}
-          sales={sales ? sales.salesbyMonth : []}
-          loading={loading}
-          product={product}
-        />
-      ) : null}
-      {sData.yearly ? (
-        <SubYearlySale
-          user={user}
-          sales={sales ? sales.salesbyYearly : []}
-          loading={loading}
-          product={product}
+          brand={brand}
         />
       ) : null}
     </div>
@@ -159,4 +131,4 @@ const SubSales = (props) => {
   );
 };
 
-export default SubSales;
+export default BrandSalesinfo;
