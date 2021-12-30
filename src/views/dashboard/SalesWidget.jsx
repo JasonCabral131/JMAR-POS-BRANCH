@@ -7,8 +7,10 @@ import { CSVLink } from "react-csv";
 import { VscGraphLine, VscGraph } from "react-icons/vsc";
 import { MdOutlineAutoGraph } from "react-icons/md";
 import { dashboardInfo, handleTodaysMonth, toCapitalized } from "src/reusable";
-
+import { ImEye } from "react-icons/im";
+import { useHistory } from "react-router-dom";
 export const TodaySaleWidget = ({ sales }) => {
+  const history = useHistory();
   const [csv, setCsv] = useState([["Today Sale", handleTodaysMonth()]]);
   const handleGetDailySale = () => {
     let daily = 0;
@@ -94,9 +96,14 @@ export const TodaySaleWidget = ({ sales }) => {
             <GrDocumentCsv size="13" className="mb-1 icon" />
           </CSVLink>
         </div>
-        {/* <div className="download-sales">
-          <AiOutlineFilePdf size="13" className="mb-1 icon" />
-        </div> */}
+        <div
+          className="download-sales"
+          onClick={() => {
+            history.push("/branch/sales/recent-sales-info");
+          }}
+        >
+          <ImEye size="13" className="mb-1 icon" />
+        </div>
       </div>
     </div>
   );

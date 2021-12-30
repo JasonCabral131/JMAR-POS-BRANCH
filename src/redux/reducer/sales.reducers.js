@@ -2,6 +2,7 @@ import { salesConstant } from "../constant";
 const initialState = {
   sales: null,
   loading: false,
+  allSales: null,
 };
 const salesReducer = (state = initialState, action) => {
   switch (action.type) {

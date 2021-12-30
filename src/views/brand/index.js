@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Carousel, OverlayTrigger, Tooltip } from "react-bootstrap";
 import CreateBrand from "./createBrand";
 import { CDataTable, CButton } from "@coreui/react";
-
+import { AiOutlineDownload } from "react-icons/ai";
 import { IoTrash, IoPencilOutline } from "react-icons/io5";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
@@ -14,6 +14,7 @@ import {
   brandRemoveImage,
   createBrandByOwner,
   deleteBrandInfo,
+  getAllBrandSale,
   UpdateBrandInfo,
 } from "src/redux/action/brand.action";
 import { BrandFields } from "src/reusable";
@@ -21,6 +22,8 @@ import UpdateBrand from "./updateBrand";
 import { RiDeviceRecoverLine, RiFileAddLine } from "react-icons/ri";
 import Loader from "react-loader-spinner";
 import { Link } from "react-router-dom";
+import { Chart } from "react-google-charts";
+import { triggerBase64Download } from "react-base64-downloader";
 const Brand = (props) => {
   const dispatch = useDispatch();
   const { brand, loading } = useSelector((state) => state.brand);
@@ -37,9 +40,11 @@ const Brand = (props) => {
   const [addingUpdateImages, setAddingUpdateImages] = useState([]);
   const [updateBrand, setUpdateBrand] = useState(null);
   const [deleteBrand, setDeleteBrand] = useState(null);
+  const [brandSales, setBrandSales] = useState([]);
+  const [chartWrapper, setChartWrapper] = useState(null);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const handleDraftJs = () => {
+  const handleDraftJs = async () => {
     const html = "<span></span>";
     const contentBlock = htmlToDraft(html);
     if (contentBlock) {
@@ -53,6 +58,16 @@ const Brand = (props) => {
     setImages([]);
     setShow(false);
     setBrandName("");
+    const res = await dispatch(getAllBrandSale());
+    if (res.result) {
+      const { brandSaleList } = res;
+      if (Array.isArray(brandSaleList)) {
+        const bSale = brandSaleList.map((data) => {
+          return [data.brand, data.brandSale];
+        });
+        setBrandSales([["Brand", "Sale"], ...bSale]);
+      }
+    }
   };
   useEffect(() => {
     handleDraftJs();
@@ -291,95 +306,152 @@ const Brand = (props) => {
       setDeletingLoading(false);
     });
   };
+  const print = async () => {
+    if (!chartWrapper) {
+      console.error("ChartWrapper not ready yet");
+    }
+    console.log(chartWrapper.getChart());
+    const base64 = await chartWrapper.getChart().getImageURI();
+    const downloadname = `Brand Sale ( ${new Date().toLocaleString()} )`;
+    triggerBase64Download(base64, downloadname);
+  };
   return (
-    <div className="card shadow card-container">
-      <div className="card-header  ">
-        <div className="row">
-          <div className="col-md-6">
-            <h1 className="header-card-information">
-              <span>Product Brand</span>
-            </h1>
-          </div>
-          <div className="col-md-6 w-100  d-flex justify-content-end">
-            <div className="mt-auto">
-              <CButton
-                color="danger"
-                variant="outline"
-                shape="square"
-                size="sm"
-              >
-                <Link
-                  to="/branch/inventory-item/brand/archived-brand"
-                  className="a-link-none"
+    <>
+      {brandSales.length > 1 ? (
+        <div className="w-100 d-flex justify-content-center card p-2">
+          <p className="d-none">{JSON.stringify(brandSales)}</p>
+          <Chart
+            width={"100%"}
+            height={"400px"}
+            chartType="ColumnChart"
+            loader={
+              <Loader type="Bars" color="#00BFFF" height={150} width={150} />
+            }
+            data={brandSales}
+            options={{
+              title: `Brand Sale`,
+              hAxis: { title: "Brand", titleTextStyle: { color: "#333" } },
+              vAxis: { minValue: 0 },
+              // For the legend to fit, we make the chart area smaller
+              chartArea: { width: "90%", height: "90%" },
+              // lineWidth: 25
+            }}
+            getChartWrapper={(chartWrapper) => {
+              setChartWrapper(chartWrapper);
+            }}
+          />
+
+          {chartWrapper !== null && (
+            <CButton
+              color="secondary"
+              style={{ width: "40px" }}
+              variant="outline"
+              onClick={() => print()}
+            >
+              {" "}
+              <AiOutlineDownload size={20} />
+            </CButton>
+          )}
+        </div>
+      ) : null}
+
+      <div className="card shadow card-container mt-2">
+        <div className="card-header  ">
+          <div className="row">
+            <div className="col-md-6">
+              <h1 className="header-card-information">
+                <span>Product Brand</span>
+              </h1>
+            </div>
+            <div className="col-md-6 w-100  d-flex justify-content-end">
+              <div className="mt-auto">
+                <CButton
+                  color="danger"
+                  variant="outline"
+                  shape="square"
+                  size="sm"
                 >
-                  <RiDeviceRecoverLine size="15" />
-                </Link>
-              </CButton>
-              <CButton
-                className="ml-1"
-                color="info"
-                shape="square"
-                variant="outline"
-                size="sm"
-                onClick={handleShow}
-                disabled={addingLoading}
-              >
-                {addingLoading ? (
-                  <>
-                    <span
-                      className="spinner-border spinner-border-sm mr-1"
-                      role="status"
-                      aria-hidden="true"
-                    ></span>
-                    Wait...
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <RiFileAddLine size="15" />
-                  </>
-                )}
-              </CButton>
+                  <Link
+                    to="/branch/inventory-item/brand/archived-brand"
+                    className="a-link-none"
+                  >
+                    <RiDeviceRecoverLine size="15" />
+                  </Link>
+                </CButton>
+                <CButton
+                  className="ml-1"
+                  color="info"
+                  shape="square"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShow}
+                  disabled={addingLoading}
+                >
+                  {addingLoading ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm mr-1"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Wait...
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <RiFileAddLine size="15" />
+                    </>
+                  )}
+                </CButton>
+              </div>
             </div>
           </div>
+          <div className="mt-2" />
         </div>
-        <div className="mt-2" />
-      </div>
-      <div className="card-body">
-        <CDataTable
-          items={[...brand]}
-          fields={BrandFields}
-          columnFilter={false}
-          tableFilter={{ placeholder: "search brand" }}
-          footer={false}
-          itemsPerPageSelect={true}
-          itemsPerPage={5}
-          hover
-          sorter
-          pagination
-          loading={loading}
-          scopedSlots={{
-            Index: (item, index) => (
-              <td>
-                <p>{item.Index}</p>
-              </td>
-            ),
-            images: (item, index) => (
-              <td className="carousel_container">
-                <Carousel fade indicators={false} variant="dark">
-                  {Array.isArray(item.images) ? (
-                    item.images.length > 0 ? (
-                      item.images.map((data, index) => {
-                        return (
-                          <Carousel.Item key={data._id}>
-                            <img
-                              className="d-block carousel_images"
-                              src={data.img}
-                              alt="First slide"
-                            />
-                          </Carousel.Item>
-                        );
-                      })
+        <div className="card-body">
+          <CDataTable
+            items={[...brand]}
+            fields={BrandFields}
+            columnFilter={false}
+            tableFilter={{ placeholder: "search brand" }}
+            footer={false}
+            itemsPerPageSelect={true}
+            itemsPerPage={5}
+            hover
+            sorter
+            pagination
+            loading={loading}
+            scopedSlots={{
+              Index: (item, index) => (
+                <td>
+                  <p>{item.Index}</p>
+                </td>
+              ),
+              images: (item, index) => (
+                <td className="carousel_container">
+                  <Carousel fade indicators={false} variant="dark">
+                    {Array.isArray(item.images) ? (
+                      item.images.length > 0 ? (
+                        item.images.map((data, index) => {
+                          return (
+                            <Carousel.Item key={data._id}>
+                              <img
+                                className="d-block carousel_images"
+                                src={data.img}
+                                alt="First slide"
+                              />
+                            </Carousel.Item>
+                          );
+                        })
+                      ) : (
+                        <Carousel.Item>
+                          <img
+                            className="d-block carousel_images"
+                            src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
+                            alt="First slide"
+                          />
+                        </Carousel.Item>
+                      )
                     ) : (
                       <Carousel.Item>
                         <img
@@ -388,229 +460,221 @@ const Brand = (props) => {
                           alt="First slide"
                         />
                       </Carousel.Item>
-                    )
-                  ) : (
-                    <Carousel.Item>
-                      <img
-                        className="d-block carousel_images"
-                        src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
-                        alt="First slide"
-                      />
-                    </Carousel.Item>
+                    )}
+                  </Carousel>
+                </td>
+              ),
+              brand: (item) => (
+                <td className="brandnametable">
+                  <OverlayTrigger
+                    key={"bottom"}
+                    placement={"top"}
+                    overlay={
+                      <Tooltip id={`tooltip-bottom`}>
+                        View Data Of {item.brand}
+                      </Tooltip>
+                    }
+                  >
+                    <Link
+                      to={`/branch/inventory-item/brand/${item._id}`}
+                      className="a-link-none"
+                    >
+                      {item.brand}
+                    </Link>
+                  </OverlayTrigger>
+                </td>
+              ),
+              Date: (item, index) => (
+                <td className="text-center">
+                  <div> {new Date(item.createdAt).toLocaleString()}</div>
+                  {item.inventoryStaff ? null : (
+                    <div className="small text-muted">
+                      <span>
+                        <img
+                          src={item.Owner.branch_owner_profile.profile}
+                          className="icon_profile"
+                          alt={`${item.Owner._id + index}`}
+                        />
+                      </span>{" "}
+                      |{" "}
+                      {`${item.Owner.branch_owner_lname} , ${item.Owner.branch_owner_fname}`}{" "}
+                      - Owner
+                    </div>
                   )}
-                </Carousel>
-              </td>
-            ),
-            brand: (item) => (
-              <td className="brandnametable">
-                <OverlayTrigger
-                  key={"bottom"}
-                  placement={"top"}
-                  overlay={
-                    <Tooltip id={`tooltip-bottom`}>
-                      View Data Of {item.brand}
-                    </Tooltip>
-                  }
-                >
-                  <Link
-                    to={`/branch/inventory-item/brand/${item._id}`}
-                    className="a-link-none"
-                  >
-                    {item.brand}
-                  </Link>
-                </OverlayTrigger>
-              </td>
-            ),
-            Date: (item, index) => (
-              <td className="text-center">
-                <div> {new Date(item.createdAt).toLocaleString()}</div>
-                {item.inventoryStaff ? null : (
-                  <div className="small text-muted">
-                    <span>
-                      <img
-                        src={item.Owner.branch_owner_profile.profile}
-                        className="icon_profile"
-                        alt={`${item.Owner._id + index}`}
-                      />
-                    </span>{" "}
-                    |{" "}
-                    {`${item.Owner.branch_owner_lname} , ${item.Owner.branch_owner_fname}`}{" "}
-                    - Owner
-                  </div>
-                )}
-              </td>
-            ),
-            action: (item, index) => (
-              <td style={{ width: "150px" }}>
-                <div className="d-flex justify-content-center">
-                  <CButton
-                    color="danger"
-                    shape="square"
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleDelete(item)}
-                    disabled={deleteLoading}
-                  >
-                    {deleteBrand ? (
-                      item._id === deleteBrand._id ? (
-                        deleteLoading ? (
-                          <Loader
-                            type="ThreeDots"
-                            color="#00BFFF"
-                            height={20}
-                            width={20}
-                          />
+                </td>
+              ),
+              action: (item, index) => (
+                <td style={{ width: "150px" }}>
+                  <div className="d-flex justify-content-center">
+                    <CButton
+                      color="danger"
+                      shape="square"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDelete(item)}
+                      disabled={deleteLoading}
+                    >
+                      {deleteBrand ? (
+                        item._id === deleteBrand._id ? (
+                          deleteLoading ? (
+                            <Loader
+                              type="ThreeDots"
+                              color="#00BFFF"
+                              height={20}
+                              width={20}
+                            />
+                          ) : (
+                            <IoTrash size="15" />
+                          )
                         ) : (
                           <IoTrash size="15" />
                         )
                       ) : (
                         <IoTrash size="15" />
-                      )
-                    ) : (
-                      <IoTrash size="15" />
-                    )}
-                  </CButton>
+                      )}
+                    </CButton>
 
-                  <CButton
-                    color="info"
-                    variant="outline"
-                    shape="square"
-                    size="sm"
-                    className="ml-1"
-                    onClick={() => {
-                      handleEdit(item);
-                    }}
-                  >
-                    <IoPencilOutline size="15" />
-                  </CButton>
-                </div>
-              </td>
-            ),
-          }}
-        />
+                    <CButton
+                      color="info"
+                      variant="outline"
+                      shape="square"
+                      size="sm"
+                      className="ml-1"
+                      onClick={() => {
+                        handleEdit(item);
+                      }}
+                    >
+                      <IoPencilOutline size="15" />
+                    </CButton>
+                  </div>
+                </td>
+              ),
+            }}
+          />
+        </div>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          backdrop="static"
+          dialogClassName="modal-cover-screen"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {" "}
+              <h1 className="header-card-information">
+                <span>Create Brand</span>
+              </h1>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="modal-body-container">
+            <CreateBrand
+              images={images}
+              setImages={setImages}
+              editorState={editorState}
+              setEditorState={setEditorState}
+              Editor={Editor}
+              brandName={brandName}
+              setBrandName={setBrandName}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <CButton
+              color="secondary"
+              variant="outline"
+              shape="square"
+              size="lg"
+              onClick={handleClose}
+            >
+              Cancel
+            </CButton>
+            <CButton
+              color="success"
+              shape="square"
+              size="lg"
+              onClick={handleSubmit}
+              disabled={addingLoading}
+            >
+              {addingLoading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm mr-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
+                </>
+              ) : (
+                "Save"
+              )}
+            </CButton>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal
+          show={updateModal}
+          onHide={() => setUpdateModal(false)}
+          backdrop="static"
+          dialogClassName="modal-cover-screen"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {" "}
+              <h1 className="header-card-information">
+                <span>Update Brand</span>
+              </h1>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="modal-body-container">
+            <UpdateBrand
+              updateEditorState={updateEditorState}
+              setUpdateEditorState={setUpdateEditorState}
+              updateImages={updateImages}
+              setUpdateImages={setUpdateImages}
+              addingUpdateImages={addingUpdateImages}
+              setAddingUpdateImages={setAddingUpdateImages}
+              updateBrand={updateBrand}
+              setUpdateBrand={setUpdateBrand}
+              handleRemoveImages={handleRemoveImages}
+              Editor={Editor}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <CButton
+              color="secondary"
+              variant="outline"
+              shape="square"
+              size="lg"
+              onClick={() => setUpdateModal(false)}
+              disabled={updateLoading}
+            >
+              Cancel
+            </CButton>
+            <CButton
+              color="info"
+              variant="outline"
+              shape="square"
+              size="lg"
+              className="ml-1"
+              onClick={handleUpdateBrand}
+              disabled={updateLoading}
+            >
+              {updateLoading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm mr-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Loading...
+                </>
+              ) : (
+                "Update"
+              )}
+            </CButton>
+          </Modal.Footer>
+        </Modal>
       </div>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        dialogClassName="modal-cover-screen"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {" "}
-            <h1 className="header-card-information">
-              <span>Create Brand</span>
-            </h1>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-body-container">
-          <CreateBrand
-            images={images}
-            setImages={setImages}
-            editorState={editorState}
-            setEditorState={setEditorState}
-            Editor={Editor}
-            brandName={brandName}
-            setBrandName={setBrandName}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <CButton
-            color="secondary"
-            variant="outline"
-            shape="square"
-            size="lg"
-            onClick={handleClose}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            color="success"
-            shape="square"
-            size="lg"
-            onClick={handleSubmit}
-            disabled={addingLoading}
-          >
-            {addingLoading ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm mr-1"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                Loading...
-              </>
-            ) : (
-              "Save"
-            )}
-          </CButton>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal
-        show={updateModal}
-        onHide={() => setUpdateModal(false)}
-        backdrop="static"
-        dialogClassName="modal-cover-screen"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {" "}
-            <h1 className="header-card-information">
-              <span>Update Brand</span>
-            </h1>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="modal-body-container">
-          <UpdateBrand
-            updateEditorState={updateEditorState}
-            setUpdateEditorState={setUpdateEditorState}
-            updateImages={updateImages}
-            setUpdateImages={setUpdateImages}
-            addingUpdateImages={addingUpdateImages}
-            setAddingUpdateImages={setAddingUpdateImages}
-            updateBrand={updateBrand}
-            setUpdateBrand={setUpdateBrand}
-            handleRemoveImages={handleRemoveImages}
-            Editor={Editor}
-          />
-        </Modal.Body>
-        <Modal.Footer>
-          <CButton
-            color="secondary"
-            variant="outline"
-            shape="square"
-            size="lg"
-            onClick={() => setUpdateModal(false)}
-            disabled={updateLoading}
-          >
-            Cancel
-          </CButton>
-          <CButton
-            color="info"
-            variant="outline"
-            shape="square"
-            size="lg"
-            className="ml-1"
-            onClick={handleUpdateBrand}
-            disabled={updateLoading}
-          >
-            {updateLoading ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm mr-1"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                Loading...
-              </>
-            ) : (
-              "Update"
-            )}
-          </CButton>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    </>
   );
 };
 export default Brand;

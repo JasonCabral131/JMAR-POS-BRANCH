@@ -198,6 +198,7 @@ const CreateProduct = ({
                         cacheOptions
                         placeholder={"Select Brand"}
                         onChange={handleBrandOnChange}
+                        menuPortalTarget={document.body}
                       />
                     </div>
                   </div>
@@ -214,6 +215,7 @@ const CreateProduct = ({
                           selectBrand ? selectBrand.value.brand : "Brand"
                         } subcategory`}
                         onChange={(e) => setSubcatSelect(e)}
+                        menuPortalTarget={document.body}
                       />
                     </div>
                   </div>

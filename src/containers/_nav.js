@@ -130,7 +130,7 @@ const _nav = [
   {
     _tag: "CSidebarNavItem",
     name: "Sales",
-    to: "/branch/sales-information",
+    to: "/branch/sales/",
     icon: <FcPositiveDynamic className="c-sidebar-nav-icon" color="#FFFFFF" />,
   },
 

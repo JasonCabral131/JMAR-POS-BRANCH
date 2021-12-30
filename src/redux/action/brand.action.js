@@ -126,3 +126,16 @@ export const getBrandSalesInfo = (data) => {
     }
   };
 };
+export const getAllBrandSale = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.get("/get-all-brand-sales");
+      if (res.status === 200) {
+        return { result: true, brandSaleList: res.data.brandSaleList };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

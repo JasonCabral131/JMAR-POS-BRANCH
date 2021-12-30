@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Modal } from "react-bootstrap";
-import { IoCloseOutline, IoImages } from "react-icons/io5";
+import { IoImages } from "react-icons/io5";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
+
+import Editor from "@react-page/editor";
+import slate from "@react-page/plugins-slate";
+// image
+import image from "@react-page/plugins-image";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
-import { DraftJsToolBar } from "src/reusable/EditorStateComponent";
+//import { DraftJsToolBar } from "src/reusable/EditorStateComponent";
 import Picker from "emoji-picker-react";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
 import { ImageGallery } from "src/reusable";
@@ -13,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { createBlog } from "src/redux/action/blog.action";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+const cellPlugins = [slate(), image];
 const CreateBlogInfo = ({ createBlogModal, setCreateBlog, user }) => {
   const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(null);
@@ -21,6 +25,7 @@ const CreateBlogInfo = ({ createBlogModal, setCreateBlog, user }) => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showImages, setShowImages] = useState(false);
+  const [value, setValue] = useState(null);
   const handleEditorState = useCallback(() => {
     const html = "<span></span>";
     const contentBlock = htmlToDraft(html);
@@ -70,123 +75,91 @@ const CreateBlogInfo = ({ createBlogModal, setCreateBlog, user }) => {
     setLoading(false);
     if (res) {
       handleEditorState();
-      setCreateBlog(false);
     }
   };
   return (
-    <Modal
-      show={createBlogModal}
-      onHide={() => setCreateBlog(false)}
-      size="lg"
-      dialogClassName="card shadow "
-      backdrop="static"
-      keyboard={false}
-    >
-      <Modal.Body>
-        {loading ? (
-          <>
-            <Skeleton height={50} />
-            <Skeleton height={450} />
-            <Skeleton height={40} />
-            <Skeleton height={60} />
-          </>
-        ) : (
-          <>
-            <div className="create-blog-modal-heading">
-              <div className="heading">
-                {" "}
-                <p className="text-center">Create Blog</p>
-              </div>
-              <div className="close-blog-modal">
-                <IoCloseOutline
-                  size={45}
-                  className="text-secondary close-button-i"
-                  onClick={() => setCreateBlog(false)}
-                />
-              </div>
-            </div>
-            <div className=" percent-container mt-1 ">
-              <label className="label-name text-left d-block">Blog Title</label>
-              <input
-                type="text"
-                className=""
-                placeholder={`input blog title`}
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-              />
-            </div>
-            <br />
-            <Editor
-              placeholder={`what's is it all about your blog,  ${
-                user ? user.branch_owner_fname : ""
-              }! Start creating now`}
-              editorState={editorState}
-              onEditorStateChange={(content) => setEditorState(content)}
-              style={{ padding: "5px" }}
-              toolbar={DraftJsToolBar}
-              spellCheck="true"
+    <div className="w-100">
+      {loading ? (
+        <>
+          <Skeleton height={50} />
+          <Skeleton height={450} />
+          <Skeleton height={40} />
+          <Skeleton height={60} />
+        </>
+      ) : (
+        <>
+          <div className=" percent-container mt-1 ">
+            <label className="label-name text-left d-block">Blog Title</label>
+            <input
+              type="text"
+              className=""
+              placeholder={`input blog title`}
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
             />
-            <br />
-            {showImages ? (
-              <ImageGallery images={images} setImages={setImages} />
-            ) : null}
+          </div>
+          <br />
+          <Editor cellPlugins={cellPlugins} value={value} onChange={setValue} />
+          <br />
+          {showImages ? (
+            <ImageGallery images={images} setImages={setImages} />
+          ) : null}
 
-            {showImoji ? (
-              <Picker
-                onEmojiClick={onEmojiClick}
-                pickerStyle={{ width: "100%" }}
-              />
-            ) : null}
-            <div className="adding-post-heading w-50 ">Add to your post</div>
-            <div className="w-50 left-heading d-flex">
-              {!loading ? (
-                <IoImages
-                  color="#41B35D"
-                  size={30}
-                  className="hover"
-                  onClick={() => {
-                    if (!loading) {
-                      setShowImages(!showImages);
-                      setShowEmoji(false);
-                    }
-                  }}
-                />
-              ) : null}
-              <HiOutlineEmojiHappy
-                size={25}
-                className="hover ml-3"
+          {showImoji ? (
+            <Picker
+              onEmojiClick={onEmojiClick}
+              pickerStyle={{ width: "100%" }}
+            />
+          ) : null}
+          <div className="adding-post-heading w-50 ">Add to your post</div>
+          <div className="w-50 left-heading d-flex">
+            {!loading ? (
+              <IoImages
+                color="#41B35D"
+                size={30}
+                className="hover"
                 onClick={() => {
-                  setShowImages(false);
-                  setShowEmoji(!showImoji);
+                  if (!loading) {
+                    setShowImages(!showImages);
+                    setShowEmoji(false);
+                  }
                 }}
               />
-            </div>
-            <button
-              className={`btn btn-${
-                title.length < 2 ? "secondary" : "info"
-              } mt-2 `}
-              style={{
-                display: "flex",
-                justifySelf: "center",
-                alignSelf: "center",
-                margin: "0 auto",
-                padding: "8px",
-                width: "95%",
-                justifyItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                alignItems: "center",
-                alignContent: "center",
+            ) : null}
+            <HiOutlineEmojiHappy
+              size={25}
+              className="hover ml-3"
+              onClick={() => {
+                setShowImages(false);
+                setShowEmoji(!showImoji);
               }}
-              disabled={title.length < 2 ? true : false}
-              onClick={handleSubmit}
-            >
-              Post
-            </button>
-          </>
-        )}
-      </Modal.Body>
-    </Modal>
+            />
+          </div>
+          <button
+            className={`btn btn-${
+              title.length < 2 ? "secondary" : "info"
+            } mt-2 `}
+            style={{
+              display: "flex",
+              justifySelf: "center",
+              alignSelf: "center",
+              margin: "0 auto",
+              padding: "8px",
+              width: "95%",
+              justifyItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              alignItems: "center",
+              alignContent: "center",
+            }}
+            disabled={title.length < 2 ? true : false}
+            onClick={handleSubmit}
+          >
+            Post
+          </button>
+        </>
+      )}
+    </div>
   );
 };
 export default CreateBlogInfo;

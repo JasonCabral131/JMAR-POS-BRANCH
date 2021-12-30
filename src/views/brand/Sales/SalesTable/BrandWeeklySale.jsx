@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sale2Png from "src/assets/icons/sell.gif";
 import { AiOutlinePrinter, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { monthNames } from "src/reusable";
+import { monthNames, LoaderSpinner } from "src/reusable";
 import { Chart } from "react-google-charts";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 
@@ -11,6 +11,7 @@ const BrandWeeklySale = ({ sales, loading, user, brand }) => {
   const [search, setSearch] = useState({ month: "", year: "" });
   const [chartState, setChartState] = useState([]);
   const [salesInfo, setSalesInfo] = useState([]);
+
   const toggleDetails = (index) => {
     const position = details.indexOf(index);
     let newDetails = details.slice();
@@ -78,6 +79,7 @@ const BrandWeeklySale = ({ sales, loading, user, brand }) => {
     handlegetDataInChart();
     // eslint-disable-next-line
   }, []);
+
   return (
     <>
       <h1 className="header-card-information mt-5">
@@ -128,25 +130,24 @@ const BrandWeeklySale = ({ sales, loading, user, brand }) => {
           </div>
         </div>
         {chartState.length > 1 ? (
-          <Chart
-            width="100%"
-            height="100%"
-            chartType="Bar"
-            data={chartState}
-            legendToggle
-            options={{
-              // Material design options
-              chart: {
-                title: "Daily Sale Product Performance",
-              },
-              vAxis: {
-                title: "Daily Sale",
-              },
-              series: {
-                0: { curveType: "function" },
-              },
-            }}
-          />
+          <>
+            <Chart
+              width="100%"
+              height="100%"
+              chartType="Bar"
+              data={chartState}
+              loader={<LoaderSpinner height={"400px"} />}
+              options={{
+                // Material design options
+                chart: {
+                  title: "Daily Sale Product Performance",
+                },
+
+                vAxis: { minValue: 0 },
+                chartArea: { width: "90%", height: "400px" },
+              }}
+            />
+          </>
         ) : (
           <h4 className="text-center text-danger">No Data Found</h4>
         )}

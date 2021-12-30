@@ -22,6 +22,8 @@ import CashierSales from "./views/cashier/cashierSales";
 import ProductSalesInformation from "./views/product/Sales";
 import SubSales from "./views/sub-brand/Sales";
 import BrandSalesinfo from "./views/brand/Sales";
+import AllSalesInformation from "./views/Sales";
+import RecentSale from "./views/Sales/Recent/RecentSale";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -162,6 +164,18 @@ const routes = [
     path: "/branch/tax/tax-remitted",
     name: "Government Remitting Tax",
     component: RemittedTax,
+  },
+  {
+    exact: true,
+    path: "/branch/sales/",
+    name: "Sales Information",
+    component: AllSalesInformation,
+  },
+  {
+    exact: true,
+    path: "/branch/sales/recent-sales-info",
+    name: "Recent Sales Information",
+    component: RecentSale,
   },
 ];
 
