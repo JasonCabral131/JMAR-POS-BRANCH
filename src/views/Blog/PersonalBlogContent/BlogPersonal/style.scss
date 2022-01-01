@@ -1,0 +1,18 @@
+.personal-blog-content-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.skeletong-loading-container-card {
+  width: 68%;
+  border-radius: 10px;
+  position: relative;
+}
+.avatar-user-info {
+  height: 50px !important;
+  width: 50px !important;
+  border-radius: 100% !important;
+}

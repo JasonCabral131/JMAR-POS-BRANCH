@@ -24,6 +24,10 @@ import SubSales from "./views/sub-brand/Sales";
 import BrandSalesinfo from "./views/brand/Sales";
 import AllSalesInformation from "./views/Sales";
 import RecentSale from "./views/Sales/Recent/RecentSale";
+import CreateBlogInfo from "./views/Blog/createBLog";
+
+import BlogPersonal from "./views/Blog/PersonalBlogContent/BlogPersonal";
+import BlogPhotoAlbum from "./views/Blog/PersonalBlogContent/BlogPhotoAlbum";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -32,6 +36,24 @@ const routes = [
     path: "/branch/BlogPosting",
     name: "Blog",
     component: BlogPosting,
+  },
+  {
+    exact: true,
+    path: "/branch/BlogPosting/creatingBlog",
+    name: "Create Blog",
+    component: CreateBlogInfo,
+  },
+  {
+    exact: true,
+    path: "/branch/BlogPosting/personal-blog-content",
+    name: "Personal Blog",
+    component: BlogPersonal,
+  },
+  {
+    exact: true,
+    path: "/branch/BlogPosting/personal-blog-content/blog-photo-album",
+    name: "Blog Photo Album",
+    component: BlogPhotoAlbum,
   },
   {
     exact: true,

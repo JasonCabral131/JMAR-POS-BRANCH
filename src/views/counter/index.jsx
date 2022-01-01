@@ -13,9 +13,10 @@ import {
 } from "src/redux/action/product.action";
 import Swal from "sweetalert2";
 import { AddSearchProduct } from "./AddSearchProduct";
-import { LoaderSpinner } from "src/reusable/";
+
 import { getTaxInfo } from "src/redux/action";
 import storelogo from "./../../assets/icons/store.jpg";
+import CounterSkelon from "./CounterSketon";
 export const CounterArea = (props) => {
   const dispatch = useDispatch();
   const searchRef = useRef();
@@ -222,7 +223,7 @@ export const CounterArea = (props) => {
       <div className="counter-area-body">
         {loading ? (
           <div className="w-100" style={{ marginTop: "62px" }}>
-            <LoaderSpinner height={"400px"} />
+            <CounterSkelon />
           </div>
         ) : (
           <>

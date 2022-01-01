@@ -332,8 +332,6 @@ const Brand = (props) => {
               title: `Brand Sale`,
               hAxis: { title: "Brand", titleTextStyle: { color: "#333" } },
               vAxis: { minValue: 0 },
-              // For the legend to fit, we make the chart area smaller
-              chartArea: { width: "90%", height: "90%" },
               // lineWidth: 25
             }}
             getChartWrapper={(chartWrapper) => {

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSelector } from "react-redux";
-import CreateBlogInfo from "./createBLog";
+import { useHistory } from "react-router-dom";
 import RecentPost from "./Recent";
 import "./style.scss";
-
+import Skeleton from "react-loading-skeleton";
 const ImageComponent = React.lazy(() => import("./ImageComponent"));
 const BlogPosting = (props) => {
-  const [createBlogModal, setCreateBlog] = useState(false);
+  const history = useHistory();
   const { user } = useSelector((state) => state.auth);
   const [listItems, setListItems] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -57,11 +57,16 @@ const BlogPosting = (props) => {
             <img
               alt={"blog-user-profile"}
               src={user.branch_owner_profile.profile}
+              onClick={() => {
+                history.push("/branch/BlogPosting/personal-blog-content");
+              }}
             />
           </div>
           <div
             className="create-blog-input"
-            onClick={() => setCreateBlog(true)}
+            onClick={() => {
+              history.push("/branch/BlogPosting/creatingBlog");
+            }}
           >
             <input
               type="text"
@@ -74,16 +79,12 @@ const BlogPosting = (props) => {
         </div>
         <>
           {listItems.map((listItem) => (
-            <div className="card data-info mt-2" key={listItem.id} style={{}}>
-              <Suspense
-                fallback={
-                  <img
-                    src={user.branch_owner_profile.profile}
-                    alt="Avatar"
-                    style={{ width: "50%" }}
-                  />
-                }
-              >
+            <div
+              className="card data-info mt-2"
+              key={listItem.id}
+              style={{ width: "100%" }}
+            >
+              <Suspense fallback={<Skeleton width={"100%"} height={300} />}>
                 <ImageComponent src={listItem.download_url} />
               </Suspense>
 
@@ -102,11 +103,6 @@ const BlogPosting = (props) => {
       <div className="col-md-3  p-1">
         <RecentPost />
       </div>
-      <CreateBlogInfo
-        createBlogModal={createBlogModal}
-        setCreateBlog={setCreateBlog}
-        user={user}
-      />
     </div>
   );
 };

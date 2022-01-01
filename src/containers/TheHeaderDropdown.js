@@ -10,9 +10,11 @@ import CIcon from "@coreui/icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineLogout } from "react-icons/ai";
 import { logout } from "src/redux/action";
+import { useHistory } from "react-router-dom";
 const TheHeaderDropdown = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const history = useHistory();
   const profile =
     "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg";
   return (
@@ -41,7 +43,11 @@ const TheHeaderDropdown = () => {
               : null}
           </strong>
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem
+          onClick={() =>
+            history.push("/branch/BlogPosting/personal-blog-content")
+          }
+        >
           <CIcon name="cil-user" className="mfe-2" />
           Profile
         </CDropdownItem>

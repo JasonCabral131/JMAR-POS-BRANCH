@@ -23,3 +23,16 @@ export const createBlog = (data) => {
     }
   };
 };
+export const getPersonalBlog = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.get("/get-personal-blog-content");
+      if (res.status === 200) {
+        return { result: true, blogs: res.data.blogs };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};
