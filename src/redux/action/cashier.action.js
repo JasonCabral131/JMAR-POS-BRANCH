@@ -248,3 +248,16 @@ export const getBannedPendingCashierBranch = (data) => {
     }
   };
 };
+export const getAllSalesOfCashier = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.get("/get-all-brand-cashier-sales");
+      if (res.status === 200) {
+        return { result: true, data: res.data };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

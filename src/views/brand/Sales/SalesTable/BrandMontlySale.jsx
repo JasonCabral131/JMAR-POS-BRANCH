@@ -34,7 +34,7 @@ const BrandMontlySale = ({ sales, loading, user, brand }) => {
     const year = [{ value: "", label: "All" }];
     if (user) {
       const yearx = new Date(user.createdAt).getFullYear();
-      for (let i = new Date().getFullYear(); i <= yearx; i++) {
+      for (let i = yearx; i <= new Date().getFullYear(); i++) {
         year.push({ value: i, label: i });
       }
     }
@@ -66,7 +66,7 @@ const BrandMontlySale = ({ sales, loading, user, brand }) => {
       }
     });
     setSalesInfo(salei);
-    setChartState([["Daily", "Value"], ...salex]);
+    setChartState([["Monthly", "Value"], ...salex]);
   };
   useEffect(() => {
     handlegetDataInChart();

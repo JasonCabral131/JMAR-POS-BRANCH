@@ -18,6 +18,7 @@ import yLogo from "src/assets/icons/yearly.gif";
 import WeeklySaleInfo from "./Sales/WeeklySale";
 import MonthlySaleInfo from "./Sales/MonthlySale";
 import YearlySaleInfo from "./Sales/YearlySale";
+import CashierInfo from "./CashierInfo";
 const CashierSales = (props) => {
   const { cashierId } = useParams();
   const dispatch = useDispatch();
@@ -58,26 +59,9 @@ const CashierSales = (props) => {
     </div>
   ) : cinfo ? (
     <div style={{ position: "relative", width: "100%" }}>
-      <div className="row">
-        <div className="col-md-2">
-          <div className="w-100 p-2 d-flex justify-content-center flex-column align-items-center">
-            <img
-              alt="profile"
-              src={cinfo.profile.url}
-              style={{
-                width: "120px",
-                height: "120px",
-                borderRadius: "100%",
-              }}
-            />
-            <h6 className="mt-2 text-center" style={{ color: "#b0b0b0" }}>
-              {toCapitalized(
-                `${cinfo.firstname} ${cinfo.middlename} ${cinfo.lastname}`
-              )}
-            </h6>
-          </div>
-        </div>
-        <div className="col-md-10">
+      <CashierInfo cashier={cinfo} />
+      <div className="row mt-2">
+        <div className="col-md-12">
           <div className="sales_container">
             <CashieryTodaySale sales={sales} />
             <CashierWeeklySale sales={sales} />

@@ -8,13 +8,11 @@ import { getPersonalBlog } from "src/redux/action/blog.action";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { IoMdGlobe } from "react-icons/io";
-import Editor from "@react-page/editor";
-import slate from "@react-page/plugins-slate";
+
 // image
 import Skeleton from "react-loading-skeleton";
-import image from "@react-page/plugins-image";
 import Photogrid from "react-facebook-photo-grid";
-const cellPlugins = [slate(), image];
+
 const BlogPersonal = () => {
   const dispatch = useDispatch();
 
@@ -71,11 +69,6 @@ const BlogPersonal = () => {
                   </div>
                   <h1 className="blog-title">{data.title}</h1>
                   <div className="mt-1 w-100" />
-                  <Editor
-                    cellPlugins={cellPlugins}
-                    value={JSON.parse(data.information)}
-                    readOnly
-                  />
                   <div className="w-100 mt-1" />
                   <Suspense fallback={<Skeleton height={300} width={"100%"} />}>
                     <Photogrid

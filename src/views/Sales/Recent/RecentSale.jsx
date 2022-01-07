@@ -54,12 +54,12 @@ const RecentSale = () => {
                       .toLowerCase()
                       .includes(search.toLocaleLowerCase())
                   ) {
-                    return <SalesInfo item={item} key={item.key} />;
+                    return <SalesInfo item={item} key={Math.random()} />;
                   } else {
                     return null;
                   }
                 } else {
-                  return <SalesInfo item={item} key={item.key} />;
+                  return <SalesInfo item={item} key={Math.random()} />;
                 }
               })}
             </div>
@@ -69,15 +69,21 @@ const RecentSale = () => {
                   .toLocaleLowerCase()
                   .includes(search.toLocaleLowerCase())
               ).length < 1 ? (
-                <h1 className="text-center text-danger">No Data Found</h1>
+                <h1 className="text-center text-danger" key={Math.random()}>
+                  No Data Found
+                </h1>
               ) : null
             ) : null}
           </>
         ) : (
-          <h1 className="text-center text-danger">No Sale For Today</h1>
+          <h1 className="text-center text-danger" key={Math.random()}>
+            No Sale For Today
+          </h1>
         )
       ) : (
-        <h1 className="text-center text-danger">No Sale For Today</h1>
+        <h1 className="text-center text-danger" key={Math.random()}>
+          No Sale For Today
+        </h1>
       )}
     </div>
   );
@@ -85,11 +91,11 @@ const RecentSale = () => {
 
 export default RecentSale;
 
-const SalesInfo = ({ item }) => {
+export const SalesInfo = ({ item }) => {
   const Print = () => {};
 
   return (
-    <div className="w-100 row mt-2 p-2 border" key={item._id}>
+    <div className="w-100 row mt-2 p-2 border">
       <div className="text-right">
         {moment(new Date(item.createdAt)).fromNow()}
         <MdOutlineHistoryToggleOff />
@@ -165,12 +171,16 @@ const SalesInfo = ({ item }) => {
                   <span className="mt-1">Total :</span>
                 </th>
                 <th className="text-left ">{`₱ ${new Intl.NumberFormat().format(
-                  item.total +
-                    item.taxs.reduce(
-                      (accum, item) =>
-                        parseFloat(accum) + parseFloat(item.amount),
-                      0.0
-                    )
+                  Math.round(
+                    (item.total +
+                      item.taxs.reduce(
+                        (accum, item) =>
+                          parseFloat(accum) + parseFloat(item.amount),
+                        0.0
+                      ) +
+                      Number.EPSILON) *
+                      100
+                  ) / 100
                 )}`}</th>
               </tr>
             </tbody>

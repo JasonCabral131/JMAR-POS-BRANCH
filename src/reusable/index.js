@@ -291,7 +291,6 @@ const imageUploadCallBack = (file) =>
   });
 const BrandFields = [
   { key: "Index", label: "#" },
-  { key: "images", label: "Images" },
   { key: "brand", label: `Brand` },
   { key: "Date", label: `Date` },
   {
@@ -301,7 +300,6 @@ const BrandFields = [
 ];
 const BrandSubFields = [
   { key: "Index", label: "Index" },
-  { key: "images", label: "Images" },
   { key: "subcategory", label: `Subcategory` },
   { key: "BrandOf", label: `Brand` },
   { key: "Date", label: `Date` },
@@ -312,7 +310,6 @@ const BrandSubFields = [
 ];
 const ProductSubFields = [
   { key: "Index", label: "Index" },
-  { key: "images", label: "Images" },
   { key: "product", label: `Product` },
   { key: "brandOf", label: `Brand` },
   { key: "price", label: `Price` },

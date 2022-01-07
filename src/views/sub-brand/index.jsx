@@ -7,7 +7,7 @@ import { BrandSubFields } from "src/reusable";
 import Select from "react-select";
 import { useSelector, useDispatch } from "react-redux";
 import { getBrandByBranchOwner } from "src/redux/action/brand.action";
-import { Carousel, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import CreateSubcategory from "./createSubcategory";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -434,43 +434,6 @@ const SubBrand = (props) => {
             Index: (item, index) => (
               <td>
                 <p>{item.Index}</p>
-              </td>
-            ),
-            images: (item, index) => (
-              <td className="carousel_container">
-                <Carousel fade indicators={false} variant="dark">
-                  {Array.isArray(item.images) ? (
-                    item.images.length > 0 ? (
-                      item.images.map((data, index) => {
-                        return (
-                          <Carousel.Item key={data._id}>
-                            <img
-                              className="d-block carousel_images"
-                              src={data.img}
-                              alt="First slide"
-                            />
-                          </Carousel.Item>
-                        );
-                      })
-                    ) : (
-                      <Carousel.Item>
-                        <img
-                          className="d-block carousel_images"
-                          src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
-                          alt="First slide"
-                        />
-                      </Carousel.Item>
-                    )
-                  ) : (
-                    <Carousel.Item>
-                      <img
-                        className="d-block carousel_images"
-                        src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
-                        alt="First slide"
-                      />
-                    </Carousel.Item>
-                  )}
-                </Carousel>
               </td>
             ),
             subcategory: (item, index) => (

@@ -9,7 +9,7 @@ import { MonthlySaleWidget } from "./SalesWidget";
 import { YearlySaleWidget } from "./SalesWidget";
 import { TodaySaleWidget } from "./SalesWidget";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
-import { handleTodaysMonth, numberFormat, toCapitalized } from "src/reusable";
+import { monthNames, numberFormat, toCapitalized } from "src/reusable";
 import moment from "moment";
 import { InformationTransact } from "./SalesWidget";
 const fields = [
@@ -177,7 +177,9 @@ const Dashboard = () => {
           </div>
           <div className="info">
             <h1 className="cashier-label">Cashier Monthly's Sales</h1>
-            <h2 className="cashier-month">{handleTodaysMonth()}</h2>
+            <h2 className="cashier-month">{`${
+              monthNames[new Date().getMonth()]
+            } ${new Date().getFullYear()} `}</h2>
             <table className="table ">
               <thead>
                 <tr>

@@ -39,9 +39,13 @@ const Barcode = ({ barcode, setBarcode }) => {
   return (
     <div className="w-100">
       <div className="w-100 d-flex flex-column justify-content-center barcode_container">
-        <canvas id="product-barcode-generator" ref={inputRef} />
+        <canvas
+          ref={inputRef}
+          id="product-barcode-generator"
+          style={{ height: "200px" }}
+        />
       </div>
-      <div className="mt-1 barcode-input-container">
+      <div className="mt-5 barcode-input-container">
         <input
           ref={inputVal}
           type="number"
@@ -89,7 +93,7 @@ const Barcode = ({ barcode, setBarcode }) => {
         <CButton
           color="primary"
           size="lg"
-          className="pl-2 pr-3 mt-1"
+          className="pl-2 pr-3 mt-4"
           onClick={save}
         >
           <AiOutlineBarcode size="20" className="text-white" /> Save

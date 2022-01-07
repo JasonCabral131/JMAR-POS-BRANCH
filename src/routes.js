@@ -28,6 +28,7 @@ import CreateBlogInfo from "./views/Blog/createBLog";
 
 import BlogPersonal from "./views/Blog/PersonalBlogContent/BlogPersonal";
 import BlogPhotoAlbum from "./views/Blog/PersonalBlogContent/BlogPhotoAlbum";
+import Transaaction from "./views/Sales/Transaction";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -198,6 +199,12 @@ const routes = [
     path: "/branch/sales/recent-sales-info",
     name: "Recent Sales Information",
     component: RecentSale,
+  },
+  {
+    exact: true,
+    path: "/branch/sales/transaction/:id",
+    name: "Transaction Information",
+    component: Transaaction,
   },
 ];
 

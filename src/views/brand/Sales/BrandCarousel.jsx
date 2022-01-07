@@ -1,10 +1,11 @@
 import React from "react";
 import { Carousel } from "react-bootstrap";
 
-export const BrandCarousel = ({ brand }) => {
-  return brand ? (
+const BrandCarousel = ({ brand }) => {
+  console.log(brand);
+  return (
     <Carousel className="w-100">
-      {brand.images.map((data) => {
+      {brand?.images.map((data) => {
         return (
           <Carousel.Item>
             <img
@@ -21,7 +22,7 @@ export const BrandCarousel = ({ brand }) => {
         );
       })}
     </Carousel>
-  ) : null;
+  );
 };
 
 export default BrandCarousel;

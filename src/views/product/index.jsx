@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Carousel, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { CButton, CDataTable } from "@coreui/react";
 import { RiFileAddLine, RiDeviceRecoverLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
@@ -243,43 +243,6 @@ const TheProduct = (props) => {
           pagination
           loading={loading}
           scopedSlots={{
-            images: (item, index) => (
-              <td className="carousel_container">
-                <Carousel fade indicators={false} variant="dark">
-                  {Array.isArray(item.images) ? (
-                    item.images.length > 0 ? (
-                      item.images.map((data, index) => {
-                        return (
-                          <Carousel.Item key={data._id}>
-                            <img
-                              className="d-block carousel_images"
-                              src={data.img}
-                              alt="First slide"
-                            />
-                          </Carousel.Item>
-                        );
-                      })
-                    ) : (
-                      <Carousel.Item>
-                        <img
-                          className="d-block carousel_images"
-                          src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
-                          alt="First slide"
-                        />
-                      </Carousel.Item>
-                    )
-                  ) : (
-                    <Carousel.Item>
-                      <img
-                        className="d-block carousel_images"
-                        src="https://cdn1.iconfinder.com/data/icons/image-1-0/1024/image_block-512.png"
-                        alt="First slide"
-                      />
-                    </Carousel.Item>
-                  )}
-                </Carousel>
-              </td>
-            ),
             product: (item, index) => (
               <td className="brandnametable">
                 <OverlayTrigger
