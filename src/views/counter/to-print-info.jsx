@@ -118,8 +118,10 @@ const ToPrintContainer = React.forwardRef(
               ? tax.map((data, key) => {
                   return (
                     <tr key={key} className="pl-2">
-                      <td className="text-left fs-5">{data.tax}</td>
-                      <td className="fs-5 text-left"> {data.percentage} %</td>
+                      <td className="text-left fs-5">
+                        {data.tax} ({data.percentage} %)
+                      </td>
+                      <td className="fs-5 text-left"></td>
                       <td className="fs-5 text-center">{`₱ ${parseFloat(
                         parseFloat(data.percentage / 100) *
                           purchase.reduce(function (accumulator, currentValue) {

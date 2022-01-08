@@ -12,6 +12,7 @@ import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
 import { monthNames, numberFormat, toCapitalized } from "src/reusable";
 import moment from "moment";
 import { InformationTransact } from "./SalesWidget";
+import { Link } from "react-router-dom";
 const fields = [
   { key: "salesId", _style: { width: "10%" }, label: "Transaction ID" },
 
@@ -81,6 +82,16 @@ const Dashboard = () => {
               sorter
               pagination
               scopedSlots={{
+                salesId: (itemxx) => (
+                  <td className="brandnametable">
+                    <Link
+                      to={`/branch/sales/transaction/${itemxx._id}`}
+                      className="a-link-none"
+                    >
+                      {itemxx.salesId}
+                    </Link>
+                  </td>
+                ),
                 show_details: (item, index) => {
                   return (
                     <td className="py-2 text-right">

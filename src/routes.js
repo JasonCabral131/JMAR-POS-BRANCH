@@ -125,6 +125,12 @@ const routes = [
   },
   {
     exact: true,
+    path: "/branch/branch-cashier-information/scheduling",
+    name: "Archived Branch Cashier",
+    component: ScheduleCashier,
+  },
+  {
+    exact: true,
     path: "/branch/branch-cashier-information/arhived-branch-cashier-information",
     name: "Archived Branch Cashier",
     component: ArchivedBranchCashier,
@@ -142,11 +148,6 @@ const routes = [
     component: CashierInformation,
   },
 
-  {
-    path: "/branch/branch-cashier-information/scheduling",
-    name: "Archived Branch Cashier",
-    component: ScheduleCashier,
-  },
   {
     exact: true,
     path: "/branch/branch-customer-information",

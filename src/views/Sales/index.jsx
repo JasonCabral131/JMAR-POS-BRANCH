@@ -12,6 +12,7 @@ import Loader from "react-loader-spinner";
 import { AiOutlineDownload } from "react-icons/ai";
 import { triggerBase64Download } from "react-base64-downloader";
 import MonthlySale from "./SalesInfo/MonthlySale";
+import YearlySale from "./SalesInfo/YearlySale";
 const AllSalesInformation = (props) => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.sales);
@@ -102,6 +103,8 @@ const AllSalesInformation = (props) => {
         {!loading ? (
           <div className="w-100 mt-2">
             <MonthlySale user={user} />
+            <br />
+            <YearlySale user={user} />
           </div>
         ) : null}
       </div>

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { Chart } from "react-google-charts";
 import Sale2Png from "src/assets/icons/sell.gif";
 import { monthNames } from "src/reusable";
+import { useReactToPrint } from "react-to-print";
 import {
   AiOutlinePrinter,
   AiOutlineDown,
@@ -11,8 +12,12 @@ import {
 } from "react-icons/ai";
 import { useHistory } from "react-router-dom";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
+import moment from "moment";
+import PrintMonthlyData from "./PrintMonthlyData";
 const MonthlySale = ({ user }) => {
   const history = useHistory();
+  const monthlySaleRef = useRef();
+
   const { sales, loading } = useSelector((state) => state.sales);
   const [chartState, setChartState] = useState([]);
   const [salesInfo, setSalesInfo] = useState([]);
@@ -85,7 +90,9 @@ const MonthlySale = ({ user }) => {
     // eslint-disable-next-line
   }, []);
 
-  const Print = () => {};
+  const Print = useReactToPrint({
+    content: () => monthlySaleRef.current,
+  });
   return (
     <div className="w-100">
       <h1 className="header-card-information mt-5">
@@ -139,7 +146,7 @@ const MonthlySale = ({ user }) => {
           <Chart
             width="100%"
             height="100%"
-            chartType="Bar"
+            chartType="LineChart"
             data={chartState}
             legendToggle
             options={{
@@ -278,6 +285,13 @@ const MonthlySale = ({ user }) => {
                                               />
                                             </td>
                                           ),
+                                          time: (item) => (
+                                            <td>
+                                              {moment(
+                                                new Date(item.updatedAt)
+                                              ).fromNow()}
+                                            </td>
+                                          ),
                                         }}
                                       />
                                     </div>
@@ -295,6 +309,14 @@ const MonthlySale = ({ user }) => {
             }}
           />
         </div>
+      </div>
+      <div className="d-none">
+        <PrintMonthlyData
+          ref={monthlySaleRef}
+          user={user}
+          chartData={chartState}
+          saleInfo={salesInfo}
+        />
       </div>
     </div>
   );
@@ -314,5 +336,6 @@ const brandSubFields = [
 const transactionField = [
   { key: "salesId", label: "Transaction ID" },
   { key: "total", label: "Total Amount" },
+  { key: "time", label: "Time" },
   { key: "action", label: "", _style: { width: "3%" } },
 ];

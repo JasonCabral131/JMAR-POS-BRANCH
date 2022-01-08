@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { dashboardInfo } from "src/reusable";
 import { AiOutlinePrinter } from "react-icons/ai";
@@ -6,6 +6,8 @@ import "./style.scss";
 import { IoSearchOutline } from "react-icons/io5";
 import moment from "moment";
 import { MdOutlineHistoryToggleOff } from "react-icons/md";
+import PrintTransaction from "./PrintTransaction";
+import { useReactToPrint } from "react-to-print";
 const RecentSale = () => {
   const [search, setSearch] = useState("");
   const { sales } = useSelector((state) => state.sales);
@@ -92,7 +94,11 @@ const RecentSale = () => {
 export default RecentSale;
 
 export const SalesInfo = ({ item }) => {
-  const Print = () => {};
+  const transRef = useRef();
+  const { user } = useSelector((state) => state.auth);
+  const Print = useReactToPrint({
+    content: () => transRef.current,
+  });
 
   return (
     <div className="w-100 row mt-2 p-2 border">
@@ -186,6 +192,9 @@ export const SalesInfo = ({ item }) => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="d-none">
+        <PrintTransaction transaction={item} user={user} ref={transRef} />
       </div>
     </div>
   );

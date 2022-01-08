@@ -64,7 +64,7 @@ const BrandYearlySale = ({ sales, loading, user, brand }) => {
       }
     });
     setSalesInfo(salei);
-    setChartState([["Daily", "Value"], ...salex]);
+    setChartState([["Yearly", "Value"], ...salex]);
   };
   useEffect(() => {
     handlegetDataInChart();
