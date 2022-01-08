@@ -9,11 +9,12 @@ import useDetectPrint from "use-detect-print";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { cashierCounter, cashierPay, logout } from "src/redux/action";
-
+import { Modal } from "react-bootstrap";
 import {
   getCounterProductByCashier,
   getProductByBrandOwner,
 } from "src/redux/action/product.action";
+import { LoaderSpinner } from "src/reusable";
 export const CounterAreaPay = ({
   purchase,
   setPurchase,
@@ -28,7 +29,7 @@ export const CounterAreaPay = ({
   const componentRef = useRef();
   const { user, token } = useSelector((state) => state.auth);
   const [salesId, setSalesId] = useState("");
-
+  const [showModal, setShowModal] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const isPrinting = useDetectPrint();
   const subTotal = purchase.reduce(function (accumulator, currentValue) {
@@ -73,110 +74,141 @@ export const CounterAreaPay = ({
   }, [isPrinting]);
   const handlePayment = async (val) => {
     if (val) {
-      if (purchase.length < 1) {
-        let audio = new Audio(boopSfx);
-        audio.play();
-        return;
-      }
-      if (payment.payment === "") {
-        let audio = new Audio(boopSfx);
-        audio.play();
-        return;
-      }
-      if (payment.payment < getTotal()) {
-        let audio = new Audio(boopSfx);
-        audio.play();
-        return;
-      }
-      const salesId = Math.floor(Math.random() * 999999999999999);
-      setSalesId(salesId);
-
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You Wont Revert this Action",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, proceed to payment",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-        allowOutsideClick: false,
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          let transactionObject = {
-            salesId,
-            payment: payment.payment,
-            customer: payer ? payer : null,
-            products: purchase,
-            taxs: await tax.map((data) => {
-              return {
-                _id: data._id,
-                percentage: data.percentage,
-                tax: data.tax,
-                amount: parseFloat(data.percentage / 100) * subTotal,
-              };
-            }),
+      let transactionObject = {
+        salesId,
+        payment: payment.payment,
+        customer: null,
+        products: purchase,
+        taxs: await tax.map((data) => {
+          return {
+            _id: data._id,
+            percentage: data.percentage,
+            tax: data.tax,
+            amount: parseFloat(data.percentage / 100) * subTotal,
           };
-          if (user.status === "owner") {
-            setPaymentLoading(true);
-            const res = await dispatch(cashierPay(transactionObject));
-            setPaymentLoading(false);
-            if (res.result) {
-              Swal.fire({
-                icon: "success",
-                text: res.message,
-              });
-              handlePrint();
-              dispatch(getProductByBrandOwner());
-
-              setTimeout(() => {
-                searchRef
-                  ? searchRef.current
-                    ? searchRef.current.blur()
-                    : console.log("")
-                  : console.log("");
-              }, 400);
-              return;
-            }
-            Swal.fire({
-              icon: "warning",
-              text: res.message,
-            });
-            return;
-          } else if (user.status === "cashier") {
-            setPaymentLoading(true);
-            const res = await dispatch(
-              cashierCounter({
-                ...transactionObject,
-                branch_id: user.branch._id,
-              })
-            );
-            setPaymentLoading(false);
-            if (res) {
-              handlePrint();
-              dispatch(
-                getCounterProductByCashier({
-                  branch_id: user.branch._id,
-                  token,
-                })
-              );
-
-              setTimeout(() => {
-                searchRef
-                  ? searchRef.current
-                    ? searchRef.current.blur()
-                    : console.log("")
-                  : console.log("");
-              }, 400);
-              return;
-            }
-          } else {
-            dispatch(logout());
-          }
-        }
-      });
+        }),
+      };
+      handlePaymentCheck(transactionObject);
+      return;
+    } else {
+      if (payer) {
+        let transactionObject = {
+          salesId,
+          payment: payment.payment,
+          customer: payer,
+          products: purchase,
+          taxs: await tax.map((data) => {
+            return {
+              _id: data._id,
+              percentage: data.percentage,
+              tax: data.tax,
+              amount: parseFloat(data.percentage / 100) * subTotal,
+            };
+          }),
+        };
+        handlePaymentCheck(transactionObject);
+        return;
+      } else {
+        Swal.fire({
+          icon: "warning",
+          title: "Warning",
+          text: "No Customer Info Found!",
+        });
+      }
     }
   };
+  const handlePaymentCheck = async (transactionObject) => {
+    if (purchase.length < 1) {
+      let audio = new Audio(boopSfx);
+      audio.play();
+      return;
+    }
+    if (payment.payment === "") {
+      let audio = new Audio(boopSfx);
+      audio.play();
+      return;
+    }
+    if (payment.payment < getTotal()) {
+      let audio = new Audio(boopSfx);
+      audio.play();
+      return;
+    }
+    const salesId = Math.floor(Math.random() * 999999999999999);
+    setSalesId(salesId);
 
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You Wont Revert this Action",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, proceed to payment",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+      allowOutsideClick: false,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        if (user.status === "owner") {
+          setPaymentLoading(true);
+          const res = await dispatch(cashierPay(transactionObject));
+          setPaymentLoading(false);
+          if (res.result) {
+            Swal.fire({
+              icon: "success",
+              text: res.message,
+            });
+            handlePrint();
+            dispatch(getProductByBrandOwner());
+
+            setTimeout(() => {
+              searchRef
+                ? searchRef.current
+                  ? searchRef.current.blur()
+                  : console.log("")
+                : console.log("");
+            }, 400);
+            setPayer(null);
+            return;
+          }
+          Swal.fire({
+            icon: "warning",
+            text: res.message,
+          });
+          setPayer(null);
+          return;
+        } else if (user.status === "cashier") {
+          setPaymentLoading(true);
+          const res = await dispatch(
+            cashierCounter({
+              ...transactionObject,
+              branch_id: user.branch._id,
+            })
+          );
+          setPaymentLoading(false);
+          if (res) {
+            handlePrint();
+            dispatch(
+              getCounterProductByCashier({
+                branch_id: user.branch._id,
+                token,
+              })
+            );
+
+            setTimeout(() => {
+              searchRef
+                ? searchRef.current
+                  ? searchRef.current.blur()
+                  : console.log("")
+                : console.log("");
+            }, 400);
+            setPayer(null);
+            return;
+          }
+        } else {
+          dispatch(logout());
+        }
+      }
+    });
+  };
   return (
     <div className="CounterAreaPay">
       <center>
@@ -293,7 +325,24 @@ export const CounterAreaPay = ({
         color="primary"
         size="lg"
         className="mt-4 w-100 fs-3"
-        onClick={() => handlePayment(false)}
+        onClick={() => {
+          if (purchase.length < 1) {
+            let audio = new Audio(boopSfx);
+            audio.play();
+            return;
+          }
+          if (payment.payment === "") {
+            let audio = new Audio(boopSfx);
+            audio.play();
+            return;
+          }
+          if (payment.payment < getTotal()) {
+            let audio = new Audio(boopSfx);
+            audio.play();
+            return;
+          }
+          setShowModal(true);
+        }}
         disabled={paymentLoading}
       >
         {paymentLoading ? (
@@ -316,6 +365,29 @@ export const CounterAreaPay = ({
           payment={payment}
         />
       </div>
+      <Modal
+        show={showModal}
+        size="lg"
+        onHide={() => setShowModal(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Body>
+          {payer ? <div></div> : <LoaderSpinner height="400px" />}
+        </Modal.Body>
+        <Modal.Footer>
+          <CButton
+            color="secondary"
+            variant="outline"
+            onClick={() => {
+              setPayer(null);
+              setShowModal(false);
+            }}
+          >
+            Close
+          </CButton>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
