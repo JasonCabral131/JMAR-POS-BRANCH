@@ -155,6 +155,83 @@ export const registeredCustomer = (data) => {
     }
   };
 };
+export const verifyCustomerToken = (data) => {
+  return async (dispatch) => {
+    try {
+      const api = apiConfig.landingPage + "/customer-token-verification";
+      const res = await axios.post(api, data);
+      if (res.status === 200) {
+        return true;
+      }
+      Swal.fire({
+        icon: "error",
+        text: "Invalid Customer Information",
+      });
+      return false;
+    } catch (e) {
+      Swal.fire({
+        icon: "error",
+        text: "Invalid Customer Information",
+      });
+      return false;
+    }
+  };
+};
+export const verifyCustomerEmail = (data) => {
+  return async (dispatch) => {
+    try {
+      const api = apiConfig.landingPage + "/customer-email-verification";
+      const res = await axios.post(api, data);
+      if (res.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Successfully",
+          text: "Please Check your email",
+        });
+        return true;
+      }
+      Swal.fire({
+        icon: "error",
+        text: "Email not found",
+      });
+      return false;
+    } catch (e) {
+      Swal.fire({
+        icon: "warning",
+        text: "Email not found",
+      });
+      return false;
+    }
+  };
+};
+export const verifyCustomerUpdatePasswordToken = (data) => {
+  return async (dispatch) => {
+    try {
+      const api =
+        apiConfig.landingPage + "/customer-password-token-verification";
+      const res = await axios.post(api, data);
+      if (res.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Successfully",
+          text: "Password Successfully changed",
+        });
+        return true;
+      }
+      Swal.fire({
+        icon: "error",
+        text: "Failed to Updated Customer Password Information",
+      });
+      return false;
+    } catch (e) {
+      Swal.fire({
+        icon: "warning",
+        text: "Failed to Updated Customer Password Information",
+      });
+      return false;
+    }
+  };
+};
 export const getRegisteredCustomerInformationToQrcode = (data) => {
   return async (dispatch) => {
     try {

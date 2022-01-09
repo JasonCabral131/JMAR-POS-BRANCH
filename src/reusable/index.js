@@ -343,7 +343,6 @@ const CashierFields = [
 ];
 const CustomerFields = [
   { key: "index", label: "Index" },
-  { key: "_id", label: "ID #" },
   { key: "name", label: "Name" },
   { key: "phone", label: `Phone` },
   { key: "email", label: `email` },

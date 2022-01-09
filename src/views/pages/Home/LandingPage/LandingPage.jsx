@@ -12,6 +12,8 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { AiOutlineArrowUp } from "react-icons/ai";
 import Login from "../../login";
 import Register from "../../register/Register";
+import CustomerForgotPassword from "../components/Member/forgotPassword";
+import CustomerChangePassword from "../components/Member/ChangePassword";
 const App = (props) => {
   const toTopRef = useRef();
   const topFunction = () => {
@@ -80,6 +82,18 @@ const App = (props) => {
             path="/JARM/customer/register"
             name="Home"
             render={(props) => <RegisterCustomer {...props} />}
+          />
+          <Route
+            exact
+            path="/JARM/customer/forgot-password"
+            name="Home"
+            render={(props) => <CustomerForgotPassword {...props} />}
+          />
+          <Route
+            exact
+            path="/JARM/customer/change-password-info/:token"
+            name="Home"
+            render={(props) => <CustomerChangePassword {...props} />}
           />
           <Route
             exact
