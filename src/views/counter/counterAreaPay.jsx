@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import { RiSecurePaymentFill, RiQrCodeLine } from "react-icons/ri";
 import boopSfx from "src/assets/ringtunes/windows-error-ringtone.mp3";
+import successSnd from "src/assets/ringtunes/messenger.mp3";
 import { useSelector } from "react-redux";
 import ToPrintContainer from "./to-print-info";
 import useDetectPrint from "use-detect-print";
@@ -10,11 +11,15 @@ import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { cashierCounter, cashierPay, logout } from "src/redux/action";
 import { Modal } from "react-bootstrap";
+import { GrClose } from "react-icons/gr";
 import {
   getCounterProductByCashier,
   getProductByBrandOwner,
 } from "src/redux/action/product.action";
 import { LoaderSpinner } from "src/reusable";
+import CustomerInfo from "src/reusable/CustomerInfo";
+import haveMoney from "src/assets/icons/wallet.png";
+import noMoney from "src/assets/icons/no-money.png";
 export const CounterAreaPay = ({
   purchase,
   setPurchase,
@@ -28,6 +33,7 @@ export const CounterAreaPay = ({
   const dispatch = useDispatch();
   const componentRef = useRef();
   const { user, token } = useSelector((state) => state.auth);
+  const { socket } = useSelector((state) => state.socket);
   const [salesId, setSalesId] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -72,13 +78,30 @@ export const CounterAreaPay = ({
     }
     // eslint-disable-next-line
   }, [isPrinting]);
-  const handlePayment = async (val) => {
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("receiving-to-customer-payment-device", ({ customer }) => {
+        console.log(showModal);
+
+        let audio = new Audio(successSnd);
+        audio.play();
+        setPayer(customer);
+        console.log(customer);
+      });
+    }
+    // eslint-disable-next-line
+  }, [socket]);
+  const handlePayment = async (val, customer) => {
     if (val) {
+      const salesId = Math.floor(Math.random() * 999999999999999);
+      setSalesId(salesId);
       let transactionObject = {
         salesId,
         payment: payment.payment,
         customer: null,
         products: purchase,
+        total: getTotal(),
         taxs: await tax.map((data) => {
           return {
             _id: data._id,
@@ -88,15 +111,21 @@ export const CounterAreaPay = ({
           };
         }),
       };
-      handlePaymentCheck(transactionObject);
+      handlePaymentCheck(transactionObject, customer);
       return;
     } else {
-      if (payer) {
+      if (customer) {
+        const salesId = Math.floor(Math.random() * 999999999999999);
+        setSalesId(salesId);
         let transactionObject = {
           salesId,
-          payment: payment.payment,
-          customer: payer,
+          payment:
+            customer.payment_check === "counter-payment"
+              ? payment.payment
+              : getTotal(),
+          customer: customer,
           products: purchase,
+          total: getTotal(),
           taxs: await tax.map((data) => {
             return {
               _id: data._id,
@@ -106,7 +135,7 @@ export const CounterAreaPay = ({
             };
           }),
         };
-        handlePaymentCheck(transactionObject);
+        handlePaymentCheck(transactionObject, customer);
         return;
       } else {
         Swal.fire({
@@ -117,24 +146,38 @@ export const CounterAreaPay = ({
       }
     }
   };
-  const handlePaymentCheck = async (transactionObject) => {
+  const handlePaymentCheck = async (transactionObject, customer) => {
     if (purchase.length < 1) {
       let audio = new Audio(boopSfx);
       audio.play();
       return;
     }
-    if (payment.payment === "") {
-      let audio = new Audio(boopSfx);
-      audio.play();
-      return;
+    if (!customer) {
+      if (payment.payment === "") {
+        let audio = new Audio(boopSfx);
+        audio.play();
+        return;
+      }
+      if (payment.payment < getTotal()) {
+        let audio = new Audio(boopSfx);
+        audio.play();
+        return;
+      }
     }
-    if (payment.payment < getTotal()) {
-      let audio = new Audio(boopSfx);
-      audio.play();
-      return;
+    if (customer) {
+      if (customer.payment_check === "counter-payment") {
+        if (payment.payment === "") {
+          let audio = new Audio(boopSfx);
+          audio.play();
+          return;
+        }
+        if (payment.payment < getTotal()) {
+          let audio = new Audio(boopSfx);
+          audio.play();
+          return;
+        }
+      }
     }
-    const salesId = Math.floor(Math.random() * 999999999999999);
-    setSalesId(salesId);
 
     Swal.fire({
       title: "Are you sure?",
@@ -209,6 +252,7 @@ export const CounterAreaPay = ({
       }
     });
   };
+
   return (
     <div className="CounterAreaPay">
       <center>
@@ -331,17 +375,8 @@ export const CounterAreaPay = ({
             audio.play();
             return;
           }
-          if (payment.payment === "") {
-            let audio = new Audio(boopSfx);
-            audio.play();
-            return;
-          }
-          if (payment.payment < getTotal()) {
-            let audio = new Audio(boopSfx);
-            audio.play();
-            return;
-          }
           setShowModal(true);
+          setPayer(null);
         }}
         disabled={paymentLoading}
       >
@@ -367,26 +402,173 @@ export const CounterAreaPay = ({
       </div>
       <Modal
         show={showModal}
-        size="lg"
+        size={payer ? "lg" : "md"}
         onHide={() => setShowModal(false)}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Body>
-          {payer ? <div></div> : <LoaderSpinner height="400px" />}
+          {paymentLoading ? (
+            <LoaderSpinner height="400px" />
+          ) : (
+            <div
+              style={{
+                margin: "0 !important",
+                padding: "0 !important",
+                position: "relative",
+                width: "100%",
+              }}
+            >
+              {payer ? (
+                <>
+                  <CustomerInfo
+                    payer={payer}
+                    handlePayment={handlePayment}
+                    setPayer={setPayer}
+                    setHideModal={setShowModal}
+                    total={getTotal()}
+                    paymentLoading={paymentLoading}
+                  />
+                  <hr />
+                  <div className="mt-2 row">
+                    <div className="col-md-6">
+                      {parseFloat(payer.deposit) >= getTotal() ? (
+                        <img
+                          src={haveMoney}
+                          alt="have-money"
+                          className="payment-img"
+                        />
+                      ) : (
+                        <img
+                          src={noMoney}
+                          alt="have-nomoney"
+                          className="payment-img"
+                        />
+                      )}
+                    </div>
+                    <div className="col-md-6 d-flex justify-content-center flex-column align-items-center">
+                      <h1 className="label-transaction-info text-center  text-success">
+                        {parseFloat(payer.deposit) >= getTotal()
+                          ? "Pay Now"
+                          : "Sorry You don't have sufficient amount"}
+                      </h1>
+                      {parseFloat(payer.deposit) >= getTotal() ? null : (
+                        <>
+                          <label className="label-name text-left">
+                            Enter Amount
+                          </label>
+                          <input
+                            type="number"
+                            name="amount"
+                            className="inputvalue filter-input"
+                            min="1"
+                            disabled={purchase.length > 0 ? false : true}
+                            style={{
+                              cursor:
+                                purchase.length > 0 ? "text" : "not-allowed",
+                            }}
+                            placeholder="enter amount"
+                            value={payment.payment}
+                            onChange={(e) => {
+                              const { value } = e.target;
+                              if (value < getTotal()) {
+                                setPayment({ payment: value, isvalid: false });
+                              } else {
+                                setPayment({ payment: value, isvalid: true });
+                              }
+                            }}
+                            onKeyPress={(e) => {
+                              if (
+                                e.key === "-" ||
+                                e.key === "E" ||
+                                e.key === "e"
+                              ) {
+                                e.preventDefault();
+                              }
+                              if (payment.payment < 1) {
+                                if (e.key === "0") {
+                                  e.preventDefault();
+                                }
+                              }
+                            }}
+                            onPaste={(e) => {
+                              const data = e.clipboardData.getData("Text");
+                              if (!isNaN(data)) {
+                                if (data < 0) {
+                                  e.preventDefault();
+                                }
+                              } else {
+                                e.preventDefault();
+                              }
+                              if (payment.payment < 1) {
+                                if (data === "0") {
+                                  e.preventDefault();
+                                }
+                              }
+                            }}
+                          />
+                          {purchase.length < 1 ? (
+                            <small className="text-danger toshow-data">
+                              No Data Available
+                            </small>
+                          ) : null}
+                          {purchase.length > 0 ? (
+                            payment.payment !== "" ? (
+                              payment.payment < getTotal() ? (
+                                <h1 className="total-amount-container border border-danger">
+                                  <span>Insufficient Amount</span>
+                                </h1>
+                              ) : (
+                                <>
+                                  {" "}
+                                  <label className="d-block label-name text-center fs-3 mt-2">
+                                    Change
+                                  </label>
+                                  <h1 className="total-amount-container border border-success">
+                                    ₱{" "}
+                                    <span>
+                                      {Math.round(
+                                        (parseFloat(payment.payment) -
+                                          getTotal() +
+                                          Number.EPSILON) *
+                                          100
+                                      ) / 100}
+                                    </span>
+                                  </h1>{" "}
+                                </>
+                              )
+                            ) : (
+                              <h1 className="total-amount-container border border-danger">
+                                <span>Payment Needed !!!</span>
+                              </h1>
+                            )
+                          ) : (
+                            <h1 className="total-amount-container border border-danger">
+                              <span>No Data Found !!!</span>
+                            </h1>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <LoaderSpinner height="400px" />
+              )}
+              {!payer ? (
+                <div
+                  className="close-transaction"
+                  onClick={() => {
+                    setShowModal(false);
+                    setPayer(null);
+                  }}
+                >
+                  <GrClose size={30} />
+                </div>
+              ) : null}
+            </div>
+          )}
         </Modal.Body>
-        <Modal.Footer>
-          <CButton
-            color="secondary"
-            variant="outline"
-            onClick={() => {
-              setPayer(null);
-              setShowModal(false);
-            }}
-          >
-            Close
-          </CButton>
-        </Modal.Footer>
       </Modal>
     </div>
   );

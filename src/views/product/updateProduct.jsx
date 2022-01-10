@@ -50,7 +50,8 @@ const UpdateProductInformation = ({
       setUpdatingLoading(false);
       return;
     }
-    if (price === "" || price < 1) {
+    if (price === "" || parseFloat(price) < 1) {
+      console.log(price);
       Swal.fire({
         icon: "error",
         text: "Price Required!",
@@ -59,10 +60,10 @@ const UpdateProductInformation = ({
       setUpdatingLoading(false);
       return;
     }
-    if (quantity === "" || quantity < 10) {
+    if (quantity === "" || parseFloat(quantity) < 10) {
       Swal.fire({
         icon: "error",
-        text: "Price Required!",
+        text: "Quantity Required!",
         timer: 3000,
       });
       setUpdatingLoading(false);

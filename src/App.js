@@ -23,6 +23,7 @@ import CashierLayout from "./CashierContainer/TheLayout";
 import HomePage from "./views/pages/Home/index";
 
 import Page404 from "./views/pages/page404/Page404";
+import BranchChat from "./views/BranchChat";
 
 const App = (props) => {
   const dispatch = useDispatch();
@@ -104,6 +105,18 @@ const App = (props) => {
               <Redirect to="/JARM/home" {...props} />
             ) : (
               <CounterArea {...props} />
+            );
+          }}
+        />
+        <Route
+          exact
+          path="/jarm-chat-system"
+          name="Counter Area"
+          render={(props) => {
+            return !isAuthenticated ? (
+              <Redirect to="/JARM/home" {...props} />
+            ) : (
+              <BranchChat {...props} />
             );
           }}
         />

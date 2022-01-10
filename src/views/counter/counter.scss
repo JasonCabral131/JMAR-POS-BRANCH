@@ -150,6 +150,29 @@
     background-color: #ffffff;
   }
 }
+.close-transaction {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 0.1rem solid rgb(252, 140, 140);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    border: 0.1rem solid rgb(252, 140, 140);
+    background-color: rgb(252, 140, 140);
+  }
+}
+.payment-img {
+  width: 98%;
+  display: block;
+  margin: 0 auto;
+  height: 200px;
+}
 @media (max-width: 780px) {
   .CounterAreaData {
     width: 100%;

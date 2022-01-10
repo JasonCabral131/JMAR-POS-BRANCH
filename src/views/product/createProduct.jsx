@@ -64,7 +64,7 @@ const CreateProduct = ({
       setAddingLoading(false);
       return;
     }
-    if (price === "" || price < 1) {
+    if (price === "" || parseFloat(price) < 1) {
       Swal.fire({
         icon: "warning",
         text: "Price Required!",
@@ -73,10 +73,10 @@ const CreateProduct = ({
       setAddingLoading(false);
       return;
     }
-    if (quantity === "" || quantity < 10) {
+    if (quantity === "" || parseFloat(quantity) < 10) {
       Swal.fire({
         icon: "warning",
-        text: "Price Required!",
+        text: "Quantity Required!",
         timer: 3000,
       });
       setAddingLoading(false);

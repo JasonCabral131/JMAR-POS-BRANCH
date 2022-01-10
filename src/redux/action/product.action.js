@@ -172,3 +172,17 @@ export const getProductSalesInfo = (data) => {
     }
   };
 };
+
+export const getProductNotification = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post("/get-product-information", data);
+      if (res.status === 200) {
+        return { result: true, product: res.data };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};

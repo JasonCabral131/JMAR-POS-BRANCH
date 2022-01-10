@@ -138,3 +138,25 @@ export const loginCashier = (data) => {
     }
   };
 };
+export const getNotification = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.get("/get-notification-branch");
+      if (res.status === 200) {
+        return { result: true, notif: res.data };
+      }
+      return { result: false };
+    } catch (e) {
+      return { result: false };
+    }
+  };
+};
+export const updateNotification = (data) => {
+  return async (dispatch) => {
+    try {
+      await axiosInstance.post("/update-notification-branch", data);
+    } catch (e) {
+      return false;
+    }
+  };
+};

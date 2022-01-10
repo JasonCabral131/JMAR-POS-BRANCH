@@ -29,6 +29,8 @@ import CreateBlogInfo from "./views/Blog/createBLog";
 import BlogPersonal from "./views/Blog/PersonalBlogContent/BlogPersonal";
 import BlogPhotoAlbum from "./views/Blog/PersonalBlogContent/BlogPhotoAlbum";
 import Transaaction from "./views/Sales/Transaction";
+
+import ProductNotif from "./views/product/ProductNotif/index";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -91,6 +93,12 @@ const routes = [
     path: "/branch/inventory-item/sub-brand",
     name: "Brand Subcategory",
     component: SubBrand,
+  },
+  {
+    exact: true,
+    path: "/branch/product-notification/:productId",
+    name: "Product Information",
+    component: ProductNotif,
   },
   {
     exact: true,

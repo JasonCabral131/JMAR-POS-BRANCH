@@ -152,10 +152,10 @@ const MonthlySale = ({ user }) => {
             options={{
               // Material design options
               chart: {
-                title: "Daily Sale Product Performance",
+                title: "Monthly Sale  Performance",
               },
               vAxis: {
-                title: "Daily Sale",
+                title: "Monthly Sale  Performance",
               },
               series: {
                 0: { curveType: "function" },

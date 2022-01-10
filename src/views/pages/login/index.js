@@ -162,11 +162,8 @@ const Login = (props) => {
               )}
             </div>
             {error && <p className="text-danger">{error}</p>}
-            <h1
-              className="login-message gradient__text forgot-password"
-              onClick={() => setCollapse(!collapse)}
-            >
-              Forgot Password ?
+            <h1 className="login-message gradient__text forgot-password">
+              Forgot Password
             </h1>
             <p className="login-message" onClick={() => setCollapse(!collapse)}>
               Login As ?
