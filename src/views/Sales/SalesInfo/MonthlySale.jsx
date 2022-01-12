@@ -277,9 +277,19 @@ const MonthlySale = ({ user }) => {
                                             <td className="text-center">
                                               <AiOutlineEye
                                                 onClick={() => {
-                                                  history.push(
-                                                    `/branch/sales/transaction/${itemxx._id}`
-                                                  );
+                                                  if (user) {
+                                                    if (
+                                                      user.status === "owner"
+                                                    ) {
+                                                      history.push(
+                                                        `/branch/sales/transaction/${itemxx._id}`
+                                                      );
+                                                    } else {
+                                                      history.push(
+                                                        `/cashier/sales/transaction/${itemxx._id}`
+                                                      );
+                                                    }
+                                                  }
                                                 }}
                                                 className="hover mt-1 ml-4"
                                               />

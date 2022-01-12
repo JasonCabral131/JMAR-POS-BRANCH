@@ -12,6 +12,9 @@ import { Modal } from "react-bootstrap";
 import Swal from "sweetalert2";
 import SalePng from "src/assets/icons/sell.gif";
 import Sale2Png from "src/assets/icons/sales2.gif";
+import { useSelector, useDispatch } from "react-redux";
+import moment from "moment-timezone";
+import { logout } from "src/redux/action";
 export const CounterAreaData = ({
   tax,
   purchase,
@@ -21,12 +24,15 @@ export const CounterAreaData = ({
   products,
   searchRef,
 }) => {
+  const dispatch = useDispatch();
   const [filterProduct, setFilterProduct] = useState({
     product: "",
     hastoShow: false,
   });
   const [editPurchaseId, setEditPurchaseId] = useState({ id: "", product: "" });
   const [showModal, setShowModal] = useState(false);
+  const [timeValue, setTimeValue] = useState("");
+  const { user } = useSelector((state) => state.auth);
   useEffect(() => {
     if (purchase.length === 0) {
       setFilterProduct({
@@ -44,8 +50,48 @@ export const CounterAreaData = ({
     };
     // eslint-disable-next-line
   }, [purchase]);
+  const nightShift = () => {
+    let someDate = new Date();
+    let result = someDate.setDate(someDate.getDate() + 1);
+    const settingHr = new Date(result).setHours(3);
+    const settingMin = new Date(settingHr).setMinutes(0);
+    const setSec = new Date(settingMin).setSeconds(0);
+    return moment(new Date(setSec)).tz("Asia/Manila").unix();
+  };
+  const morningShift = () => {
+    const someDate = new Date();
+    const settingHr = new Date(someDate).setHours(17);
+    const settingMin = new Date(settingHr).setMinutes(0);
+    const setSec = new Date(settingMin).setSeconds(0);
+    return moment(new Date(setSec)).tz("Asia/Manila").unix();
+  };
   useEffect(() => {
     document.getElementById("searchProduct-counter").blur();
+    setInterval(function () {
+      // Get today's date and time
+      if (user) {
+        const currentTime = moment(new Date()).tz("Asia/Manila").unix();
+        const diffTime =
+          user.shiftingSchedule === "night"
+            ? nightShift() - currentTime
+            : morningShift() - currentTime;
+        const duration = moment.duration(diffTime * 1000, "milliseconds");
+
+        const hr = moment.duration(duration).hours();
+        const mn = moment.duration(duration).minutes();
+        const sec = moment.duration(duration).seconds();
+        // If the count down is over, write some text
+        setTimeValue(`${hr}h ${mn}m ${sec}sec`);
+
+        if (diffTime < 0) {
+          dispatch(logout());
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval();
+    };
+
     // eslint-disable-next-line
   }, []);
   const handleKeyDown = (e) => {
@@ -230,6 +276,16 @@ export const CounterAreaData = ({
             src={Sale2Png}
             style={{ height: "100px", width: "150px" }}
           />
+          {user ? (
+            user.status === "cashier" ? (
+              <h5 className="time-out-heading mt-3 text-center">
+                Time Out <br />
+                <span className="text-danger d-block text-center mt-2">
+                  {timeValue}
+                </span>{" "}
+              </h5>
+            ) : null
+          ) : null}
           <img
             alt="sales"
             src={SalePng}

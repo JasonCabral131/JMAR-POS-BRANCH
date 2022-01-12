@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sale2Png from "src/assets/icons/sell.gif";
-import { AiOutlinePrinter } from "react-icons/ai";
+
 import { Chart } from "react-google-charts";
 import { CDataTable } from "@coreui/react";
 import { useSelector } from "react-redux";
@@ -56,7 +56,7 @@ const YearlySale = ({ user }) => {
     handlegetDataInChart();
     // eslint-disable-next-line
   }, []);
-  const Print = () => {};
+  // const Print = () => {};
   return (
     <div className="w-100">
       <h1 className="header-card-information mt-5">
@@ -69,9 +69,9 @@ const YearlySale = ({ user }) => {
       </h1>
       <div className="card shadow p-2 mt-2">
         <div className="print-left-info">
-          {chartState.length > 1 ? (
+          {/* {chartState.length > 1 ? (
             <AiOutlinePrinter size="25" className="hover" onClick={Print} />
-          ) : null}
+          ) : null} */}
         </div>
         <div className="row ml-2 mb-3">
           <div className="col-md-2 percent-container ml-3">
@@ -94,7 +94,7 @@ const YearlySale = ({ user }) => {
           <Chart
             width={"100%"}
             height={"400px"}
-            chartType="PieChart"
+            chartType="ColumnChart"
             data={chartState}
             legendToggle
             options={{

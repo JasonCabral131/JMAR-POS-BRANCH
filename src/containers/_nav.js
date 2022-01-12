@@ -9,7 +9,7 @@ import {
 import { MdSecurity, MdOutlineInventory } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
 import { FaPeopleCarry } from "react-icons/fa";
-import { IoDocumentTextOutline } from "react-icons/io5";
+
 import { FcPositiveDynamic } from "react-icons/fc";
 const _nav = [
   {
@@ -121,12 +121,7 @@ const _nav = [
     to: "/branch/roles-permission",
     icon: <MdSecurity className="c-sidebar-nav-icon" />,
   },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Reports",
-    to: "/branch/report-information",
-    icon: <IoDocumentTextOutline className="c-sidebar-nav-icon " />,
-  },
+
   {
     _tag: "CSidebarNavItem",
     name: "Sales",

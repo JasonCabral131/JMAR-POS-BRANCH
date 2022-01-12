@@ -160,3 +160,12 @@ export const updateNotification = (data) => {
     }
   };
 };
+export const deleteNotification = (data) => {
+  return async (dispatch) => {
+    try {
+      await axiosInstance.post("/delete-notification-branch", data);
+    } catch (e) {
+      return false;
+    }
+  };
+};

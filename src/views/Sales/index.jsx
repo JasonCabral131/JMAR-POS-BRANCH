@@ -49,7 +49,15 @@ const AllSalesInformation = (props) => {
   };
   return (
     <div className="w-100">
-      <Link to={"/branch/sales/recent-sales-info"}>
+      <Link
+        to={
+          user
+            ? user.status === "owner"
+              ? "/branch/sales/recent-sales-info"
+              : "/cashier/sales/recent-sales-info"
+            : "/"
+        }
+      >
         Recent Sales <MdOutlineHistoryToggleOff />
       </Link>
       <div className="mt-2 w-100 d-flex flex-column justify-content-center align-items-center p-2">

@@ -37,7 +37,10 @@ export const getProductByBrandOwner = () => {
       if (res.status === 200) {
         dispatch({
           type: productConstant.GET_PRODUCT_SUCCESS,
-          payload: { products: res.data.products },
+          payload: {
+            products: res.data.products,
+            chartdata: res.data.chartData,
+          },
         });
         return { result: true };
       }

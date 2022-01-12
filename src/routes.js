@@ -15,7 +15,7 @@ import DepositCustomer from "./views/deposit";
 import DepositHistory from "./views/deposit/DepositHistory";
 import ScheduleCashier from "./views/cashier/schedule";
 import RolesPermission from "./views/roles_permission";
-import ReportInformation from "./views/Report";
+
 import BlogPosting from "./views/Blog";
 import RemittedTax from "./views/tax/RemittedTax";
 import CashierSales from "./views/cashier/cashierSales";
@@ -184,12 +184,6 @@ const routes = [
     path: "/branch/roles-permission",
     name: "Roles & Permission",
     component: RolesPermission,
-  },
-  {
-    exact: true,
-    path: "/branch/report-information",
-    name: "Report Information",
-    component: ReportInformation,
   },
   {
     exact: true,

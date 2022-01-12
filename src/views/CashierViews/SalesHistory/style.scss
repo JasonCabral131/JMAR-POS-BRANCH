@@ -1,0 +1,18 @@
+.recent-cashier-info {
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+  }
+  .name-recent {
+    font-size: 15px;
+    letter-spacing: 2px;
+    font-weight: 600;
+  }
+}
+.positioning-fixed {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+  background-color: #ebedef;
+}

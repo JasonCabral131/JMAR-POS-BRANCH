@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Chart } from "react-google-charts";
+import { getWeekOfMonth } from "src/reusable";
 
 const WeekLySale = ({ sales }) => {
   const handleWeekLyData = () => {
@@ -49,6 +50,10 @@ const WeekLySale = ({ sales }) => {
 
     return Weeklydata;
   };
+  const TitleWeek = () => {
+    const weekdata = new Date();
+    return getWeekOfMonth(weekdata);
+  };
   return (
     <Chart
       width="100%"
@@ -59,10 +64,10 @@ const WeekLySale = ({ sales }) => {
       options={{
         // Material design options
         chart: {
-          title: "Weekly Sale",
+          title: `${TitleWeek()}  Sale`,
         },
         vAxis: {
-          title: "Weekly Sale",
+          title: `${TitleWeek()}  Sale`,
         },
         series: {
           0: { curveType: "function" },

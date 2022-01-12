@@ -68,12 +68,18 @@ const PrintTransaction = React.forwardRef(({ transaction, user }, ref) => {
             <img src={logo} id="logoInfoPrint" alt="logo-alt-information" />
             <h6 id="branch-name">
               {" "}
-              {user ? user.branch_name + " Store" : null}{" "}
+              {user
+                ? user.status === "owner"
+                  ? user.branch_name + " Store"
+                  : user.branch.branch_name + " Store"
+                : null}{" "}
             </h6>
             <h6 id="branch-name">
               {user
                 ? toCapitalized(
-                    JSON.parse(user.branch_owner_address).fullAddress
+                    user.status === "owner"
+                      ? JSON.parse(user.branch_owner_address).fullAddress
+                      : JSON.parse(user.branch.branch_owner_address).fullAddress
                   )
                 : null}
             </h6>

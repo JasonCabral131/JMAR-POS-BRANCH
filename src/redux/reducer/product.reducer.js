@@ -3,6 +3,7 @@ import { productConstant } from "../constant";
 const initialState = {
   products: [],
   archives: [],
+  chartdata: [],
   loading: false,
 };
 
@@ -28,6 +29,7 @@ const productReducer = (state = initialState, action) => {
       return (state = {
         ...state,
         products: [...action.payload.products],
+        chartdata: action.payload.chartdata,
         loading: false,
       });
     case productConstant.GET_PRODUCT_FAIL:

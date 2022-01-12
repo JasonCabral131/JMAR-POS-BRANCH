@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
@@ -46,21 +45,6 @@ const TheHeaderDropdown = () => {
           <CIcon name="cil-user" className="mfe-2" />
           Profile
         </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-bell" className="mfe-2" />
-          Updates
-          <CBadge color="info" className="mfs-auto">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem>
-          <CIcon name="cil-envelope-open" className="mfe-2" />
-          Messages
-          <CBadge color="success" className="mfs-auto">
-            42
-          </CBadge>
-        </CDropdownItem>
-
         <CDropdownItem divider />
         <CDropdownItem
           onClick={() => {

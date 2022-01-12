@@ -8,7 +8,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { useDispatch } from "react-redux";
-import { getNotification, updateNotification } from "src/redux/action";
+import {
+  deleteNotification,
+  getNotification,
+  updateNotification,
+} from "src/redux/action";
 import systemProfile from "src/assets/icons/system.jpg";
 import { toCapitalized } from "src/reusable";
 import moment from "moment";
@@ -54,7 +58,9 @@ const TheHeaderDropdownNotif = () => {
     history.push(`${data.link}`);
     dispatch(updateNotification({ notifId: data._id }));
   };
-  const deleteNotif = (data) => {};
+  const deleteNotif = (data) => {
+    dispatch(deleteNotification(data));
+  };
   return (
     <CDropdown inNav className="c-header-nav-item mx-2">
       <CDropdownToggle className="c-header-nav-link" caret={false}>

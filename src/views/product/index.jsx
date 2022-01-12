@@ -20,9 +20,12 @@ import htmlToDraft from "html-to-draftjs";
 import CreateBarcode from "./createBarcode";
 import Swal from "sweetalert2";
 import Loader from "react-loader-spinner";
+import { Chart } from "react-google-charts";
 const TheProduct = (props) => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector((state) => state.product);
+  const { products, loading, chartdata } = useSelector(
+    (state) => state.product
+  );
   const { brand } = useSelector((state) => state.brand);
   const { subcategory } = useSelector((state) => state.subcategory);
   const [addModal, setAddModal] = useState(false);
@@ -41,6 +44,8 @@ const TheProduct = (props) => {
   const [updateProduct, setUpdateProduct] = useState(null);
   const [selectedSub, setSelectSub] = useState([]);
   const [deleteProduct, setDeleteProduct] = useState(null);
+  const [cData, setCData] = useState({ search: false, data: [] });
+
   useEffect(() => {
     const html = `<span></span>`;
     const contentBlock = htmlToDraft(html);
@@ -67,9 +72,21 @@ const TheProduct = (props) => {
       const newFiltering = products.filter(
         (datax) => datax.brandOf === val.value.brand
       );
+      let chartx = [["Product", "Sale"]];
+      const cdt = chartdata
+        .filter((xx) => xx.brand === val.value.brand)
+        .map((mp) => {
+          return [mp.product, mp.amount];
+        });
+      if (cdt.length > 0) {
+        setCData({ search: true, data: [...chartx, ...cdt] });
+      } else {
+        setCData({ search: true, data: [...chartx] });
+      }
       setOptionBrandPresented(newFiltering);
     } else {
       setOptionBrandPresented(null);
+      setCData({ search: false, data: [] });
     }
   };
   const handleEdit = (item) => {
@@ -155,6 +172,13 @@ const TheProduct = (props) => {
       setDeletingLoading(false);
     });
   };
+  const getChartData = () => {
+    let chartx = [["Product", "Sale"]];
+    chartdata.forEach((cx) => {
+      chartx.push([cx.product, cx.amount]);
+    });
+    return chartx;
+  };
   return (
     <div className="card">
       <div className="card-header  ">
@@ -228,7 +252,29 @@ const TheProduct = (props) => {
             menuPortalTarget={document.body}
           />
         </div>
-
+        <br />
+        {getChartData().length > 1 ? (
+          <Chart
+            width="100%"
+            height="400px"
+            chartType="Bar"
+            data={cData.search ? cData.data : getChartData()}
+            legendToggle
+            options={{
+              // Material design options
+              chart: {
+                title: `Product  Sale Performance`,
+              },
+              vAxis: {
+                title: `Product`,
+              },
+              series: {
+                0: { curveType: "function" },
+              },
+            }}
+          />
+        ) : null}
+        <br />
         <CDataTable
           items={optionsBrandPresented ? optionsBrandPresented : products}
           fields={ProductSubFields}

@@ -26,7 +26,14 @@ const PrintMonthlyData = React.forwardRef(
           />
         </div>
         <h4 className="brand-information-header-x">
-          <p> {user?.branch_name + " Store"}</p>
+          <p>
+            {" "}
+            {user
+              ? user.status === "owner"
+                ? user.branch_name + " Store"
+                : user.branch.branch_name + " Store"
+              : null}
+          </p>
           <img
             alt={"store"}
             src={storelogo}
@@ -35,7 +42,15 @@ const PrintMonthlyData = React.forwardRef(
           />
         </h4>
         <hr />
-        <h4>{user ? toCapitalized(user.branch_address.fullAddress) : null} </h4>
+        <h4>
+          {user
+            ? user.status === "owner"
+              ? toCapitalized(user.branch_address.fullAddress)
+              : toCapitalized(
+                  JSON.parse(user.branch.branch_address).fullAddress
+                )
+            : null}{" "}
+        </h4>
         <div className="col-md-12">
           <div
             className="w-100 p-1 content-center"
