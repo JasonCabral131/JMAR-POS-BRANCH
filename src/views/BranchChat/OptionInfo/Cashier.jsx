@@ -6,9 +6,12 @@ import { toCapitalized } from "src/reusable";
 import UnseenCashier from "./unseen/UnseenCashier";
 import Loader from "react-loader-spinner";
 import { useHistory } from "react-router-dom";
-const Cashier = ({ cashiersActive }) => {
+import { useSelector } from "react-redux";
+const Cashier = ({ cashiersActive, setCashiers }) => {
   const [cashierList, setCashierList] = useState([]);
   const [search, setSearch] = useState("");
+  const { socket } = useSelector((state) => state.socket);
+  const { user } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const getBranchCashier = () => {
     if (cashierList.length < 1) {
@@ -54,7 +57,14 @@ const Cashier = ({ cashiersActive }) => {
 
     return [...Active, ...Unactive];
   };
-
+  useEffect(() => {
+    if (socket) {
+      socket.emit("get-active-user-by-branch", { user }, (data) => {
+        setCashiers(data.customer);
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="option-container-info scale-up-bl">
       <div className="searh-bar-container">

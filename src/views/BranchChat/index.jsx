@@ -20,6 +20,7 @@ import AdminInboxView from "./component/AdminInbox/AdminIbox";
 import CustomerView from "./component/CustomerInbox";
 import CustomerInboxView from "./component/CustomerInbox/CustomerInboxView";
 import { useSelector } from "react-redux";
+import boopSfx from "src/assets/ringtunes/messenger.mp3";
 const BranchChat = (props) => {
   const history = useHistory();
   const { socket } = useSelector((state) => state.socket);
@@ -52,6 +53,9 @@ const BranchChat = (props) => {
   }, []);
   useEffect(() => {
     if (socket) {
+      socket.emit("get-active-user-by-branch", { user }, (data) => {
+        setCashiers(data.customer);
+      });
       socket.on("login-active-cashier", async ({ customer }) => {
         let ixExist = false;
         for (let cashr of cashiers) {
@@ -68,6 +72,10 @@ const BranchChat = (props) => {
           (data) => data._id.toString() !== cashierId.toString()
         );
         setCashiers(filterOut);
+      });
+      socket.on("new-message-send-by-cashier", async ({ sendMessage }) => {
+        let audio = new Audio(boopSfx);
+        audio.play();
       });
     }
     // eslint-disable-next-line
@@ -155,7 +163,9 @@ const BranchChat = (props) => {
             </div>
           </div>
 
-          {option.option1 ? <Cashier cashiersActive={cashiers} /> : null}
+          {option.option1 ? (
+            <Cashier cashiersActive={cashiers} setCashiers={setCashiers} />
+          ) : null}
           {option.option2 ? <Branch /> : null}
           {option.option3 ? <Customer /> : null}
           {option.option4 ? <Admin /> : null}

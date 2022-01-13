@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   background-color: #011b39;
+  height: auto;
   .branch-chat-heading {
     width: 100%;
     position: fixed;
@@ -336,6 +337,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   .sender-content {
     display: flex;
     justify-content: flex-start;
@@ -351,6 +353,7 @@
       padding: 5px;
       border-radius: 10px;
       p {
+        font-size: 14px;
         color: rgb(219, 219, 219);
       }
     }
@@ -363,6 +366,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end !important;
+  align-items: flex-end;
   .sender-content {
     display: flex;
     justify-content: flex-end;
@@ -378,6 +383,10 @@
       background-color: rgb(226, 161, 161);
       padding: 5px;
       border-radius: 10px;
+      p {
+        font-size: 17px;
+        // color: rgb(226, 226, 226);
+      }
     }
   }
   p {
@@ -495,4 +504,8 @@
     text-transform: capitalize;
     letter-spacing: 1.5px;
   }
+}
+.image-container-chat {
+  width: 50%;
+  margin-top: 5px;
 }

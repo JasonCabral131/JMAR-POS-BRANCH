@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { MdOutlinePhotoLibrary, MdEmojiEmotions } from "react-icons/md";
 import Picker from "emoji-picker-react";
 import axiosInstance from "src/helpers/axios";
 import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { toCapitalized } from "src/reusable";
+import { getBase64, toCapitalized } from "src/reusable";
 import Female from "src/assets/icons/female.jpg";
 import Male from "src/assets/icons/male.jpg";
 import moment from "moment";
+import shortid from "shortid";
+import ImageUploaderChat from "../ImageUploader";
+import Linkify from "react-linkify";
+import Photogrid from "react-facebook-photo-grid";
+import { BiSend } from "react-icons/bi";
 const CashierInboxView = () => {
+  const uploadRef = useRef();
+  const chatContainer = useRef();
   const { cashierId } = useParams();
   const { socket } = useSelector((state) => state.socket);
+  const { user } = useSelector((state) => state.auth);
   const [isShowEmoji, setIsShowEmoji] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [chat, setChat] = useState([]);
+  const [images, setImages] = useState([]);
   const [cashier, setCashier] = useState(null);
   const [active, setActive] = useState(false);
   const onEmojiClick = (e, { emoji }) => {
@@ -25,7 +34,9 @@ const CashierInboxView = () => {
   };
   const handleGetCashierChat = async () => {
     try {
-      setLoading(true);
+      if (chat.length < 1) {
+        setLoading(true);
+      }
       const res = await axiosInstance.post("/get-cashier-chat-information", {
         cashierId,
       });
@@ -78,11 +89,24 @@ const CashierInboxView = () => {
     }
     return () => {
       setActive(false);
+      setChat([]);
     };
     // eslint-disable-next-line
   }, [cashierId]);
   useEffect(() => {
     if (socket) {
+      socket.emit("get-active-user-by-branch", { cashier }, (data) => {
+        if (Array.isArray(data.customer)) {
+          const filteredOut = data.customer.filter(
+            (custo) => custo._id === cashierId
+          );
+          if (filteredOut.length > 0) {
+            setActive(true);
+          } else {
+            setActive(false);
+          }
+        }
+      });
       socket.on("login-active-cashier", async ({ customer }) => {
         console.log("login", customer._id, cashierId);
         if (cashierId === customer._id) {
@@ -97,9 +121,89 @@ const CashierInboxView = () => {
           setActive(false);
         }
       });
+      socket.on("new-message-send-by-cashier", async ({ sendMessage }) => {
+        setChat((prev) => {
+          return [...prev, sendMessage];
+        });
+      });
     }
     // eslint-disable-next-line
   }, [socket]);
+  const handleImageChange = async (e) => {
+    const { files } = e.target;
+    const letData = [];
+    for (let file of files) {
+      letData.push({
+        url: await getBase64(file),
+        _id: shortid.generate(),
+        file,
+      });
+    }
+    setImages([...images, ...letData]);
+  };
+  const handlescrollBottom = () => {
+    const scroll =
+      chatContainer.current.scrollHeight - chatContainer.current.clientHeight;
+    chatContainer.current.scrollTo(0, scroll);
+  };
+
+  const handleSendChat = async () => {
+    if (message.trim().length > 0) {
+      if (socket) {
+        setImages([]);
+        setMessage("");
+        setChat((prev) => {
+          return [
+            ...prev,
+            {
+              createdAt: new Date(),
+              message,
+              images,
+              sender: { branch: user._id },
+              receiver: { cashier: cashierId },
+            },
+          ];
+        });
+        socket.emit(
+          "send-chat-cashier-data-by-branch",
+          { images, cashierId, message },
+          (data) => {
+            console.log(data);
+          }
+        );
+      }
+      return;
+    }
+    if (images.length > 0) {
+      if (socket) {
+        setImages([]);
+        setMessage("");
+        setChat((prev) => {
+          return [
+            ...prev,
+            {
+              createdAt: new Date(),
+              message,
+              images,
+              sender: { branch: user._id },
+              receiver: { cashier: cashierId },
+            },
+          ];
+        });
+        socket.emit(
+          "send-chat-cashier-data-by-branch",
+          { images, cashierId, message },
+          (data) => {
+            console.log(data);
+          }
+        );
+      }
+      return;
+    }
+  };
+  useEffect(() => {
+    handlescrollBottom();
+  }, [chat]);
   return (
     <div className="chat-content-information">
       <div className="chat-content-info">
@@ -158,7 +262,7 @@ const CashierInboxView = () => {
             </div>
           )}
         </div>
-        <div className="chat-content-info-content">
+        <div className="chat-content-info-content" ref={chatContainer}>
           {!loading ? (
             <div className="chat-heading-information">
               <center>
@@ -190,25 +294,86 @@ const CashierInboxView = () => {
               </center>
             </div>
           ) : null}
-          <div className="left-sender">
-            <div className="sender-content">
-              <img src={Male} alt="cashier-pofilexx" />
-              <div className="left-sender-content">
-                <p>he bitch kamusta ka asdasda</p>
-              </div>
-            </div>
-            <p>{moment(new Date()).fromNow()}</p>
-          </div>
-          <div className="right-sender">
-            <div className="sender-content">
-              <div className="right-sender-content">
-                <p>he bitch kamusta ka asdasdasd</p>
-              </div>
-              <img src={Male} alt="cashier-pofilexx" />
-            </div>
-            <p className="text-right">{moment(new Date()).fromNow()}</p>
-          </div>
+          {chat.map((data) => {
+            if (user) {
+              if (data.sender.cashier) {
+                return (
+                  <div className="left-sender">
+                    <div className="sender-content">
+                      <img
+                        src={
+                          cashier
+                            ? cashier.profile.url
+                              ? cashier.profile.url
+                              : cashier.profile.sex === "Male"
+                              ? Female
+                              : Male
+                            : Male
+                        }
+                        alt="cashier-pofilexx"
+                      />
+                      <div className="left-sender-content">
+                        <p>
+                          {" "}
+                          <Linkify>{data.message}</Linkify>
+                        </p>
+                      </div>
+                    </div>
+                    {data.images.length > 0 ? (
+                      <div className="image-container-chat">
+                        <Photogrid
+                          images={data.images.map((photo) => {
+                            return photo.url;
+                          })}
+                        />
+                      </div>
+                    ) : null}
+
+                    <p>{moment(new Date(data.createdAt)).fromNow()}</p>
+                  </div>
+                );
+              }
+              if (data.sender.branch) {
+                return (
+                  <div className="right-sender">
+                    <div className="sender-content">
+                      <div className="right-sender-content">
+                        <p>
+                          {" "}
+                          <Linkify>{data.message}</Linkify>
+                        </p>
+                      </div>
+                      <img
+                        src={user ? user.branch_owner_profile.profile : Male}
+                        alt="cashier-pofilexx"
+                      />
+                    </div>
+                    {data.images.length > 0 ? (
+                      <div className="image-container-chat">
+                        <Photogrid
+                          images={data.images.map((photo) => {
+                            return photo.url;
+                          })}
+                        />
+                      </div>
+                    ) : null}
+                    <p className="text-right">
+                      {moment(new Date(data.createdAt)).fromNow()}
+                    </p>
+                  </div>
+                );
+              }
+            }
+            return null;
+          })}
         </div>
+        {!loading ? (
+          cashier ? (
+            images.length > 0 ? (
+              <ImageUploaderChat images={images} setImages={setImages} />
+            ) : null
+          ) : null
+        ) : null}
         <div className="chat-content-info-input">
           {loading ? (
             <div style={{ width: "100%" }}>
@@ -225,6 +390,9 @@ const CashierInboxView = () => {
                 color="#858AF2"
                 size={25}
                 className="hover"
+                onClick={(e) => {
+                  uploadRef.current.click();
+                }}
               />
               {isShowEmoji && (
                 <div className="emoji-div">
@@ -244,6 +412,27 @@ const CashierInboxView = () => {
                 type="text"
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleSendChat();
+                  }
+                }}
+              />
+              {images.length > 0 || message.trim().length > 0 ? (
+                <BiSend
+                  size={25}
+                  color="#30a501"
+                  onClick={handleSendChat}
+                  className="ml-2 hover"
+                />
+              ) : null}
+              <input
+                ref={uploadRef}
+                type="file"
+                accept="image/*"
+                multiple={true}
+                className="d-none"
+                onChange={handleImageChange}
               />
             </>
           ) : null}
