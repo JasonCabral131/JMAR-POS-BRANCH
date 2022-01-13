@@ -35,7 +35,10 @@ const ProductSalesInformation = (props) => {
       setSales(POS);
       setProduct(product);
       const element = document.querySelector("ol.breadcrumb > li.active");
-      element.innerHTML = toCapitalized(`${product.product} Sales `);
+      if (element) {
+        element.innerHTML = toCapitalized(`${product.product} Sales `);
+      }
+
       return;
     }
   };

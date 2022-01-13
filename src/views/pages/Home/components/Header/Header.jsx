@@ -11,9 +11,9 @@ const Header = (props) => {
             Let's Build Something About Your Modern Gracery Store
           </h1>
           <p>
-            7-Eleven, retailer that operates more than 60,000 convenience
-            stores, mostly in North America and Asia. The typical outlet is
-            small in size and carries a limited stock of food, drinks, and other
+            JARM, retailer that operates more than 60,000 convenience stores,
+            mostly in North America and Asia. The typical outlet is small in
+            size and carries a limited stock of food, drinks, and other
             high-turnover products but stays open long hours.
           </p>
           <div className="gpt3__header-content__people">

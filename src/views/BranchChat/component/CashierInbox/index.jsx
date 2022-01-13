@@ -1,7 +1,15 @@
 import React from "react";
-
+import casImg from "src/assets/icons/cashier.png";
 const CashierView = () => {
-  return <div>CashierView</div>;
+  return (
+    <div className="w-100 d-flex flex-column justify-content-center align-items-center">
+      <h1 className="mt-5 gradient__text font">
+        Branch to Cashier Chat System
+      </h1>
+      <p>realtime chat system to have a connection to your employee</p>
+      <img alt="cashier-info" src={casImg} />
+    </div>
+  );
 };
 
 export default CashierView;

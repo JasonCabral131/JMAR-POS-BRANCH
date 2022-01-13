@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import "./Navigation.scss";
 import { Link, useHistory } from "react-router-dom";
+import logo from "src/assets/icons/hamburger_logo_expand.png";
 const Menu = (props) => {
   return (
     <>
@@ -37,8 +38,6 @@ const Menu = (props) => {
 const Navbar = (props) => {
   let history = useHistory();
   const [toggleMenu, setToggleMenu] = useState(false);
-  const logo =
-    "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1633504263/logo_umwwru.png";
   return (
     <div className="gpt3__navbar">
       <div className="gpt3__navbar-links">

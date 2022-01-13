@@ -67,27 +67,34 @@ export const CounterAreaData = ({
   };
   useEffect(() => {
     document.getElementById("searchProduct-counter").blur();
-    setInterval(function () {
-      // Get today's date and time
-      if (user) {
-        const currentTime = moment(new Date()).tz("Asia/Manila").unix();
-        const diffTime =
-          user.shiftingSchedule === "night"
-            ? nightShift() - currentTime
-            : morningShift() - currentTime;
-        const duration = moment.duration(diffTime * 1000, "milliseconds");
+    if (user) {
+      if (user.status === "cashier") {
+        setInterval(function () {
+          // Get today's date and time
 
-        const hr = moment.duration(duration).hours();
-        const mn = moment.duration(duration).minutes();
-        const sec = moment.duration(duration).seconds();
-        // If the count down is over, write some text
-        setTimeValue(`${hr}h ${mn}m ${sec}sec`);
+          const currentTime = moment(new Date()).tz("Asia/Manila").unix();
+          const diffTime =
+            user.shiftingSchedule === "night"
+              ? nightShift() - currentTime
+              : morningShift() - currentTime;
+          const duration = moment.duration(diffTime * 1000, "milliseconds");
 
-        if (diffTime < 0) {
-          dispatch(logout());
-        }
+          const hr = moment.duration(duration).hours();
+          const mn = moment.duration(duration).minutes();
+          const sec = moment.duration(duration).seconds();
+          // If the count down is over, write some text
+          setTimeValue(`${hr}h ${mn}m ${sec}sec`);
+
+          if (diffTime < 0) {
+            dispatch(logout());
+          }
+        }, 1000);
+      } else {
+        clearInterval();
       }
-    }, 1000);
+    } else {
+      clearInterval();
+    }
     return () => {
       clearInterval();
     };

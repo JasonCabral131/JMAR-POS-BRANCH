@@ -16,6 +16,12 @@
   margin-top: 10px;
   letter-spacing: 1px;
 }
+.gradient__text {
+  background: var(--gradient-bar);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .notif-link {
   width: 400px;
   position: relative;
@@ -929,6 +935,8 @@
     p {
       font-size: 15px !important;
     }
+    margin-left: 0 !important;
+    padding-left: 5px !important;
   }
   .modal-cover-screen {
     height: auto;

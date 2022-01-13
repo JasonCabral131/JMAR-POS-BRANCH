@@ -129,11 +129,11 @@ const MemberCustomer = (props) => {
     <div className="customer-membership-container">
       <div className="customer_register_header">
         <div className="section__margin customer__register_container">
-          <h1 className="gradient_text_green">
+          <h1 className="gradient_text_green mobile-design">
             Be Part Of JARM Customer to make purchase anywhere
           </h1>
           <p>This can track your purchase via Qrcode</p>
-          <div className="d-flex flex-row justify-content-start">
+          <div className="d-flex flex-row justify-content-start button-customer__">
             <button
               name="register-customer"
               className="btn-qrcode btn-download-qrcode"

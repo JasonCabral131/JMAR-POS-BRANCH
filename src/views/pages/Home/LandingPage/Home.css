@@ -168,6 +168,9 @@ a:hover {
   .section__padding {
     margin: 4rem;
   }
+  .section__margin {
+    margin: 2rem 2rem;
+  }
 }
 @media screen and (max-width: 550px) {
   .section__padding {
@@ -175,5 +178,27 @@ a:hover {
   }
   .section__padding {
     margin: 4rem 2rem;
+  }
+  .section__margin {
+    margin: 2rem 2rem;
+  }
+  .button-customer__ {
+    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .button-customer__ > * {
+    margin-top: 10px !important;
+  }
+  .is-scanned-true,
+  .is-scanned-false {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .mobile-design {
+    font-size: 35px !important;
+    text-align: center;
   }
 }

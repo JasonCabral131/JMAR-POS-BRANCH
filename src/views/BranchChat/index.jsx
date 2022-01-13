@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
+import "./mobile.scss";
 import FullWidthLogo from "src/assets/icons/hamburger_logo_expand.png";
 import option1 from "src/assets/icons/cashier.jpg";
 import option2 from "src/assets/icons/branch.jpg";
@@ -18,14 +19,60 @@ import AdminView from "./component/AdminInbox";
 import AdminInboxView from "./component/AdminInbox/AdminIbox";
 import CustomerView from "./component/CustomerInbox";
 import CustomerInboxView from "./component/CustomerInbox/CustomerInboxView";
+import { useSelector } from "react-redux";
 const BranchChat = (props) => {
   const history = useHistory();
+  const { socket } = useSelector((state) => state.socket);
+  const { user } = useSelector((state) => state.auth);
+  const [cashiers, setCashiers] = useState([]);
   const [option, setOption] = useState({
     option1: true,
     option2: false,
     option3: false,
     option4: false,
   });
+  useEffect(() => {
+    if (socket) {
+      socket.emit("get-active-user-by-branch", { user }, (data) => {
+        setCashiers(data.customer);
+      });
+      socket.on("login-active-cashier", async ({ customer }) => {
+        let ixExist = false;
+        for (let cashr of cashiers) {
+          if (cashr._id.toString() === customer._id.toString()) {
+            ixExist = true;
+          }
+        }
+        if (!ixExist) {
+          setCashiers([...cashiers, customer]);
+        }
+      });
+    }
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    if (socket) {
+      socket.on("login-active-cashier", async ({ customer }) => {
+        let ixExist = false;
+        for (let cashr of cashiers) {
+          if (cashr._id.toString() === customer._id.toString()) {
+            ixExist = true;
+          }
+        }
+        if (!ixExist) {
+          setCashiers([...cashiers, customer]);
+        }
+      });
+      socket.on("disconnect-cashier", async ({ cashierId }) => {
+        const filterOut = cashiers.filter(
+          (data) => data._id.toString() !== cashierId.toString()
+        );
+        setCashiers(filterOut);
+      });
+    }
+    // eslint-disable-next-line
+  }, [socket]);
+
   return (
     <div className="branch-chat-container">
       <div className="branch-chat-heading shadow">
@@ -36,7 +83,7 @@ const BranchChat = (props) => {
           }}
         >
           <img alt="logo-jarm" src={FullWidthLogo} />
-          <h1> Chat System</h1>
+          <h1 className="chat-system-h1"> Chat System</h1>
         </div>
       </div>
       <div className="body-chat-system">
@@ -57,9 +104,6 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option1} />
-              <div className="status-check">
-                <span>1</span>
-              </div>
             </div>
             <div
               className={`list-option-info ${
@@ -76,9 +120,6 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option2} />
-              <div className="status-check">
-                <span>1</span>
-              </div>
             </div>
             <div
               className={`list-option-info ${
@@ -95,9 +136,6 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option3} />
-              <div className="status-check">
-                <span>1</span>
-              </div>
             </div>
             <div
               className={`list-option-info ${
@@ -114,12 +152,10 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option4} />
-              <div className="status-check">
-                <span>1</span>
-              </div>
             </div>
           </div>
-          {option.option1 ? <Cashier /> : null}
+
+          {option.option1 ? <Cashier cashiersActive={cashiers} /> : null}
           {option.option2 ? <Branch /> : null}
           {option.option3 ? <Customer /> : null}
           {option.option4 ? <Admin /> : null}
@@ -128,12 +164,12 @@ const BranchChat = (props) => {
           <Switch>
             <Route
               exact
-              component={CashierInboxView}
+              component={CashierView}
               path={"/jarm-chat-system/cashier"}
             />
             <Route
               exact
-              component={CashierView}
+              component={CashierInboxView}
               path={"/jarm-chat-system/cashier/:cashierId"}
             />
             <Route
