@@ -1026,10 +1026,7 @@
 @media print {
   html,
   body {
-    height: initial !important;
-    overflow: initial !important;
-    -webkit-print-color-adjust: exact;
-    padding: 10px;
+    padding: 0 !important;
   }
   .content-center {
     width: 100%;

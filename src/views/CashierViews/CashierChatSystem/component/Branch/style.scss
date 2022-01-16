@@ -1,5 +1,14 @@
-.branch-chat-container {
-  display: flex;
-  position: relative;
-  width: 100%;
+.pointer {
+  cursor: pointer;
+  border-bottom: 0.1rem solid rgb(143, 143, 143);
+  padding: 10px;
+  width: 332px;
+  position: fixed;
+  top: 55px;
+  z-index: 1;
+  background-color: #011b39;
+  height: 48px;
+  &:hover {
+    border-bottom: 0.1rem solid rgb(240, 162, 162);
+  }
 }

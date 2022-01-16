@@ -6,7 +6,7 @@ import {
   RiGovernmentLine,
 } from "react-icons/ri";
 import { CButton, CDataTable } from "@coreui/react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import CreateTax from "./createTax";
 import { TaxFields } from "src/reusable";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import Loader from "react-loader-spinner";
 import UpdateTax from "./updateTax";
 import Swal from "sweetalert2";
 const GovernmentTaxInfo = (props) => {
+  const history = useHistory();
   const [addingLoading, setAddingLoading] = useState(false);
   const [addModal, setAddModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
@@ -145,7 +146,16 @@ const GovernmentTaxInfo = (props) => {
                     </Tooltip>
                   }
                 >
-                  <p> {item.tax}</p>
+                  <p
+                    onClick={() =>
+                      history.push(
+                        `/branch/inventory-item/government-tax/tax-collected-data/${item._id}`
+                      )
+                    }
+                  >
+                    {" "}
+                    {item.tax}
+                  </p>
                 </OverlayTrigger>
               </td>
             ),

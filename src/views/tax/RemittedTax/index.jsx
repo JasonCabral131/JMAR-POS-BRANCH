@@ -32,7 +32,6 @@ const fields = [
 ];
 const productField = [
   { key: "product", label: "Product" },
-  { key: "total", label: `Total` },
   { key: "taxCollected", label: `Tax Collected` },
 ];
 const RemittedTax = (props) => {

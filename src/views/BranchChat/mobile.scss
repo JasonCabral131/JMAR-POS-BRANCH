@@ -28,6 +28,7 @@
   }
   .chat-body-container {
     width: 100% !important;
+    height: 100%;
   }
   .chat-content-information {
     display: flex;
@@ -42,5 +43,11 @@
   }
   .chat-content-info-header {
     width: 100% !important;
+  }
+  .image-container-chat {
+    width: 85% !important;
+  }
+  .right-sender-content {
+    width: 75% !important;
   }
 }

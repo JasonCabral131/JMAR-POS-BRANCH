@@ -31,6 +31,7 @@ import BlogPhotoAlbum from "./views/Blog/PersonalBlogContent/BlogPhotoAlbum";
 import Transaaction from "./views/Sales/Transaction";
 
 import ProductNotif from "./views/product/ProductNotif/index";
+import TaxCollection from "./views/tax/TaxInfo";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -124,6 +125,12 @@ const routes = [
     path: "/branch/inventory-item/government-tax",
     name: "Government Tax",
     component: GovernmentTaxInfo,
+  },
+  {
+    exact: true,
+    path: "/branch/inventory-item/government-tax/tax-collected-data/:taxid",
+    name: "Government Tax",
+    component: TaxCollection,
   },
   {
     exact: true,

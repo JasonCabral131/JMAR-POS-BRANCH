@@ -13,8 +13,10 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { triggerBase64Download } from "react-base64-downloader";
 import MonthlySale from "./SalesInfo/MonthlySale";
 import YearlySale from "./SalesInfo/YearlySale";
+import { getCashierSales, getSales } from "src/redux/action";
 const AllSalesInformation = (props) => {
   const dispatch = useDispatch();
+
   const { loading } = useSelector((state) => state.sales);
   const { user } = useSelector((state) => state.auth);
   const [brandSales, setBrandSales] = useState([]);
@@ -38,6 +40,19 @@ const AllSalesInformation = (props) => {
     handleGetSales();
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (user) {
+      if (user.status === "cashier") {
+        dispatch(getCashierSales());
+        return;
+      }
+      if (user.status === "owner") {
+        dispatch(getSales());
+        return;
+      }
+    }
+    // eslint-disable-next-line
+  }, [user]);
   const print = async () => {
     if (!chartWrapper) {
       console.error("ChartWrapper not ready yet");

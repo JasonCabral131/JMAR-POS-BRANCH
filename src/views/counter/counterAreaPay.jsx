@@ -398,6 +398,7 @@ export const CounterAreaPay = ({
           tax={tax}
           getTotal={getTotal}
           payment={payment}
+          payer={payer}
         />
       </div>
       <Modal

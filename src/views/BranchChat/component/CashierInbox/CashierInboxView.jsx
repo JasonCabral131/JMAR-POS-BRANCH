@@ -5,7 +5,7 @@ import Picker from "emoji-picker-react";
 import axiosInstance from "src/helpers/axios";
 import Skeleton from "react-loading-skeleton";
 import { useSelector } from "react-redux";
-import { getBase64, toCapitalized } from "src/reusable";
+import { getBase64, LoaderSpinner, toCapitalized } from "src/reusable";
 import Female from "src/assets/icons/female.jpg";
 import Male from "src/assets/icons/male.jpg";
 import moment from "moment";
@@ -41,9 +41,11 @@ const CashierInboxView = () => {
         cashierId,
       });
       setLoading(false);
+      handleUpdate();
       if (res.status === 200) {
         setCashier(res.data.cashier);
         setChat(res.data.chat);
+        console.log(res.data.chat.length);
         return;
       }
     } catch (e) {
@@ -67,12 +69,15 @@ const CashierInboxView = () => {
       });
     }
     return () => {
-      setActive(false);
+      handleUpdate();
+      setLoading(true);
+      // setChat([]);
     };
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
     handleGetCashierChat();
+
     if (socket) {
       socket.emit("get-active-user-by-branch", { cashier }, (data) => {
         if (Array.isArray(data.customer)) {
@@ -88,8 +93,9 @@ const CashierInboxView = () => {
       });
     }
     return () => {
-      setActive(false);
-      setChat([]);
+      handleUpdate();
+      setLoading(true);
+      //setChat([]);
     };
     // eslint-disable-next-line
   }, [cashierId]);
@@ -121,14 +127,37 @@ const CashierInboxView = () => {
           setActive(false);
         }
       });
-      socket.on("new-message-send-by-cashier", async ({ sendMessage }) => {
-        setChat((prev) => {
-          return [...prev, sendMessage];
-        });
+      socket.on("new-message-send-by-cashier", async (data) => {
+        if (cashier) {
+          const { sendMessage } = await data;
+          if (sendMessage) {
+            if (
+              sendMessage.sender.cashier
+                .toLowerCase()
+                .includes(cashier._id.toLowerCase())
+            ) {
+              setChat((prev) => {
+                return [...prev, sendMessage];
+              });
+            }
+          }
+        }
       });
     }
     // eslint-disable-next-line
   }, [socket]);
+  const handleUpdate = async () => {
+    if (socket) {
+      try {
+        const result = await axiosInstance.post(
+          "/update-unseen-cashier-information",
+          { cashierId }
+        );
+        socket.emit("update-socket-cashier", { result }, (data) => {});
+        return 0;
+      } catch (e) {}
+    }
+  };
   const handleImageChange = async (e) => {
     const { files } = e.target;
     const letData = [];
@@ -150,8 +179,6 @@ const CashierInboxView = () => {
   const handleSendChat = async () => {
     if (message.trim().length > 0) {
       if (socket) {
-        setImages([]);
-        setMessage("");
         setChat((prev) => {
           return [
             ...prev,
@@ -164,11 +191,13 @@ const CashierInboxView = () => {
             },
           ];
         });
+        setImages([]);
+        setMessage("");
         socket.emit(
           "send-chat-cashier-data-by-branch",
           { images, cashierId, message },
           (data) => {
-            console.log(data);
+            handleUpdate();
           }
         );
       }
@@ -176,8 +205,6 @@ const CashierInboxView = () => {
     }
     if (images.length > 0) {
       if (socket) {
-        setImages([]);
-        setMessage("");
         setChat((prev) => {
           return [
             ...prev,
@@ -190,11 +217,13 @@ const CashierInboxView = () => {
             },
           ];
         });
+        setImages([]);
+        setMessage("");
         socket.emit(
           "send-chat-cashier-data-by-branch",
           { images, cashierId, message },
           (data) => {
-            console.log(data);
+            handleUpdate();
           }
         );
       }
@@ -294,78 +323,95 @@ const CashierInboxView = () => {
               </center>
             </div>
           ) : null}
-          {chat.map((data) => {
-            if (user) {
-              if (data.sender.cashier) {
-                return (
-                  <div className="left-sender">
-                    <div className="sender-content">
-                      <img
-                        src={
-                          cashier
-                            ? cashier.profile.url
+          {!loading ? (
+            chat.map((data) => {
+              if (user) {
+                if (
+                  !data.hasOwnProperty("message") ||
+                  !data.hasOwnProperty("images")
+                ) {
+                  return null;
+                }
+                if (data.sender.cashier) {
+                  return (
+                    <div className="left-sender">
+                      <div className="sender-content">
+                        <img
+                          src={
+                            cashier
                               ? cashier.profile.url
-                              : cashier.profile.sex === "Male"
-                              ? Female
+                                ? cashier.profile.url
+                                : cashier.profile.sex === "Male"
+                                ? Female
+                                : Male
                               : Male
-                            : Male
-                        }
-                        alt="cashier-pofilexx"
-                      />
-                      <div className="left-sender-content">
-                        <p>
-                          {" "}
-                          <Linkify>{data.message}</Linkify>
-                        </p>
-                      </div>
-                    </div>
-                    {data.images.length > 0 ? (
-                      <div className="image-container-chat">
-                        <Photogrid
-                          images={data.images.map((photo) => {
-                            return photo.url;
-                          })}
+                          }
+                          alt="cashier-pofilexx"
                         />
+                        <div className="w-100 d-flex flex-column">
+                          {data.message.trim().length > 0 ? (
+                            <div className="left-sender-content">
+                              <p>
+                                {" "}
+                                <Linkify>{data.message}</Linkify>
+                              </p>
+                            </div>
+                          ) : null}
+                          {data.images.length > 0 ? (
+                            <div className="image-container-chat ml-1">
+                              <Photogrid
+                                images={data.images.map((photo) => {
+                                  return photo.url;
+                                })}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
                       </div>
-                    ) : null}
 
-                    <p>{moment(new Date(data.createdAt)).fromNow()}</p>
-                  </div>
-                );
-              }
-              if (data.sender.branch) {
-                return (
-                  <div className="right-sender">
-                    <div className="sender-content">
-                      <div className="right-sender-content">
-                        <p>
-                          {" "}
-                          <Linkify>{data.message}</Linkify>
-                        </p>
-                      </div>
-                      <img
-                        src={user ? user.branch_owner_profile.profile : Male}
-                        alt="cashier-pofilexx"
-                      />
+                      <p>{moment(new Date(data.createdAt)).fromNow()}</p>
                     </div>
-                    {data.images.length > 0 ? (
-                      <div className="image-container-chat">
-                        <Photogrid
-                          images={data.images.map((photo) => {
-                            return photo.url;
-                          })}
+                  );
+                }
+                if (data.sender.branch) {
+                  return (
+                    <div className="right-sender">
+                      <div className="sender-content">
+                        {data.message.trim().length > 0 ? (
+                          <div className="right-sender-content">
+                            <p>
+                              {" "}
+                              <Linkify>{data.message}</Linkify>
+                            </p>
+                          </div>
+                        ) : null}
+
+                        <img
+                          src={user ? user.branch_owner_profile.profile : Male}
+                          alt="cashier-pofilexx"
                         />
                       </div>
-                    ) : null}
-                    <p className="text-right">
-                      {moment(new Date(data.createdAt)).fromNow()}
-                    </p>
-                  </div>
-                );
+                      {data.images.length > 0 ? (
+                        <div className="image-container-chat mr-1">
+                          <Photogrid
+                            images={data.images.map((photo) => {
+                              return photo.url;
+                            })}
+                          />
+                        </div>
+                      ) : null}
+                      <p className="text-right">
+                        {moment(new Date(data.createdAt)).fromNow()}
+                      </p>
+                    </div>
+                  );
+                }
               }
-            }
-            return null;
-          })}
+              return null;
+            })
+          ) : (
+            <LoaderSpinner height="400px" />
+          )}
         </div>
         {!loading ? (
           cashier ? (

@@ -73,7 +73,7 @@ const BranchChat = (props) => {
         );
         setCashiers(filterOut);
       });
-      socket.on("new-message-send-by-cashier", async ({ sendMessage }) => {
+      socket.on("new-message-send-by-cashier", async (data) => {
         let audio = new Audio(boopSfx);
         audio.play();
       });

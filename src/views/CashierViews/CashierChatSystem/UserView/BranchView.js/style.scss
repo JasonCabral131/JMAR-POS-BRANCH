@@ -1,0 +1,82 @@
+.store-owner-img {
+  display: block;
+  width: 55%;
+  height: 120px;
+  border-radius: 100%;
+  margin: 0 auto;
+}
+.store-info-container {
+  margin-top: 10px;
+  h1 {
+    color: rgb(212, 198, 198);
+    letter-spacing: 1.5px;
+    font-size: 22px;
+  }
+  h4 {
+    font-size: 15px;
+    text-align: center;
+  }
+}
+.store-owner-is-active {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 100%;
+  background-color: chartreuse;
+  bottom: 10px;
+  right: 28%;
+}
+.owner-content-info {
+  width: 70% !important;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.owner-right-side {
+  width: 30%;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 85vh;
+  overflow-y: scroll;
+  align-items: flex-start;
+  padding: 5px;
+}
+.eye-view-content {
+  display: none;
+}
+@media screen and (max-width: 550px) {
+  .store-owner-img {
+    width: 100px;
+    height: 100px;
+  }
+  .eye-view-content {
+    display: block;
+    position: absolute;
+    top: 40%;
+    right: 5%;
+  }
+  .owner-content-info {
+    height: auto !important;
+  }
+  .chat-content-information {
+    width: 100%;
+  }
+  .store-owner-is-active {
+    width: 20px;
+    height: 20px;
+    right: 41%;
+  }
+  .owner-content-info {
+    width: 100% !important;
+  }
+
+  .owner-right-side {
+    display: none;
+    width: 100% !important;
+    height: auto;
+  }
+  .pointer {
+    display: none !important;
+  }
+}

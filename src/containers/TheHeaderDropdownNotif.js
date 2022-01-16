@@ -33,6 +33,9 @@ const TheHeaderDropdownNotif = () => {
     setInterval(() => {
       handleGetNotif();
     }, 2000);
+    return () => {
+      clearInterval();
+    };
     // eslint-disable-next-line
   }, []);
   const handleGetImage = (data) => {

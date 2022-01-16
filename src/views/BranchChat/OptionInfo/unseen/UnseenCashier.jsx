@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axiosInstance from "src/helpers/axios";
 const UnseenCashier = ({ cashierId }) => {
   const [unseen, setUnseen] = useState(0);
+  const { socket } = useSelector((state) => state.socket);
   const handleGetUnseenChat = async () => {
     try {
       const res = await axiosInstance.post("/get-unseen-cashier-information", {
@@ -21,6 +23,15 @@ const UnseenCashier = ({ cashierId }) => {
     handleGetUnseenChat();
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (socket) {
+      socket.on("new-message-send-by-cashier", async ({ sendMessage }) => {
+        handleGetUnseenChat();
+      });
+      handleGetUnseenChat();
+    }
+    // eslint-disable-next-line
+  }, [socket]);
   return unseen > 0 ? (
     <div className="status-check">
       <span>{unseen}</span>

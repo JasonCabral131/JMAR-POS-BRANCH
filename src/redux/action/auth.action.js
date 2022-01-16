@@ -2,7 +2,8 @@ import { authConstant } from "./../constant";
 import axiosInstance from "src/helpers/axios";
 import Swal from "sweetalert2";
 import cashierAxios from "src/helpers/cashierAxios";
-
+import { disconnectSocketConnect } from "./socket.action";
+import { Store } from "../store";
 export const login = (user_info) => {
   return async (dispatch) => {
     try {
@@ -32,7 +33,16 @@ export const login = (user_info) => {
 };
 export const logout = () => {
   return async (dispatch) => {
+    const user = Store.getState().auth.user;
+    if (user) {
+      if (user.status === "cashier") {
+        await cashierAxios.post("/logout-cashier-from-server", {
+          user: user,
+        });
+      }
+    }
     dispatch({ type: authConstant.LOGOUT_SUCCESS });
+    dispatch(disconnectSocketConnect());
   };
 };
 

@@ -11,8 +11,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "src/redux/action";
 import { AiOutlineLogout } from "react-icons/ai";
 import { toCapitalized } from "src/reusable";
+import { useHistory } from "react-router-dom";
 const TheHeaderDropdown = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { user } = useSelector((state) => state.auth);
   const profile =
     "https://res.cloudinary.com/seven-eleven-grocery-netlify-com/image/upload/v1632895905/blank_vwt551.jpg";
@@ -41,7 +43,11 @@ const TheHeaderDropdown = () => {
               : null}
           </strong>
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem
+          onClick={() => {
+            history.push("/cashier/my-profile");
+          }}
+        >
           <CIcon name="cil-user" className="mfe-2" />
           Profile
         </CDropdownItem>
