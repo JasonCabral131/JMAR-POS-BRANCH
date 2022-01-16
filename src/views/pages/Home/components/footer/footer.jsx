@@ -16,8 +16,14 @@ const Footer = (props) => {
       <div className="gpt3__footer-links">
         <div className="gpt3__footer-links_div">
           <h4>Links</h4>
-          <p>Facebook</p>
-          <p>Twitter</p>
+          <p
+            onClick={() => {
+              window.location.href =
+                "https://www.facebook.com/Jarm-Grocery-Sale-Service-107363775176523";
+            }}
+          >
+            Facebook
+          </p>
           <p>Instragram</p>
         </div>
         <div className="gpt3__footer-links_div">
@@ -29,7 +35,7 @@ const Footer = (props) => {
           <h4>Get in Touch</h4>
           <p>248 San Antonio St. Dagami,Leyte</p>
           <p>09959524131</p>
-          <p>7.11.grocery.info@gmail.com</p>
+          <p>jarm.grocery.sale.service@gmail.com</p>
         </div>
         <div className="gpt3__footer-links_div">
           <h4>Behind the Project</h4>

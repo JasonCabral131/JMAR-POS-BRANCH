@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sale2Png from "src/assets/icons/sell.gif";
-import { AiOutlinePrinter, AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import { monthNames } from "src/reusable";
 import { Chart } from "react-google-charts";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
@@ -40,7 +40,7 @@ const BrandDailySale = ({ sales, loading, user, brand }) => {
     }
     return year;
   };
-  const Print = () => {};
+
   const handlegetDataInChart = () => {
     let salex = [];
     let salei = [];
@@ -88,9 +88,9 @@ const BrandDailySale = ({ sales, loading, user, brand }) => {
       </h1>
       <div className="card shadow p-2 mt-2">
         <div className="print-left-info">
-          {chartState.length > 1 ? (
+          {/* {chartState.length > 1 ? (
             <AiOutlinePrinter size="25" className="hover" onClick={Print} />
-          ) : null}
+          ) : null} */}
         </div>
         <div className="row ml-2 mb-3">
           <div className="col-md-2 percent-container">
@@ -229,6 +229,22 @@ const BrandDailySale = ({ sales, loading, user, brand }) => {
                                     <h4 className="ml-2">
                                       {item.brandSub + " List Of Sales"}
                                     </h4>
+                                    <div className="card p-2">
+                                      <CDataTable
+                                        items={item.product}
+                                        fields={brandProField}
+                                        columnFilter={false}
+                                        tableFilterValue={null}
+                                        tableFilter={{
+                                          placeholder: "product ",
+                                        }}
+                                        itemsPerPageSelect={true}
+                                        itemsPerPage={5}
+                                        hover
+                                        sorter
+                                        pagination
+                                      />
+                                    </div>
                                   </CCardBody>
                                 </CCollapse>
                               );
@@ -258,4 +274,9 @@ const brandSubFields = [
   { key: "brandSub", label: "Brand Subcategory" },
   { key: "totalAmount", label: "Total Amount" },
   { key: "show_details", label: "", _style: { width: "3%" } },
+];
+const brandProField = [
+  { key: "product", label: "Product" },
+  { key: "quantity", label: "Quantity" },
+  { key: "totalAmount", label: "Total Amount" },
 ];

@@ -30,11 +30,11 @@ const TheHeaderDropdownNotif = () => {
   };
   useEffect(() => {
     handleGetNotif();
-    setInterval(() => {
+    const notifInterval = setInterval(() => {
       handleGetNotif();
     }, 2000);
     return () => {
-      clearInterval();
+      clearInterval(notifInterval);
     };
     // eslint-disable-next-line
   }, []);

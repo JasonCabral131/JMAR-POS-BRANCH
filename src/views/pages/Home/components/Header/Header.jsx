@@ -16,7 +16,7 @@ const Header = (props) => {
             size and carries a limited stock of food, drinks, and other
             high-turnover products but stays open long hours.
           </p>
-          <div className="gpt3__header-content__people">
+          {/* <div className="gpt3__header-content__people">
             <img
               src={
                 "https://github.com/adrianhajdin/project_modern_ui_ux_gpt3/blob/main/src/assets/people.png?raw=true"
@@ -26,7 +26,7 @@ const Header = (props) => {
             <p>
               6 people including cashier and branch using this web application
             </p>
-          </div>
+          </div> */}
         </div>
         <div className="gpt3__header-image">
           <img src={HeaderLogo} alt="header-logo" />

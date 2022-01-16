@@ -10,12 +10,12 @@ const WhatGPT = (props) => {
           {...props}
           text={
             "This is Multibranch system that covers the sales of the branch" +
-            ",Also can manipulate inventory of the product Brand. This also monitor" +
+            ",Also can manipulate inventory of the product Brand. This also monitor " +
             "the cashier sales for  day, week, month and even year and much more has a " +
-            +"downloadable android application for barcode scanning, qrcode-scanning, And later on " +
-            "this project  will integrate paymongoose  payless transaction that will connect to your paypal account" +
+            " downloadable android application for barcode scanning, qrcode-scanning, And later on " +
+            "this project  will integrate paymongoose  payless transaction that will connect to your paypal account " +
             "as now we dont have budget to have that services, we only integrate QRCODE Payless transaction " +
-            "that deposited to customer account in each branch, And Government Tax are available and to be remitted"
+            "that deposited to customer account in each branch, And Government Tax are available and to be remitted "
           }
         />
       </div>
