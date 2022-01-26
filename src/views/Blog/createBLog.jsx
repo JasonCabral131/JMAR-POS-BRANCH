@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { IoImages } from "react-icons/io5";
-
+import Editor from "@react-page/editor";
+import slate from "@react-page/plugins-slate";
 import { useHistory } from "react-router-dom";
 import { ImageGallery } from "src/reusable";
 import { useDispatch } from "react-redux";
 import { createBlog } from "src/redux/action/blog.action";
 import Skeleton from "react-loading-skeleton";
-
+import spacer from "@react-page/plugins-spacer";
+import divider from "@react-page/plugins-divider";
+import image from "@react-page/plugins-image";
+const cellPlugins = [slate(), image, spacer, divider];
 const CreateBlogInfo = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -59,7 +63,7 @@ const CreateBlogInfo = (props) => {
             />
           </div>
           <br />
-
+          <Editor cellPlugins={cellPlugins} value={value} onChange={setValue} />
           <br />
           {showImages ? (
             <ImageGallery images={images} setImages={setImages} />
