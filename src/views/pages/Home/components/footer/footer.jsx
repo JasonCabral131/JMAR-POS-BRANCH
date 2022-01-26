@@ -1,8 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 import "./footer.scss";
 
 const Footer = (props) => {
+  const history = useHistory();
   return (
     <div className="gpt3__footer section__padding">
       <div className="gpt3__footer-heading">
@@ -11,7 +13,14 @@ const Footer = (props) => {
         </h1>
       </div>
       <div className="gpt3__footer-btn">
-        <p>Register Now</p>
+        <p
+          onClick={() => {
+            history.push("/JARM/sign-up");
+            window.scrollTo(0, 0);
+          }}
+        >
+          Register Now
+        </p>
       </div>
       <div className="gpt3__footer-links">
         <div className="gpt3__footer-links_div">

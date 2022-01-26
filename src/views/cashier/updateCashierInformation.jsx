@@ -430,7 +430,7 @@ const UpdateCashierInformation = ({
                 </div>
               </div>
               <div className="col-md-6 card">
-                <label className="label-name text-center d-block mt-3 border-bottom p-2">
+                {/* <label className="label-name text-center d-block mt-3 border-bottom p-2">
                   Resume Information
                 </label>
                 {cashierInformation ? (
@@ -439,14 +439,9 @@ const UpdateCashierInformation = ({
                     free account, need to Have Plan account in order to access
                     this file!
                   </label>
-                ) : // {/* <PDFViewer
-                //   document={{
-                //     url: cashierInformation.resume.url,
-                //   }}
-                // /> */}
+                ) :
 
-                null}
-
+                null} */}
                 <div className="row border-top">
                   <div className="col-md-6">
                     <label className="label-name text-center d-block mt-3  p-2">

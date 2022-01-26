@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { login, loginCashier } from "src/redux/action";
 import Swal from "sweetalert2";
 import LoginLogo from "./../Home/assets/Jarm_Logo.svg";
+import { useHistory } from "react-router-dom";
 const initialState = {
   email: { email: "", valid: false },
   password: "",
@@ -18,7 +19,7 @@ const initialState = {
 };
 const Login = (props) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [collapse, setCollapse] = useState(false);
@@ -94,7 +95,31 @@ const Login = (props) => {
       };
     });
   };
-
+  const handleChangePass = async () => {
+    const { value } = await Swal.fire({
+      title: "Select User field Validation",
+      input: "select",
+      inputOptions: {
+        StoreOwner: "Store Owner",
+        StoreCashier: "Store Cashier",
+      },
+      inputPlaceholder: "Select User Type",
+      showCancelButton: true,
+      reverseButtons: true,
+    });
+    if (value) {
+      if (value === "StoreOwner") {
+        history.push("/JARM/store/forgot-password");
+      } else {
+        history.push("/JARM/cashier/forgot-password");
+      }
+    } else {
+      Swal.fire({
+        icon: "warning",
+        text: "Please Select Type of User",
+      });
+    }
+  };
   return (
     <div className="login-component-container">
       <section className="section-container side">
@@ -162,7 +187,10 @@ const Login = (props) => {
               )}
             </div>
             {error && <p className="text-danger">{error}</p>}
-            <h1 className="login-message gradient__text forgot-password">
+            <h1
+              className="login-message gradient__text forgot-password"
+              onClick={handleChangePass}
+            >
               Forgot Password
             </h1>
             <p className="login-message" onClick={() => setCollapse(!collapse)}>

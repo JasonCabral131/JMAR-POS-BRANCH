@@ -6,7 +6,11 @@ import {
   RiUserStarLine,
   RiGovernmentLine,
 } from "react-icons/ri";
-import { MdSecurity, MdOutlineInventory } from "react-icons/md";
+import {
+  MdSecurity,
+  MdOutlineInventory,
+  MdOutlineBookOnline,
+} from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
 import { FaPeopleCarry } from "react-icons/fa";
 
@@ -81,6 +85,27 @@ const _nav = [
         _tag: "CSidebarNavItem",
         name: "Tax Remitted",
         to: "/branch/tax/tax-remitted",
+      },
+    ],
+  },
+  {
+    _tag: "CSidebarNavDropdown",
+    name: "Online Store",
+    icon: <MdOutlineBookOnline className="c-sidebar-nav-icon" />,
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Order",
+        to: "/branch/orders",
+        badge: {
+          color: "success",
+          text: "NEW",
+        },
+      },
+      {
+        _tag: "CSidebarNavItem",
+        name: "Shipping Fee",
+        to: "/branch/shipping-fee",
       },
     ],
   },

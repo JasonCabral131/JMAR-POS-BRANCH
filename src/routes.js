@@ -32,6 +32,12 @@ import Transaaction from "./views/Sales/Transaction";
 
 import ProductNotif from "./views/product/ProductNotif/index";
 import TaxCollection from "./views/tax/TaxInfo";
+import Order from "./views/OnlineStore/Order";
+// import Pending from "./views/OnlineStore/Order/Pending";
+// import Cancelled from "./views/OnlineStore/Order/Cancelled/Cancelled";
+// import Completed from "./views/OnlineStore/Order/Completed";
+// import Refund from "./views/OnlineStore/Order/Refund";
+import ShippingFee from "./views/OnlineStore/ShippingFee/index";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -215,6 +221,41 @@ const routes = [
     path: "/branch/sales/transaction/:id",
     name: "Transaction Information",
     component: Transaaction,
+  },
+  {
+    path: "/branch/orders",
+    name: "Orders",
+    component: Order,
+  },
+  // {
+  //   exact: true,
+  //   path: "/branch/orders/pending",
+  //   name: "Pending",
+  //   component: Pending,
+  // },
+  // {
+  //   exact: true,
+  //   path: "/branch/orders/cancelled",
+  //   name: "Cancelled",
+  //   component: Cancelled,
+  // },
+  // {
+  //   exact: true,
+  //   path: "/branch/orders/completted",
+  //   name: "Completed",
+  //   component: Completed,
+  // },
+  // {
+  //   exact: true,
+  //   path: "/branch/orders/refund",
+  //   name: "Completed",
+  //   component: Refund,
+  // },
+  {
+    exact: true,
+    path: "/branch/shipping-fee",
+    name: "Completed",
+    component: ShippingFee,
   },
 ];
 

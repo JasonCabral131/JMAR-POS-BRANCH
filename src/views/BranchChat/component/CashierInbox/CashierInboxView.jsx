@@ -177,33 +177,7 @@ const CashierInboxView = () => {
   };
 
   const handleSendChat = async () => {
-    if (message.trim().length > 0) {
-      if (socket) {
-        setChat((prev) => {
-          return [
-            ...prev,
-            {
-              createdAt: new Date(),
-              message,
-              images,
-              sender: { branch: user._id },
-              receiver: { cashier: cashierId },
-            },
-          ];
-        });
-        setImages([]);
-        setMessage("");
-        socket.emit(
-          "send-chat-cashier-data-by-branch",
-          { images, cashierId, message },
-          (data) => {
-            handleUpdate();
-          }
-        );
-      }
-      return;
-    }
-    if (images.length > 0) {
+    if (message.trim().length > 0 || images.length > 0) {
       if (socket) {
         setChat((prev) => {
           return [

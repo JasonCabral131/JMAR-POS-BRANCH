@@ -1,7 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Feature } from "..";
 import "./WhatGPT.scss";
 const WhatGPT = (props) => {
+  const history = useHistory();
   return (
     <div className="gpt3__whatgpt3 section__margin">
       <div className="gpt3_whatgp3-feature">
@@ -24,7 +26,14 @@ const WhatGPT = (props) => {
           The Possibility and Upgrade Are are still going on to meet your
           expectation
         </h1>
-        <p>Create your branch Now</p>
+        <p
+          onClick={() => {
+            history.push("/JARM/sign-up");
+            window.scrollTo(0, 0);
+          }}
+        >
+          Create your branch Now
+        </p>
       </div>
       <div className="gpt3__whatgpt3-container">
         <Feature

@@ -14,6 +14,10 @@ import Login from "../../login";
 import Register from "../../register/Register";
 import CustomerForgotPassword from "../components/Member/forgotPassword";
 import CustomerChangePassword from "../components/Member/ChangePassword";
+import ForgotPasswordBranch from "../../login/ForgotPasswordBranch";
+import RecoverPassBranch from "../../login/ForgotPasswordBranch/RecoverPassBranch";
+import ForgotPasswordCashier from "../../login/ForgotPasswordCashier";
+import RecoverPassCashier from "../../login/ForgotPasswordCashier/RecoverPassCashier";
 const App = (props) => {
   const toTopRef = useRef();
   const topFunction = () => {
@@ -107,7 +111,30 @@ const App = (props) => {
             name="Home"
             render={(props) => <Register {...props} />}
           />
-
+          <Route
+            exact
+            path="/JARM/store/forgot-password"
+            name="Home"
+            render={(props) => <ForgotPasswordBranch {...props} />}
+          />
+          <Route
+            exact
+            path="/JARM/store/change-password-info/:token"
+            name="Home"
+            render={(props) => <RecoverPassBranch {...props} />}
+          />
+          <Route
+            exact
+            path="/JARM/cashier/forgot-password"
+            name="Home"
+            render={(props) => <ForgotPasswordCashier {...props} />}
+          />
+          <Route
+            exact
+            path="/JARM/cashier/change-password-info/:token"
+            name="Home"
+            render={(props) => <RecoverPassCashier {...props} />}
+          />
           <Redirect from="/" to="/404" />
         </Switch>
       </div>

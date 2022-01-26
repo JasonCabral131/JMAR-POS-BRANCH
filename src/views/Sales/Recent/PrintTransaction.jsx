@@ -17,9 +17,19 @@ const BarcodeInformation = ({ salesId }) => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 0,
+        margin: 0,
       }}
     >
-      <canvas ref={inputRef} style={{ width: "245px", height: "70px" }} />
+      <canvas
+        ref={inputRef}
+        style={{
+          width: "200px",
+          height: "90px",
+          display: "flex",
+          alignSelf: "center",
+        }}
+      />
     </div>
   );
 };
@@ -60,7 +70,7 @@ const PrintTransaction = React.forwardRef(({ transaction, user }, ref) => {
       style={{
         width: "240px",
         height: "auto",
-        padding: "5px",
+        padding: "2px",
       }}
     >
       <p style={{ width: "240px", textAlign: "center" }}>
@@ -254,7 +264,17 @@ const PrintTransaction = React.forwardRef(({ transaction, user }, ref) => {
           THANK YOU FOR YOUR PURCHASE
         </p>
       </div>
-      <div style={{ width: "235px", height: "70px" }}>
+      <div
+        style={{
+          width: "245px",
+          height: "90px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          margin: 0,
+          padding: 0,
+        }}
+      >
         <BarcodeInformation salesId={transaction?.salesId} />
       </div>
     </div>

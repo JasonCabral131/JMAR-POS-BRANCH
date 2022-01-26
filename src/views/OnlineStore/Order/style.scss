@@ -1,0 +1,54 @@
+.order-card {
+  width: 100% !important;
+  display: flex !important;
+  align-self: center !important;
+  text-align: center !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background-color: #fff;
+  flex-direction: column;
+  height: 250;
+  position: relative;
+  .heading-order {
+    padding: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-bottom: 2px solid red;
+    &:hover {
+      color: rgb(93, 198, 224);
+    }
+  }
+  span {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 700;
+  }
+  .active-heading {
+    border-bottom: 3px solid rgb(0, 211, 28) !important;
+  }
+}
+.order-heading-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 200px;
+    height: 100px;
+  }
+  p {
+    margin-left: 10px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    font-size: 30px;
+  }
+}

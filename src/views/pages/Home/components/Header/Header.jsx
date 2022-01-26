@@ -11,10 +11,12 @@ const Header = (props) => {
             Let's Build Something About Your Modern Gracery Store
           </h1>
           <p>
-            JARM, retailer that operates more than 60,000 convenience stores,
-            mostly in North America and Asia. The typical outlet is small in
-            size and carries a limited stock of food, drinks, and other
-            high-turnover products but stays open long hours.
+            JARM, operates more than 10,000 grocery store across the
+            philippines, it covers all the point of sale system of the grocery
+            that gives them comfort about there sale of their store, and can
+            have Android online platform where the customer can order in the
+            specific store and can track the order details and transaction that
+            they have purchase or Order
           </p>
           {/* <div className="gpt3__header-content__people">
             <img

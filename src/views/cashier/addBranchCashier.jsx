@@ -40,7 +40,7 @@ const AddBranchCashier = ({
     form.append("password", password);
 
     form.append("civilStatus", civilStatus);
-    form.append("resume", resume);
+    // form.append("resume", resume);
     form.append("profile", images.profile.file);
     form.append("backId", images.BackId.file);
     form.append("frontId", images.FrontId.file);
@@ -76,7 +76,7 @@ const AddBranchCashier = ({
       setAddingLoading={setAddingLoading}
       showAddModal={showAddModal}
       setShowAddModal={setShowAddModal}
-      resume={true}
+      resume={false}
       info={"Cashier"}
       images={images}
       setImages={setImages}

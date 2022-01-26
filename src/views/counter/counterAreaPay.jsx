@@ -54,6 +54,7 @@ export const CounterAreaPay = ({
     content: () => componentRef.current,
     onAfterPrint: () => {
       setPurchase([]);
+      setPayer(null);
     },
     onBeforePrint: async (data) => {
       if (await data) {
@@ -209,14 +210,14 @@ export const CounterAreaPay = ({
                   : console.log("")
                 : console.log("");
             }, 400);
-            setPayer(null);
+
             return;
           }
           Swal.fire({
             icon: "warning",
             text: res.message,
           });
-          setPayer(null);
+
           return;
         } else if (user.status === "cashier") {
           setPaymentLoading(true);
@@ -243,7 +244,6 @@ export const CounterAreaPay = ({
                   : console.log("")
                 : console.log("");
             }, 400);
-            setPayer(null);
             return;
           }
         } else {

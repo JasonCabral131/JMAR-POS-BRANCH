@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import { CButton } from "@coreui/react";
-import { ImageGallery, imageUploadCallBack } from "src/reusable";
+import { ImageGallery } from "src/reusable";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
@@ -9,7 +9,11 @@ import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
-import { createProductInfo } from "src/redux/action/product.action";
+import {
+  createProductInfo,
+  getProductByBrandOwner,
+} from "src/redux/action/product.action";
+import { DraftJsToolBar } from "src/reusable/EditorStateComponent";
 const CreateProduct = ({
   addModal,
   setAddModal,
@@ -137,6 +141,7 @@ const CreateProduct = ({
         text: "Successfully Created!",
         timer: 3000,
       });
+      dispatch(getProductByBrandOwner());
       handleReset();
       setAddingLoading(false);
       return;
@@ -278,7 +283,7 @@ const CreateProduct = ({
                         value={productId}
                         onChange={(e) => setProductId(e.target.value)}
                         className="form-control inputvalue"
-                        placeholder="Input product name"
+                        placeholder="product barcode number"
                       />
                     </div>
                   </div>
@@ -289,23 +294,7 @@ const CreateProduct = ({
                     <Editor
                       editorState={editorState}
                       onEditorStateChange={(content) => setEditorState(content)}
-                      toolbar={{
-                        image: {
-                          className: undefined,
-                          component: undefined,
-                          popupClassName: undefined,
-                          urlEnabled: true,
-                          uploadEnabled: true,
-                          alignmentEnabled: true,
-                          uploadCallback: imageUploadCallBack,
-                          previewImage: true,
-                          inputAccept: "image/*",
-                          defaultSize: {
-                            height: "400px",
-                            width: "400px",
-                          },
-                        },
-                      }}
+                      toolbar={DraftJsToolBar}
                     />
                   </div>
                 </div>

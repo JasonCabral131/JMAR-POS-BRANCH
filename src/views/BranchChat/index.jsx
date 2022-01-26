@@ -26,6 +26,7 @@ const BranchChat = (props) => {
   const { socket } = useSelector((state) => state.socket);
   const { user } = useSelector((state) => state.auth);
   const [cashiers, setCashiers] = useState([]);
+  const [customerActive, setCustomerActive] = useState([]);
   const [option, setOption] = useState({
     option1: true,
     option2: false,
@@ -36,6 +37,10 @@ const BranchChat = (props) => {
     if (socket) {
       socket.emit("get-active-user-by-branch", { user }, (data) => {
         setCashiers(data.customer);
+      });
+      socket.emit("get-active-branch-customer", { user }, (data) => {
+        setCustomerActive(data);
+        console.log(data);
       });
       socket.on("login-active-cashier", async ({ customer }) => {
         let ixExist = false;
@@ -67,6 +72,10 @@ const BranchChat = (props) => {
           setCashiers([...cashiers, customer]);
         }
       });
+      socket.emit("get-active-branch-customer", { user }, (data) => {
+        setCustomerActive(data);
+        console.log(data);
+      });
       socket.on("disconnect-cashier", async ({ cashierId }) => {
         const filterOut = cashiers.filter(
           (data) => data._id.toString() !== cashierId.toString()
@@ -74,6 +83,22 @@ const BranchChat = (props) => {
         setCashiers(filterOut);
       });
       socket.on("new-message-send-by-cashier", async (data) => {
+        let audio = new Audio(boopSfx);
+        audio.play();
+      });
+      socket.on("disconnected-customer-from-server", (data) => {
+        socket.emit("get-active-branch-customer", { user }, (data) => {
+          setCustomerActive(data);
+          console.log(data);
+        });
+      });
+      socket.on("new-join-customer", (data) => {
+        socket.emit("get-active-branch-customer", { user }, (data) => {
+          setCustomerActive(data);
+          console.log(data);
+        });
+      });
+      socket.on("new-message-send-by-customer", async (data) => {
         let audio = new Audio(boopSfx);
         audio.play();
       });
@@ -167,7 +192,12 @@ const BranchChat = (props) => {
             <Cashier cashiersActive={cashiers} setCashiers={setCashiers} />
           ) : null}
           {option.option2 ? <Branch /> : null}
-          {option.option3 ? <Customer /> : null}
+          {option.option3 ? (
+            <Customer
+              customerActive={customerActive}
+              setCustomerActive={setCustomerActive}
+            />
+          ) : null}
           {option.option4 ? <Admin /> : null}
         </div>
         <div className="chat-body-container">

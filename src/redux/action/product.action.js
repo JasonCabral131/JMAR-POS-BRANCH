@@ -14,10 +14,10 @@ export const createProductInfo = (data) => {
       );
 
       if (res.status === 200) {
-        dispatch({
-          type: productConstant.PRODUCT_CREATE_SUCCESS,
-          payload: { product: res.data.product },
-        });
+        // dispatch({
+        //   type: productConstant.PRODUCT_CREATE_SUCCESS,
+        //   payload: { product: res.data.product },
+        // });
         return { result: true, message: "Successfully Created!" };
       }
       return { result: false, message: res.data.message };

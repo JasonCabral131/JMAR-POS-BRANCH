@@ -459,6 +459,10 @@ const ProfileIdContainer = ({ images, setImages, update }) => {
                       src={images[key].dataUrl}
                       alt={images[key].dataUrl}
                       key={randomString(12)}
+                      onClick={() => {
+                        setCurrentImage(index);
+                        setIsViewerOpen(true);
+                      }}
                     />
                     <div
                       className="view-listx"
@@ -617,6 +621,7 @@ const informationObject = {
     fullAddress: null,
     st: "",
   },
+  store_name: "",
   password: randomString(16),
   resume: null,
   civilStatus: "",

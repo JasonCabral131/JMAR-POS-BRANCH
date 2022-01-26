@@ -1,8 +1,9 @@
 import React from "react";
 
 import { Editor } from "react-draft-wysiwyg";
-import { ImageGallery, imageUploadCallBack } from "src/reusable";
+import { ImageGallery } from "src/reusable";
 import Select from "react-select";
+import { DraftJsToolBar } from "src/reusable/EditorStateComponent";
 const CreateSubcategory = ({
   images,
   setImages,
@@ -48,23 +49,7 @@ const CreateSubcategory = ({
                   editorState={editorState}
                   onEditorStateChange={(content) => setEditorState(content)}
                   style={{ padding: "5px" }}
-                  toolbar={{
-                    image: {
-                      className: undefined,
-                      component: undefined,
-                      popupClassName: undefined,
-                      urlEnabled: true,
-                      uploadEnabled: true,
-                      alignmentEnabled: true,
-                      uploadCallback: imageUploadCallBack,
-                      previewImage: true,
-                      inputAccept: "image/*",
-                      defaultSize: {
-                        height: "400px",
-                        width: "400px",
-                      },
-                    },
-                  }}
+                  toolbar={DraftJsToolBar}
                 />
               </div>
             </div>

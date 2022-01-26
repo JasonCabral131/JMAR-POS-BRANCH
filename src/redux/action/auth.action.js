@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import cashierAxios from "src/helpers/cashierAxios";
 import { disconnectSocketConnect } from "./socket.action";
 import { Store } from "../store";
+import axios from "axios";
+import { apiConfig } from "src/helpers/apiConfig";
 export const login = (user_info) => {
   return async (dispatch) => {
     try {
@@ -175,6 +177,65 @@ export const deleteNotification = (data) => {
     try {
       await axiosInstance.post("/delete-notification-branch", data);
     } catch (e) {
+      return false;
+    }
+  };
+};
+export const signUpBranch = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post(
+        `${apiConfig.socketApi}/api-7-11-administrative/sign-up-store-membership`,
+        data
+      );
+      if (res.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Successfully Created",
+          text: "You'll recieved an email After We accept Your Membership",
+        });
+        return { result: true };
+      }
+      Swal.fire({
+        icon: "warning",
+        title: "Failed Submission",
+        text: res.data.message,
+      });
+      return { result: false };
+    } catch (e) {
+      Swal.fire({
+        icon: "warning",
+        text: "Under Maintenance In Backend We will back in a few minutes",
+      });
+      return { result: false };
+    }
+  };
+};
+
+export const forgotStoreOwnerPassword = (data) => {
+  return async (dispatch) => {
+    try {
+      const res = await axiosInstance.post(
+        "/store-owner-email-verification",
+        data
+      );
+      if (res.status === 200) {
+        Swal.fire({
+          icon: "success",
+          text: "Check your email",
+        });
+        return true;
+      }
+      Swal.fire({
+        icon: "warning",
+        text: res.data.msg,
+      });
+      return true;
+    } catch (e) {
+      Swal.fire({
+        icon: "warning",
+        text: "Email Not Found",
+      });
       return false;
     }
   };

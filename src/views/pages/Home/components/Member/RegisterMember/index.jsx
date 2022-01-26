@@ -367,7 +367,12 @@ const RegisterMember = (props) => {
                   Civil Status
                 </label>
                 <select name="civilStatus" onChange={handleChange}>
-                  <option value="">Choosing...</option>
+                  {!information.civilStatus ? (
+                    <option value="" selected={true}>
+                      Choosing...
+                    </option>
+                  ) : null}
+
                   <option value="Single">Single</option>
                   <option value="Married">Married</option>
                   <option value="Separated">Separated</option>
@@ -383,7 +388,11 @@ const RegisterMember = (props) => {
                   sex
                 </label>
                 <select name="sex" onChange={handleChange}>
-                  <option value="">Choosing...</option>
+                  {!information.sex ? (
+                    <option value="" selected={true}>
+                      Choosing...
+                    </option>
+                  ) : null}
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
@@ -398,6 +407,12 @@ const RegisterMember = (props) => {
                 <input
                   type="date"
                   min="0"
+                  onKeyPress={(event) => {
+                    event.preventDefault();
+                  }}
+                  onPaste={(e) => {
+                    e.preventDefault();
+                  }}
                   value={information.birthday}
                   name="birthday"
                   max={handleMaxdate()}

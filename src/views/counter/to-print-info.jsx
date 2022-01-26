@@ -18,7 +18,15 @@ const BarcodeInformation = ({ salesId }) => {
         alignItems: "center",
       }}
     >
-      <canvas ref={inputRef} style={{ width: "245px", height: "70px" }} />
+      <canvas
+        ref={inputRef}
+        style={{
+          width: "200px",
+          height: "90px",
+          display: "flex",
+          alignSelf: "center",
+        }}
+      />
     </div>
   );
 };
@@ -52,7 +60,7 @@ const ToPrintContainer = React.forwardRef(
         style={{
           width: "240px",
           height: "auto",
-          padding: "5px",
+          padding: "2px",
         }}
       >
         <p style={{ width: "240px", textAlign: "center" }}>
@@ -246,7 +254,15 @@ const ToPrintContainer = React.forwardRef(
             THANK YOU FOR YOUR PURCHASE
           </p>
         </div>
-        <div style={{ width: "235px", height: "70px" }}>
+        <div
+          style={{
+            width: "245px",
+            height: "90px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <BarcodeInformation salesId={salesId} />
         </div>
       </div>
