@@ -11,19 +11,18 @@ import Pending from "./Pending";
 import Completed from "./Completed";
 import Cancelled from "./Cancelled/Cancelled";
 import Refund from "./Refund";
-import orderlogo from "src/assets/icons/order.png";
-import { CDataTable } from "@coreui/react";
 const initialState = {
-  default: true,
-  pending: false,
+  pending: true,
   cancelled: false,
   completed: false,
   refund: false,
 };
 const Order = (props) => {
   const [show, setShow] = useState(initialState);
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [pendingData, setPendingData] = useState(0);
+  const [completedData, setCompletedData] = useState(0);
+  const [cancelledData, setCancelledData] = useState(0);
+  const [refundedData, setRefundedData] = useState(0);
   return (
     <div className="w-100">
       <div className="row">
@@ -120,44 +119,36 @@ const Order = (props) => {
         </div>
       </div>
       <div className="mt-3 w-100">
-        {show.pending ? <Pending {...props} /> : null}
-        {show.completed ? <Completed {...props} /> : null}
-        {show.cancelled ? <Cancelled {...props} /> : null}
-        {show.refund ? <Refund {...props} /> : null}
-        <div className="card p-2 shadow mt-2">
-          <div className="order-heading-container">
-            <img src={orderlogo} alt="order-logo" />
-            <p>Orders</p>
-          </div>
-          <CDataTable
-            items={orders}
-            fields={order_field}
-            columnFilter={false}
-            tableFilterValue={null}
-            tableFilter={{ placeholder: "search order..." }}
-            footer={false}
-            itemsPerPageSelect
-            itemsPerPage={5}
-            hover
-            sorter
-            pagination
-            loading={loading}
+        {show.pending ? (
+          <Pending
+            {...props}
+            pendingData={pendingData}
+            setPendingData={setPendingData}
           />
-        </div>
+        ) : null}
+        {show.completed ? (
+          <Completed
+            {...props}
+            completedData={completedData}
+            setCompletedData={setCompletedData}
+          />
+        ) : null}
+        {show.cancelled ? (
+          <Cancelled
+            {...props}
+            cancelledData={cancelledData}
+            setCancelledData={setCancelledData}
+          />
+        ) : null}
+        {show.refund ? (
+          <Refund
+            {...props}
+            refundedData={refundedData}
+            setRefundedData={setRefundedData}
+          />
+        ) : null}
       </div>
     </div>
   );
 };
 export default Order;
-
-const order_field = [
-  { key: "index", label: "#" },
-  { key: "order_id", label: `Order ID` },
-  { key: "order", label: `Order` },
-  { key: "customer", label: `Customer` },
-  { key: "total", label: `Order Status` },
-  { key: "total", label: `total` },
-
-  { key: "date", label: `Date` },
-  { key: "action", label: `Actions` },
-];

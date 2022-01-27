@@ -18,7 +18,6 @@ const RolesPermission = (props) => {
           <Tab eventKey="customer" title="Customer">
             <CustomerRolesAndPermission />
           </Tab>
-          <Tab eventKey="inventory-management" title="Contact"></Tab>
         </Tabs>
       </div>
     </div>

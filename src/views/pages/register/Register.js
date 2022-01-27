@@ -225,7 +225,7 @@ const Register = () => {
       store_name,
     } = information;
     const form = new FormData();
-    form.append("branch_address", JSON.stringify(storeAddress));
+    form.append("branch_address", JSON.stringify(storeAddress.address));
     form.append("branch_name", store_name);
     form.append("fname", firstname);
     form.append("lname", lastname);

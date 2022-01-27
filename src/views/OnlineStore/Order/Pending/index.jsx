@@ -1,12 +1,16 @@
 import React, { useState } from "react";
-
+import orderlogo from "src/assets/icons/order.png";
 import { CDataTable } from "@coreui/react";
+import Steps from "rsuite/Steps";
 const Pending = (props) => {
   const [loading, setLoading] = useState(false);
   return (
     <div className="card p-2 shadow">
       <div className="order-heading-container">
-        <p>Pending Orders</p>
+        <div className="order-heading-container">
+          <img src={orderlogo} alt="order-logo" />
+          <p className="gradient__text">Pending Order</p>
+        </div>
       </div>
       <CDataTable
         items={[]}
