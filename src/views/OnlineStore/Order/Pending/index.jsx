@@ -61,19 +61,92 @@ const Pending = ({
     }
   };
   const orderStatus = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You wont revert this action",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, proceed it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true,
-      allowOutsideClick: false,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-      }
-    });
+    if (details.data) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You wont revert this action",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, proceed it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+        allowOutsideClick: false,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            if (details.data.orderStatus.length < 3) {
+              setUpdating(true);
+              const orderStat = ["ordered", "packed", "shipped", "delivered"];
+              const obj = {
+                orderId: details.data._id,
+                orderStatus: {
+                  type: orderStat[details.data.orderStatus.length],
+                },
+                paymentStatus:
+                  details.data.orderStatus.length === 4
+                    ? "Completed"
+                    : "pending",
+              };
+              const res = await axiosInstance.post("/update-order-status", obj);
+              setUpdating(false);
+              if (res.status === 200) {
+                Swal.fire({
+                  icon: "success",
+                  text: "Successfully Updated Order Status",
+                });
+                setDetails({ modal: false, data: null });
+                return;
+              }
+              Swal.fire({
+                icon: "warning",
+                text: res.data.msg,
+              });
+              setDetails({ modal: false, data: null });
+              return;
+            } else {
+              setUpdating(true);
+              const obj = {
+                items: details.data.items,
+                orderId: details.data._id,
+                totalAmount: details.data.totalAmount,
+                customerId: details.data.customer._id,
+                usingPayment:
+                  details.data.paymentType === "Cash on Delivery"
+                    ? "COUNTER"
+                    : "QRCODE-PAYMENT",
+              };
+              const res = await axiosInstance.post(
+                "/complete-order-status",
+                obj
+              );
+              setUpdating(false);
+              if (res.status === 200) {
+                Swal.fire({
+                  icon: "success",
+                  text: "Order Successfully Delivered",
+                });
+                setDetails({ modal: false, data: null });
+                return;
+              }
+              Swal.fire({
+                icon: "warning",
+                text: res.data.msg,
+              });
+              setDetails({ modal: false, data: null });
+              return;
+            }
+          } catch (e) {
+            setUpdating(false);
+            setDetails({ modal: false, data: null });
+            Swal.fire({
+              icon: "warning",
+              text: "Failed to Updated Order Status",
+            });
+            return;
+          }
+        }
+      });
+    }
   };
   const cancelOrder = (item) => {
     try {
@@ -366,36 +439,42 @@ const Pending = ({
           ) : null}
         </Modal.Body>
         <Modal.Footer>
-          <button
-            className="button-customer button-cancel"
-            onClick={() => {
-              setDetails({ modal: false, data: null });
-              setOrderStats("");
-            }}
-            disabled={updating}
-          >
-            Cancel
-          </button>
-          <button
-            className="button-customer button-save"
-            onClick={() => {
-              orderStatus();
-            }}
-            disabled={updating}
-          >
-            {updating ? (
-              <>
-                <span
-                  className="spinner-border spinner-border-sm mr-1"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                Loading...
-              </>
-            ) : (
-              "update"
-            )}
-          </button>
+          {details.data ? (
+            <>
+              <button
+                className="button-customer button-cancel"
+                onClick={() => {
+                  setDetails({ modal: false, data: null });
+                  setOrderStats("");
+                }}
+                disabled={updating}
+              >
+                Cancel
+              </button>
+              {details.data.orderStatus.length < 4 ? (
+                <button
+                  className="button-customer button-save"
+                  onClick={() => {
+                    orderStatus();
+                  }}
+                  disabled={updating}
+                >
+                  {updating ? (
+                    <>
+                      <span
+                        className="spinner-border spinner-border-sm mr-1"
+                        role="status"
+                        aria-hidden="true"
+                      ></span>
+                      Loading...
+                    </>
+                  ) : (
+                    "update"
+                  )}
+                </button>
+              ) : null}
+            </>
+          ) : null}
         </Modal.Footer>
       </Modal>
     </div>
