@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { CButton, CDataTable } from "@coreui/react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { RiDeviceRecoverLine, RiFileAddLine } from "react-icons/ri";
+import { RiFileAddLine } from "react-icons/ri";
 import AddCustomerInformation from "./addCustomer";
 import { CustomerFields, getstatus, toCapitalized } from "src/reusable";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { changeCustomerStatus, getCustomerInfo } from "src/redux/action";
-import { IoTrash } from "react-icons/io5";
+import { getCustomerInfo } from "src/redux/action";
+// import { IoTrash } from "react-icons/io5";
 import { AiOutlineEye } from "react-icons/ai";
 import Swal from "sweetalert2";
 import ExistingAccount from "./ExistingAccount";
@@ -26,24 +26,24 @@ const CustomerInformation = (props) => {
     };
   }, [dispatch]);
 
-  const handleDelete = (item) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You want to Archived",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes, proceed it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true,
-      allowOutsideClick: false,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        dispatch(
-          changeCustomerStatus({ _id: item.branchCustoID, status: "archived" })
-        );
-      }
-    });
-  };
+  // const handleDelete = (item) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You want to Archived",
+  //     icon: "question",
+  //     showCancelButton: true,
+  //     confirmButtonText: "Yes, proceed it!",
+  //     cancelButtonText: "No, cancel!",
+  //     reverseButtons: true,
+  //     allowOutsideClick: false,
+  //   }).then(async (result) => {
+  //     if (result.isConfirmed) {
+  //       dispatch(
+  //         changeCustomerStatus({ _id: item.branchCustoID, status: "archived" })
+  //       );
+  //     }
+  //   });
+  // };
   const handleIfExistingAccount = () => {
     Swal.fire({
       title: "Existing Account?",
@@ -74,7 +74,7 @@ const CustomerInformation = (props) => {
           </div>
           <div className="col-md-6 w-100  d-flex justify-content-end">
             <div className="mt-auto">
-              <CButton
+              {/* <CButton
                 color="danger"
                 variant="outline"
                 shape="square"
@@ -86,7 +86,7 @@ const CustomerInformation = (props) => {
                 >
                   <RiDeviceRecoverLine size="15" />
                 </Link>
-              </CButton>
+              </CButton> */}
               <CButton
                 className="ml-1 "
                 color="info"
@@ -169,14 +169,14 @@ const CustomerInformation = (props) => {
             action: (item, index) => (
               <td>
                 <div className="d-flex justify-content-center">
-                  <CButton
+                  {/* <CButton
                     color="danger"
                     variant="outline"
                     size="sm"
                     onClick={() => handleDelete(item)}
                   >
                     <IoTrash size="15" />
-                  </CButton>
+                  </CButton> */}
                   <CButton
                     color="info"
                     variant="outline"

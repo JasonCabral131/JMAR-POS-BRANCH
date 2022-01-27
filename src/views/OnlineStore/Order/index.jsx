@@ -11,6 +11,9 @@ import Pending from "./Pending";
 import Completed from "./Completed";
 import Cancelled from "./Cancelled/Cancelled";
 import Refund from "./Refund";
+import axiosInstance from "src/helpers/axios";
+import "src/views/pages/Home/components/Member/RegisterMember/index.scss";
+import { useEffect } from "react";
 const initialState = {
   pending: true,
   cancelled: false,
@@ -19,10 +22,49 @@ const initialState = {
 };
 const Order = (props) => {
   const [show, setShow] = useState(initialState);
-  const [pendingData, setPendingData] = useState(0);
-  const [completedData, setCompletedData] = useState(0);
-  const [cancelledData, setCancelledData] = useState(0);
-  const [refundedData, setRefundedData] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [pendingData, setPendingData] = useState([]);
+  const [completedData, setCompletedData] = useState([]);
+  const [cancelledData, setCancelledData] = useState([]);
+  const [refundedData, setRefundedData] = useState([]);
+  const [customer, setCustomer] = useState(null);
+  const [messageModal, setMessageModal] = useState(false);
+  const handleFetch = async () => {
+    try {
+      setLoading(true);
+      const res = await axiosInstance.get("/get-order-data-datails");
+      setLoading(false);
+      if (res.status === 200) {
+        setPendingData(res.data.pending);
+        setCompletedData(res.data.completed);
+        setCancelledData(res.data.cancelled);
+        setRefundedData(res.data.refunded);
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleFetch();
+    const fetching = setInterval(async () => {
+      try {
+        const res = await axiosInstance.get("/get-order-data-datails");
+
+        if (res.status === 200) {
+          setPendingData(res.data.pending);
+          setCompletedData(res.data.completed);
+          setCancelledData(res.data.cancelled);
+          setRefundedData(res.data.refunded);
+        }
+      } catch (e) {}
+    }, 2000);
+    return () => {
+      clearInterval(fetching);
+    };
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div className="w-100">
       <div className="row">
@@ -47,7 +89,7 @@ const Order = (props) => {
             >
               Pending
             </p>
-            <span>1</span>
+            {pendingData.length > 0 ? <span>{pendingData.length}</span> : null}
           </div>
         </div>
         <div className="col-md-3 d-flex justify-content-center align-items-center">
@@ -69,8 +111,11 @@ const Order = (props) => {
                 });
               }}
             >
-              Completed
+              Delivered
             </p>
+            {completedData.length > 0 ? (
+              <span>{completedData.length}</span>
+            ) : null}
           </div>
         </div>
         <div className="col-md-3 d-flex justify-content-center align-items-center">
@@ -94,6 +139,9 @@ const Order = (props) => {
             >
               Cancelled
             </p>
+            {cancelledData.length > 0 ? (
+              <span>{cancelledData.length}</span>
+            ) : null}
           </div>
         </div>
         <div className="col-md-3 d-flex justify-content-center align-items-center">
@@ -115,6 +163,9 @@ const Order = (props) => {
             >
               Refund
             </p>
+            {refundedData.length > 0 ? (
+              <span>{refundedData.length}</span>
+            ) : null}
           </div>
         </div>
       </div>
@@ -124,6 +175,12 @@ const Order = (props) => {
             {...props}
             pendingData={pendingData}
             setPendingData={setPendingData}
+            loading={loading}
+            setLoading={setLoading}
+            customer={customer}
+            setCustomer={setCustomer}
+            messageModal={messageModal}
+            setMessageModal={setMessageModal}
           />
         ) : null}
         {show.completed ? (
@@ -131,6 +188,12 @@ const Order = (props) => {
             {...props}
             completedData={completedData}
             setCompletedData={setCompletedData}
+            loading={loading}
+            setLoading={setLoading}
+            customer={customer}
+            setCustomer={setCustomer}
+            messageModal={messageModal}
+            setMessageModal={setMessageModal}
           />
         ) : null}
         {show.cancelled ? (
@@ -138,6 +201,12 @@ const Order = (props) => {
             {...props}
             cancelledData={cancelledData}
             setCancelledData={setCancelledData}
+            loading={loading}
+            setLoading={setLoading}
+            customer={customer}
+            setCustomer={setCustomer}
+            messageModal={messageModal}
+            setMessageModal={setMessageModal}
           />
         ) : null}
         {show.refund ? (
@@ -145,10 +214,17 @@ const Order = (props) => {
             {...props}
             refundedData={refundedData}
             setRefundedData={setRefundedData}
+            loading={loading}
+            setLoading={setLoading}
+            customer={customer}
+            setCustomer={setCustomer}
+            messageModal={messageModal}
+            setMessageModal={setMessageModal}
           />
         ) : null}
       </div>
     </div>
   );
+  // eslint-disable-next-line
 };
 export default Order;

@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-
+import React from "react";
+import orderlogo from "src/assets/icons/order.png";
 import { CDataTable } from "@coreui/react";
 
-const Completed = (props) => {
-  const [loading, setLoading] = useState(false);
+const Completed = ({ loading, setLoading }) => {
   return (
     <div className="card p-2 shadow">
       <div className="order-heading-container">
-        <p>Completed Orders</p>
+        <img src={orderlogo} alt="order-logo" />
+        <p className="gradient__text">Completed Order</p>
       </div>
       <CDataTable
         items={[]}

@@ -14,14 +14,14 @@ const Menu = (props) => {
           Home
         </Link>
       </p>
-      <p>
+      {/* <p>
         <Link
           to="/JARM/blog"
           className={props.location.pathname === "/JARM/blog" ? "active" : ""}
         >
           Blog
         </Link>
-      </p>
+      </p> */}
       <p>
         <Link
           to="/JARM/customer"

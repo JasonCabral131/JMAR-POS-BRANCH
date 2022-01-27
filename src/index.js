@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import "@react-page/editor/lib/index.css";
 import "draft-js/dist/Draft.css";
+import "rsuite/dist/rsuite.min.css";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-app-polyfill/ie11"; // For IE 11 support
