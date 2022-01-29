@@ -75,6 +75,9 @@ const Cashier = ({ cashiersActive, setCashiers }) => {
           value={search}
         />
       </div>
+      <label className=" ml-1 fw-bold mt-1 w-50" style={{ color: "#f47a36" }}>
+        List Cashier Store
+      </label>
       <div className="users-container">
         {loading ? (
           <div className="w-100 d-flex flex-column justify-content-center align-items-center">

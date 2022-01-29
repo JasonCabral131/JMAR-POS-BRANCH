@@ -144,6 +144,84 @@
     }
   }
 }
+.heading-profile-store-container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  .store-profile {
+    width: 100%;
+    height: 380px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 0.5px solid rgb(177, 175, 175);
+    position: relative;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .close-model-x {
+    position: absolute;
+    right: -12px;
+    top: -10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    background-color: #f0f2f5;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    cursor: pointer;
+    &:hover {
+      background-color: #d8dadf;
+    }
+  }
+  .edit-background {
+    position: absolute;
+    bottom: 10px;
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    background-color: #f0f2f5;
+    justify-content: flex-start;
+    align-items: center;
+    right: 15px;
+    span {
+      display: block;
+      margin-left: 5px;
+      margin-top: 3px !important;
+      color: black;
+      font-weight: 700;
+    }
+
+    cursor: pointer;
+    &:hover {
+      background-color: #d8dadf;
+    }
+  }
+  .profile-avatar-store {
+    position: absolute;
+    bottom: -50px;
+    left: 40%;
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    padding: 2px;
+    border: 2px solid rgb(255, 85, 85);
+  }
+  flex-direction: column;
+}
+.loadingStyle {
+  position: absolute;
+  bottom: 10px;
+  border-radius: 6px;
+  padding: 0;
+  display: flex;
+  background-color: #f0f2f5;
+  justify-content: flex-start;
+  align-items: center;
+  right: 15px;
+}
 @media screen and (max-width: 700px) {
   .personl-container {
     .user-profile-container {
@@ -178,6 +256,36 @@
     font-size: 40px !important;
     margin-right: 1px !important;
   }
+}
+.information-content-store {
+  width: 100%;
+  margin-top: 60px !important;
+  .edit-input {
+    text-transform: capitalize;
+  }
+}
+.edit-store-content {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(141, 250, 141);
+  }
+  span {
+    margin-left: 7px;
+    color: black;
+    font-weight: 600;
+  }
+}
+.onEditing-mode {
+  background-color: rgb(54, 253, 54) !important;
 }
 @media screen and (max-width: 550px) {
   .personl-container {
@@ -220,5 +328,11 @@
         display: none;
       }
     }
+  }
+  .profile-avatar-store {
+    left: 10% !important;
+    bottom: -30px !important;
+    width: 100px !important;
+    height: 100px !important;
   }
 }

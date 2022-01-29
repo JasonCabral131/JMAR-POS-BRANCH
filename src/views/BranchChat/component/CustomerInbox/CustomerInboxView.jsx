@@ -113,22 +113,21 @@ const CustomerInboxView = () => {
       });
       socket.on("new-message-send-by-customer", async (data) => {
         const { sendMessage } = await data;
-
         if (sendMessage) {
           if (
-            sendMessage.sender.customer
-              .toLowerCase()
-              .includes(customerId.toLowerCase())
+            sendMessage.sender.customer.toString() === customerId.toString()
           ) {
+            console.log(true);
             setChat((prev) => {
               return [...prev, sendMessage];
             });
           }
         }
+        console.log(sendMessage.sender.customer, customerId);
       });
     }
     // eslint-disable-next-line
-  }, [socket]);
+  }, []);
   const handleUpdate = async () => {
     await axiosInstance.post("/update-chat-cashier", { customerId });
   };

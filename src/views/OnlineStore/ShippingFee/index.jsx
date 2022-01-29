@@ -30,6 +30,8 @@ const ShippingFee = (props) => {
   const [check, setCheck] = useState([]);
   const [munCheck, setMunCheck] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const [provinceModal, setProvinceModal] = useState(false);
+  const [provinceFee, setProvinceFee] = useState(0);
   const [updateByProvince, setUpdateByProvince] = useState(initialState);
   const [UpdateByProvModal, setUpdateByProvModal] = useState(false);
   const fetch = async () => {
@@ -123,7 +125,7 @@ const ShippingFee = (props) => {
       text: "No Data Found",
     });
   };
-  const allUpdateAll = async (item) => {};
+
   const feeOnChange = (_id, value) => {
     const newData = updateByProvince.mun.map((prev) => {
       if (prev._id === _id) {
@@ -147,7 +149,7 @@ const ShippingFee = (props) => {
           <CButton
             color="info"
             onClick={() => {
-              allUpdateAll();
+              setProvinceModal(true);
             }}
           >
             Update Fee
@@ -274,7 +276,13 @@ const ShippingFee = (props) => {
       <Modal
         show={UpdateByProvModal}
         size="lg"
-        onHide={() => setUpdateByProvModal(false)}
+        onHide={() => {
+          if (!fetching) {
+            setUpdateByProvModal(false);
+          }
+        }}
+        backdrop="static"
+        keyboard={false}
       >
         <Modal.Header closeButton>
           <div className="d-flex">
@@ -354,6 +362,7 @@ const ShippingFee = (props) => {
                               feeOnChange(data._id, 0);
                             }
                           }}
+                          min={0}
                         />
                       </div>
                     </div>
@@ -368,7 +377,9 @@ const ShippingFee = (props) => {
           <CButton
             color={"secondary"}
             onClick={() => {
-              setUpdateByProvModal(false);
+              if (!fetching) {
+                setUpdateByProvModal(false);
+              }
             }}
           >
             close
@@ -427,6 +438,124 @@ const ShippingFee = (props) => {
                   update();
                 }
               } catch (e) {
+                Swal.fire({
+                  icon: "warning",
+                  text: "Internet Connection Lost",
+                });
+              }
+            }}
+            disabled={fetching}
+          >
+            {fetching ? "Loading" : "Update"}
+          </CButton>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={provinceModal}
+        size="md"
+        onHide={() => {
+          if (!fetching) {
+            setProvinceModal(false);
+            setProvinceFee(0);
+          }
+        }}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <div className="d-flex">
+            <h1 className="header-card-information">
+              <span>Update Data By Province</span>
+            </h1>
+          </div>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="row">
+            <div className="col-md-12">
+              <label className="label-name gradient__text">Provinces</label>
+              <div className="mt-2">
+                {check.map((data) => {
+                  return (
+                    <label className="label-name ml-2 d-block text-left">
+                      <span className="text-danger mr-2"> * </span>
+                      {data}
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="col-md-12 percent-container mt-1 bg-white">
+                <label>Shipping Fee</label>
+                <input
+                  min={0}
+                  type="number"
+                  value={provinceFee}
+                  className=""
+                  onChange={(e) => {
+                    setProvinceFee(e.target.value);
+                  }}
+                  onKeyPress={(e) => {
+                    const theEvent = e || window.event;
+                    if (e.target.value.length === 0 && e.which === 48) {
+                      theEvent.preventDefault();
+                    }
+                  }}
+                  onBlur={(e) => {
+                    const { value } = e.target;
+                    if (value.length === 0) {
+                      setProvinceFee(0);
+                    }
+                  }}
+                  style={{ backgroundColor: "#fff" }}
+                />
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <CButton
+            color={"secondary"}
+            onClick={() => {
+              if (!fetching) {
+                setProvinceModal(false);
+                setProvinceFee(0);
+              }
+            }}
+          >
+            close
+          </CButton>
+          <CButton
+            color={"info"}
+            onClick={async () => {
+              try {
+                setFetching(true);
+                const res = await axiosInstance.post("/update-all-prov", {
+                  provinces: check,
+                  fee: provinceFee,
+                });
+                setFetching(false);
+                setProvinceFee(0);
+                if (res.status === 200) {
+                  Swal.fire({
+                    icon: "success",
+                    text: "Successfully Updated Shipping Fee",
+                  });
+                  setCheck([]);
+                  fetch();
+                  setProvinceModal(false);
+
+                  return;
+                } else {
+                  Swal.fire({
+                    icon: "warning",
+                    text: "Failed to Update Shipping fee",
+                  });
+                  setProvinceModal(false);
+                }
+              } catch (e) {
+                setProvinceModal(false);
+                setFetching(false);
                 Swal.fire({
                   icon: "warning",
                   text: "Internet Connection Lost",

@@ -4,12 +4,14 @@ import { AiOutlineMessage } from "react-icons/ai";
 import { IoLocationOutline } from "react-icons/io5";
 import { toCapitalized } from "src/reusable";
 import { CDataTable } from "@coreui/react";
+import { useHistory } from "react-router-dom";
 const Cancelled = ({
   loading,
   setLoading,
   cancelledData,
   setCancelledData,
 }) => {
+  const history = useHistory();
   return (
     <div className="card p-2 shadow">
       <div className="order-heading-container">
@@ -45,6 +47,11 @@ const Cancelled = ({
                         size={22}
                         className="ml-2 msg-icon"
                         color={"#ff6600 "}
+                        onClick={() => {
+                          history.push(
+                            `/jarm-chat-system/customer/${item.customer._id}`
+                          );
+                        }}
                       />
                     </label>
                     <label className="d-block phone-num-order">

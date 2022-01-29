@@ -138,7 +138,7 @@ const BranchChat = (props) => {
             >
               <img alt="cashier-logo" src={option1} />
             </div>
-            <div
+            {/* <div
               className={`list-option-info ${
                 option.option2 ? "active-option" : ""
               }`}
@@ -153,7 +153,7 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option2} />
-            </div>
+            </div> */}
             <div
               className={`list-option-info ${
                 option.option3 ? "active-option" : ""

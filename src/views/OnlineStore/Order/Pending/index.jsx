@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { MdDeliveryDining, MdOutlineLocalShipping } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import axiosInstance from "src/helpers/axios";
+import { useHistory } from "react-router-dom";
 const Pending = ({
   pendingData,
   setPendingData,
@@ -17,6 +18,7 @@ const Pending = ({
   setLoading,
   handleUpdateData,
 }) => {
+  const history = useHistory();
   const [details, setDetails] = useState({ modal: false, data: null });
   const [orderStats, setOrderStats] = useState("");
   const [updating, setUpdating] = useState(false);
@@ -315,6 +317,11 @@ const Pending = ({
                         size={22}
                         className="ml-2 msg-icon"
                         color={"#ff6600 "}
+                        onClick={() => {
+                          history.push(
+                            `/jarm-chat-system/customer/${item.customer._id}`
+                          );
+                        }}
                       />
                     </label>
                     <label className="d-block phone-num-order">

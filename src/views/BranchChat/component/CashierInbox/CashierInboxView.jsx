@@ -132,9 +132,7 @@ const CashierInboxView = () => {
           const { sendMessage } = await data;
           if (sendMessage) {
             if (
-              sendMessage.sender.cashier
-                .toLowerCase()
-                .includes(cashier._id.toLowerCase())
+              sendMessage.sender.cashier.toString() === cashier._id.toString()
             ) {
               setChat((prev) => {
                 return [...prev, sendMessage];

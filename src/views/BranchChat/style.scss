@@ -123,8 +123,23 @@
     color: rgb(155, 155, 155);
   }
 }
+.chat-room-name-con {
+  width: 100%;
+  .room-sender {
+    margin-left: 10px;
+    font-size: 16;
+    letter-spacing: 1.7px;
+    font-weight: 800;
+  }
+  .room-message {
+    margin-left: 20px;
+  }
+  .is-unseen-chat {
+    color: #fff;
+  }
+}
 .users-container {
-  margin-top: 10px;
+  margin-top: 4;
   width: 100%;
   padding: 10px;
   position: relative;
