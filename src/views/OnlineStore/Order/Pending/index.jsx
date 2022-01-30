@@ -11,6 +11,7 @@ import { MdDeliveryDining, MdOutlineLocalShipping } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
 import axiosInstance from "src/helpers/axios";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 const Pending = ({
   pendingData,
   setPendingData,
@@ -397,6 +398,11 @@ const Pending = ({
                       size={22}
                       className="ml-2 msg-icon"
                       color={"#ff6600 "}
+                      onClick={() => {
+                        history.push(
+                          `/jarm-chat-system/customer/${details.data.customer._id}`
+                        );
+                      }}
                     />
                   </label>
                   <label className="d-block modal-customer-_id">
@@ -419,12 +425,85 @@ const Pending = ({
               </label>
               <div className="w-100 p-3">
                 <Steps current={details.data.orderStatus.length}>
-                  <Steps.Item title="Pending" />
-                  <Steps.Item title="Place Order" />
-                  <Steps.Item title="Packed" />
-                  <Steps.Item title="Shipped" />
-                  <Steps.Item title="Delivered" />
+                  <Steps.Item
+                    title="Pending"
+                    description={moment(details.data.createdAt).fromNow()}
+                  />
+                  <Steps.Item
+                    title="Place Order"
+                    description={
+                      details.data.orderStatus.length > 0
+                        ? moment(details.data.orderStatus[0].date).fromNow()
+                        : ""
+                    }
+                  />
+                  <Steps.Item
+                    title="Packed"
+                    description={
+                      details.data.orderStatus.length > 1
+                        ? moment(details.data.orderStatus[1].date).fromNow()
+                        : ""
+                    }
+                  />
+                  <Steps.Item
+                    title="Shipped"
+                    description={
+                      details.data.orderStatus.length > 2
+                        ? moment(details.data.orderStatus[2].date).fromNow()
+                        : ""
+                    }
+                  />
+                  <Steps.Item
+                    title="Delivered"
+                    description={
+                      details.data.orderStatus.length > 3
+                        ? moment(details.data.orderStatus[3].date).fromNow()
+                        : ""
+                    }
+                  />
                 </Steps>
+              </div>
+              <div className="w-100 d-flex flex-column p-2">
+                <label className="label-name d-block text-left gradient__text ">
+                  Order Item
+                </label>
+                {details.data.items.map((data) => {
+                  return (
+                    <div className="d-flex">
+                      {data.product.images.length > 0 ? (
+                        <img
+                          className="cart-item-img shadow"
+                          src={data.product.images[0].img}
+                          alt={Math.random()}
+                        />
+                      ) : null}
+                      <div className="order-details-product">
+                        <h1 className="product-name-order">
+                          {data.product.product}
+                        </h1>
+                        <div className="d-flex ml-4">
+                          <label className=" no-capitalized">
+                            ₱.{data.price}
+                          </label>
+                          <label className=" no-capitalized ml-4">
+                            x {data.qty}
+                          </label>
+                          <label
+                            className=" ml-4"
+                            style={{
+                              color: "#ef4304",
+                              fontSize: 17,
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {" "}
+                            ₱. {parseFloat(data.qty) * parseFloat(data.price)}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
               {details.data.orderStatus.length < 4 ? (
                 <div className="d-flex flex-column w-100 align-items-end mr-2 ">

@@ -3,7 +3,7 @@ import "./style.scss";
 import "./mobile.scss";
 import FullWidthLogo from "src/assets/icons/hamburger_logo_expand.png";
 import option1 from "src/assets/icons/cashier.jpg";
-import option2 from "src/assets/icons/branch.jpg";
+//import option2 from "src/assets/icons/branch.jpg";
 import option3 from "src/assets/icons/customer.png";
 import option4 from "src/assets/icons/admin.jpg";
 import { Route, Switch, useHistory, Redirect } from "react-router-dom";
