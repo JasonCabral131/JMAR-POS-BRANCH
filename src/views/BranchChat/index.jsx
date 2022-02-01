@@ -230,6 +230,9 @@ const BranchChat = (props) => {
             <Route
               exact
               component={CustomerInboxView}
+              render={(props) => {
+                return <CustomerInboxView {...props} setOption={setOption} />;
+              }}
               path={"/jarm-chat-system/customer/:customerId"}
             />
             <Route

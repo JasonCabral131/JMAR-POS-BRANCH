@@ -74,7 +74,11 @@ const TheHeaderDropdownNotif = () => {
           </CBadge>
         ) : null}
       </CDropdownToggle>
-      <CDropdownMenu placement="bottom-end" className="pt-0 ">
+      <CDropdownMenu
+        placement="bottom-end"
+        className="pt-0 "
+        style={{ height: "90vh", overflowY: "scroll" }}
+      >
         <CDropdownItem header tag="div" className="text-center" color="light">
           <strong>
             You have {notification.filter((data) => !data.seen).length}{" "}

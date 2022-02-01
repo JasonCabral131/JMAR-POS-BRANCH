@@ -273,7 +273,7 @@ const PersonalBlogContent = (props) => {
                 </div>
               </div>
               <div className="col-md-8 mt-1">
-                <label className="label-name ">Store Name</label>
+                <label className="label-name ">Store Address</label>
                 <div className="percent-container">
                   <input
                     value={user ? user.branch_address.fullAddress : ""}

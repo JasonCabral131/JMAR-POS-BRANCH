@@ -15,7 +15,7 @@ import { MdOutlinePhotoLibrary, MdEmojiEmotions } from "react-icons/md";
 import Picker from "emoji-picker-react";
 import shortid from "shortid";
 
-const CustomerInboxView = () => {
+const CustomerInboxView = (props) => {
   const { customerId } = useParams();
   const { socket } = useSelector((state) => state.socket);
   const [loading, setLoading] = useState(false);
@@ -74,6 +74,13 @@ const CustomerInboxView = () => {
   };
   useEffect(() => {
     handleGetCashierChat();
+    // setOption({
+    //   option1: false,
+    //   option2: false,
+    //   option3: true,
+    //   option4: false,
+    // });
+    console.log(props);
     // eslint-disable-next-line
   }, []);
   const handleSetActive = (data) => {
@@ -84,6 +91,7 @@ const CustomerInboxView = () => {
       setActive(isAct.length > 0);
     }
   };
+
   useEffect(() => {
     if (socket) {
       socket.emit("get-active-branch-customer", { user }, (data) => {
@@ -93,8 +101,16 @@ const CustomerInboxView = () => {
     handlescrollBottom();
     // eslint-disable-next-line
   }, [customer]);
+
   useEffect(() => {
     newCustomerId();
+    // setOption({
+    //   option1: false,
+    //   option2: false,
+    //   option3: true,
+    //   option4: false,
+    // });
+    console.log(props);
     return () => {
       setActive(false);
     };

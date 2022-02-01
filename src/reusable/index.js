@@ -751,6 +751,8 @@ const getWeekOfMonth = (dit) => {
       "3rd-Week",
       "4th-Week",
       "5th-Week",
+      "6th-Week",
+      "7th-Week",
     ];
     var weekOfMonth = Math.ceil((date - 1 - day) / 7);
 
