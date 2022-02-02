@@ -38,6 +38,7 @@ import Order from "./views/OnlineStore/Order";
 // import Completed from "./views/OnlineStore/Order/Completed";
 // import Refund from "./views/OnlineStore/Order/Refund";
 import ShippingFee from "./views/OnlineStore/ShippingFee/index";
+import WarningMessage from "./views/WarningMessage";
 const routes = [
   { path: "/branch/", exact: true, name: "Home", component: Dashboard },
   { path: "/branch/dashboard", name: "Dashboard", component: Dashboard },
@@ -227,35 +228,18 @@ const routes = [
     name: "Orders",
     component: Order,
   },
-  // {
-  //   exact: true,
-  //   path: "/branch/orders/pending",
-  //   name: "Pending",
-  //   component: Pending,
-  // },
-  // {
-  //   exact: true,
-  //   path: "/branch/orders/cancelled",
-  //   name: "Cancelled",
-  //   component: Cancelled,
-  // },
-  // {
-  //   exact: true,
-  //   path: "/branch/orders/completted",
-  //   name: "Completed",
-  //   component: Completed,
-  // },
-  // {
-  //   exact: true,
-  //   path: "/branch/orders/refund",
-  //   name: "Completed",
-  //   component: Refund,
-  // },
+
   {
     exact: true,
     path: "/branch/shipping-fee",
     name: "Completed",
     component: ShippingFee,
+  },
+  {
+    exact: true,
+    path: "/branch/warning-message-send-by-admin/:_id",
+    name: "Completed",
+    component: WarningMessage,
   },
 ];
 

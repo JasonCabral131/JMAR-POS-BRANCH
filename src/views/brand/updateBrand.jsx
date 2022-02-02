@@ -48,32 +48,29 @@ const UpdateBrand = ({
             </div>
             <div className="form-group">
               <label className="label-name">Brand Description</label>
-              <div className="text-area-description">
-                <Editor
-                  editorState={updateEditorState}
-                  onEditorStateChange={(content) =>
-                    setUpdateEditorState(content)
-                  }
-                  style={{ padding: "5px" }}
-                  toolbar={{
-                    image: {
-                      className: undefined,
-                      component: undefined,
-                      popupClassName: undefined,
-                      urlEnabled: true,
-                      uploadEnabled: true,
-                      alignmentEnabled: true,
-                      uploadCallback: imageUploadCallBack,
-                      previewImage: true,
-                      inputAccept: "image/*",
-                      defaultSize: {
-                        height: "400px",
-                        width: "400px",
-                      },
+              <Editor
+                editorState={updateEditorState}
+                onEditorStateChange={(content) => setUpdateEditorState(content)}
+                style={{ padding: "5px" }}
+                toolbar={{
+                  image: {
+                    className: undefined,
+                    component: undefined,
+                    popupClassName: undefined,
+                    urlEnabled: true,
+                    uploadEnabled: true,
+                    alignmentEnabled: true,
+                    uploadCallback: imageUploadCallBack,
+                    previewImage: true,
+                    inputAccept: "image/*",
+                    defaultSize: {
+                      height: "400px",
+                      width: "400px",
                     },
-                  }}
-                />
-              </div>
+                  },
+                }}
+                placeholder="product description"
+              />
             </div>
           </form>
         </div>

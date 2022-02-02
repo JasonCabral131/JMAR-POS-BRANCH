@@ -35,14 +35,14 @@ const CreateBrand = ({
             </div>
             <div className="form-group">
               <label className="label-name">Brand Description</label>
-              <div className="text-area-description">
-                <Editor
-                  editorState={editorState}
-                  onEditorStateChange={(content) => setEditorState(content)}
-                  style={{ padding: "5px" }}
-                  toolbar={DraftJsToolBar}
-                />
-              </div>
+
+              <Editor
+                editorState={editorState}
+                onEditorStateChange={(content) => setEditorState(content)}
+                style={{ padding: "5px" }}
+                toolbar={DraftJsToolBar}
+                placeholder="brand description"
+              />
             </div>
           </form>
         </div>

@@ -269,7 +269,7 @@
 }
 .modal-cover-screen {
   max-width: 100vw !important;
-  height: 100vh !important;
+  height: auto;
   margin-top: 0 !important;
 }
 .brand-modal-container {
@@ -482,7 +482,7 @@
 }
 .rdw-editor-main {
   padding: 10px;
-  height: 250px;
+  height: 300px;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {

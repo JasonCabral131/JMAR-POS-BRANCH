@@ -74,66 +74,76 @@ const TheHeaderDropdownNotif = () => {
           </CBadge>
         ) : null}
       </CDropdownToggle>
-      <CDropdownMenu
-        placement="bottom-end"
-        className="pt-0 "
-        style={{ height: "90vh", overflowY: "scroll" }}
-      >
-        <CDropdownItem header tag="div" className="text-center" color="light">
-          <strong>
-            You have {notification.filter((data) => !data.seen).length}{" "}
-            notifications
-          </strong>
-        </CDropdownItem>
-        {notification.map((data, index) => {
-          return (
-            <div
-              className={`notif-link p-2 ${!data.seen ? "bg-secondary" : ""} ${
-                index === 0 ? "" : "border-top"
-              }`}
-              key={Math.random()}
-            >
+      {notification.length > 0 ? (
+        <CDropdownMenu
+          placement="bottom-end"
+          className="pt-0 "
+          style={{ height: "90vh", overflowY: "scroll" }}
+        >
+          <CDropdownItem header tag="div" className="text-center" color="light">
+            <strong>
+              You have {notification.filter((data) => !data.seen).length}{" "}
+              notifications
+            </strong>
+          </CDropdownItem>
+
+          {notification.map((data, index) => {
+            return (
               <div
-                className="c-avatar  mt-1 p-1"
-                style={{ position: "relative" }}
+                className={`notif-link p-2 ${
+                  !data.seen ? "bg-secondary" : ""
+                } ${index === 0 ? "" : "border-top"}`}
+                key={Math.random()}
+                onClick={() => handleRouting(data)}
               >
-                <img
-                  src={handleGetImage(data).url}
-                  className="notif-img shadow "
-                  alt="img-branch-profile"
-                />
-              </div>
-              <div className="d-flex flex-column ml-2">
-                <p
-                  className="p-2"
-                  dangerouslySetInnerHTML={{ __html: data.headingMessage }}
-                />
-                <div className="d-flex justify-content-between">
-                  <span className="d-block text-left fw-bold">
-                    {handleGetImage(data).sendby}
-                  </span>
-                  <p
-                    className="text-info text-left"
-                    onClick={() => handleRouting(data)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {" "}
-                    {`${moment(new Date(data.createdAt)).fromNow()} `}
-                  </p>
-                </div>
-                {data.seen ? (
-                  <BsFillTrashFill
-                    className="delete-notif-request"
-                    size={20}
-                    color="#fb0a66"
-                    onClick={() => deleteNotif({ notifId: data._id })}
+                <div
+                  className="c-avatar  mt-1 p-1"
+                  style={{ position: "relative" }}
+                >
+                  <img
+                    src={handleGetImage(data).url}
+                    className="notif-img shadow "
+                    alt="img-branch-profile"
                   />
-                ) : null}
+                </div>
+                <div className="d-flex flex-column ml-2">
+                  <p
+                    className="p-2"
+                    dangerouslySetInnerHTML={{ __html: data.headingMessage }}
+                  />
+                  <div className="d-flex justify-content-between">
+                    <span className="d-block text-left fw-bold">
+                      {handleGetImage(data).sendby}
+                    </span>
+                    <p
+                      className="text-info text-left"
+                      onClick={() => handleRouting(data)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {" "}
+                      {`${moment(new Date(data.createdAt)).fromNow()} `}
+                    </p>
+                  </div>
+                  {data.seen ? (
+                    <BsFillTrashFill
+                      className="delete-notif-request"
+                      size={20}
+                      color="#fb0a66"
+                      onClick={() => deleteNotif({ notifId: data._id })}
+                    />
+                  ) : null}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </CDropdownMenu>
+            );
+          })}
+        </CDropdownMenu>
+      ) : (
+        <CDropdownMenu placement="bottom-end" className="pt-0">
+          <CDropdownItem header tag="div" className="text-center" color="light">
+            <strong>No Notification</strong>
+          </CDropdownItem>
+        </CDropdownMenu>
+      )}
     </CDropdown>
   );
 };

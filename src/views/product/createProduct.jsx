@@ -290,13 +290,13 @@ const CreateProduct = ({
                 </div>
                 <div className="form-group">
                   <label className="label-name">Product Description</label>
-                  <div className="text-area-description">
-                    <Editor
-                      editorState={editorState}
-                      onEditorStateChange={(content) => setEditorState(content)}
-                      toolbar={DraftJsToolBar}
-                    />
-                  </div>
+
+                  <Editor
+                    editorState={editorState}
+                    onEditorStateChange={(content) => setEditorState(content)}
+                    toolbar={DraftJsToolBar}
+                    placeholder="Product Description"
+                  />
                 </div>
               </form>
             </div>
