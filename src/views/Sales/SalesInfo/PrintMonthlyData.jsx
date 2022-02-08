@@ -82,7 +82,7 @@ const PrintMonthlyData = React.forwardRef(
             />
           </div>
         </div>
-        <table className="table mt-1">
+        <table className="table mt-1" style={{ width: "100%" }}>
           <thead>
             <tr>
               <th>Date</th>

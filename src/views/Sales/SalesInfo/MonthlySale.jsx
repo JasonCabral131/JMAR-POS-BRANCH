@@ -14,10 +14,11 @@ import { useHistory } from "react-router-dom";
 import { CDataTable, CCollapse, CCardBody } from "@coreui/react";
 import moment from "moment";
 import PrintMonthlyData from "./PrintMonthlyData";
+import { GrDocumentCsv } from "react-icons/gr";
+import { CSVLink } from "react-csv";
 const MonthlySale = ({ user }) => {
   const history = useHistory();
   const monthlySaleRef = useRef();
-
   const { sales, loading } = useSelector((state) => state.sales);
   const [chartState, setChartState] = useState([]);
   const [salesInfo, setSalesInfo] = useState([]);
@@ -54,7 +55,7 @@ const MonthlySale = ({ user }) => {
           }
         });
         setSalesInfo(salei);
-        setChartState([["Monthly", "Value"], ...salex]);
+        setChartState([["Monthly", "Value"], ...salex.slice(0).reverse()]);
       }
     }
   };
@@ -93,6 +94,18 @@ const MonthlySale = ({ user }) => {
   const Print = useReactToPrint({
     content: () => monthlySaleRef.current,
   });
+  const getMonthSale = (data, date) => {
+    if (data) {
+      const transaction = ["Date", date];
+      const producthead = ["Products", "Price", "Quantity Sale", "Sales"];
+      const product = data.map((data) => {
+        return [data.product, data.price, data.TotalQuantity, data.totalSale];
+      });
+      return [transaction, producthead, ...product];
+    } else {
+      return [];
+    }
+  };
   return (
     <div className="w-100">
       <h1 className="header-card-information mt-5">
@@ -205,7 +218,43 @@ const MonthlySale = ({ user }) => {
                   <CCollapse show={details.includes(findex)}>
                     <CCardBody className={"p-2"}>
                       <h4 className="ml-2">{item.date + " List Of Sales"}</h4>
+
                       <div className="card shadow p-2">
+                        <Chart
+                          height="500px"
+                          chartType="LineChart"
+                          data={[
+                            ["Product", "Quantity Sale", "Total Sale"],
+                            ...item.ProductSale.map((prod) => {
+                              return [
+                                prod.product,
+                                prod.TotalQuantity,
+                                prod.totalSale,
+                              ];
+                            }),
+                          ]}
+                          legendToggle
+                          options={{
+                            // Material design options
+                            chart: {
+                              title: `${item.date} Product Sale  Performance`,
+                            },
+                            vAxis: {
+                              title: `${item.date} Sale `,
+                            },
+                            series: {
+                              0: { curveType: "function" },
+                            },
+                          }}
+                        />
+                        <div className="print-left-info">
+                          <CSVLink
+                            data={getMonthSale(item.ProductSale, item.date)}
+                            filename={`Monthly Sale ( ${item.date} ).csv`}
+                          >
+                            <GrDocumentCsv size="20" className="hover" />
+                          </CSVLink>
+                        </div>
                         <CDataTable
                           items={item.data}
                           fields={brandSubFields}

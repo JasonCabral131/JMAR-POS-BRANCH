@@ -32,6 +32,11 @@ const TheHeaderDropdownMssg = () => {
         audio.play();
         handleGetChat();
       });
+      socket.on("new-message-send-by-admin", async (data) => {
+        let audio = new Audio(boopSfx);
+        audio.play();
+        handleGetChat();
+      });
     }
     // eslint-disable-next-line
   }, []);

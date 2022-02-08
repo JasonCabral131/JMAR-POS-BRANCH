@@ -386,10 +386,8 @@ const CashierInboxView = () => {
           )}
         </div>
         {!loading ? (
-          cashier ? (
-            images.length > 0 ? (
-              <ImageUploaderChat images={images} setImages={setImages} />
-            ) : null
+          images.length > 0 ? (
+            <ImageUploaderChat images={images} setImages={setImages} />
           ) : null
         ) : null}
         <div className="chat-content-info-input">

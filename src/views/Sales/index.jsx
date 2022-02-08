@@ -13,7 +13,9 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { triggerBase64Download } from "react-base64-downloader";
 import MonthlySale from "./SalesInfo/MonthlySale";
 import YearlySale from "./SalesInfo/YearlySale";
+import { GrDocumentCsv } from "react-icons/gr";
 import { getCashierSales, getSales } from "src/redux/action";
+import { CSVLink } from "react-csv";
 const AllSalesInformation = (props) => {
   const dispatch = useDispatch();
 
@@ -80,7 +82,7 @@ const AllSalesInformation = (props) => {
           <LoaderSpinner height={"400px"} />
         ) : brandSales.length > 1 ? (
           <div
-            className="w-100 d-flex flex-column justify-content-center  p-2"
+            className="w-100 d-flex flex-column justify-content-center  p-2 card"
             style={{ position: "relative" }}
           >
             <Chart
@@ -101,8 +103,23 @@ const AllSalesInformation = (props) => {
                 setChartWrapper(chartWrapper);
               }}
             />
-
-            {chartWrapper !== null && (
+            <div className="d-flex w-100 ">
+              {chartWrapper !== null && (
+                <CButton
+                  color="secondary"
+                  style={{
+                    width: "40px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  variant="outline"
+                  onClick={() => print()}
+                >
+                  {" "}
+                  <AiOutlineDownload size={20} />
+                </CButton>
+              )}
               <CButton
                 color="secondary"
                 style={{
@@ -110,17 +127,15 @@ const AllSalesInformation = (props) => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  position: "absolute",
-                  top: "20px",
-                  right: "15px",
+                  marginLeft: 10,
                 }}
                 variant="outline"
-                onClick={() => print()}
               >
-                {" "}
-                <AiOutlineDownload size={20} />
+                <CSVLink data={brandSales} filename={`BrandSale.csv`}>
+                  <GrDocumentCsv size={20} />
+                </CSVLink>
               </CButton>
-            )}
+            </div>
           </div>
         ) : null}
         {!loading ? (

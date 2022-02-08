@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "src/views/BranchChat/style.scss";
 import FullWidthLogo from "src/assets/icons/hamburger_logo_expand.png";
 import { useHistory, Switch, Route, Redirect } from "react-router-dom";
-import option1 from "src/assets/icons/cashier.jpg";
+// import option1 from "src/assets/icons/cashier.jpg";
 import option2 from "src/assets/icons/storeKo.jpg";
 import BranchView from "./UserView/BranchView.js";
 import BranchChatContent from "./component/Branch/index.jsx";
@@ -97,7 +97,7 @@ const CashierChatSystem = (props) => {
             >
               <img alt="cashier-logo" src={option2} />
             </div>
-            <div
+            {/* <div
               className={`list-option-info ${
                 option.option1 ? "active-option" : ""
               }`}
@@ -110,7 +110,7 @@ const CashierChatSystem = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option1} />
-            </div>
+            </div> */}
           </div>
           {option.option2 ? <BranchView /> : null}
         </div>

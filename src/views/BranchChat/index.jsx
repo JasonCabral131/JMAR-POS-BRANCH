@@ -6,7 +6,13 @@ import option1 from "src/assets/icons/cashier.jpg";
 //import option2 from "src/assets/icons/branch.jpg";
 import option3 from "src/assets/icons/customer.png";
 import option4 from "src/assets/icons/admin.jpg";
-import { Route, Switch, useHistory, Redirect } from "react-router-dom";
+import {
+  Route,
+  Switch,
+  useHistory,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 import Admin from "./OptionInfo/Admin";
 import Cashier from "./OptionInfo/Cashier";
 import Branch from "./OptionInfo/Branch";
@@ -21,12 +27,17 @@ import CustomerView from "./component/CustomerInbox";
 import CustomerInboxView from "./component/CustomerInbox/CustomerInboxView";
 import { useSelector } from "react-redux";
 import boopSfx from "src/assets/ringtunes/messenger.mp3";
+import axiosInstance from "src/helpers/axios";
 const BranchChat = (props) => {
   const history = useHistory();
+  const location = useLocation();
   const { socket } = useSelector((state) => state.socket);
   const { user } = useSelector((state) => state.auth);
   const [cashiers, setCashiers] = useState([]);
   const [customerActive, setCustomerActive] = useState([]);
+  const [unseenAdmin, setUnseenAdmin] = useState(0);
+  const [unseenCustomer, setUnseenCustomer] = useState(0);
+  const [unseenCashier, setUnseenCashier] = useState(0);
   const [option, setOption] = useState({
     option1: true,
     option2: false,
@@ -34,6 +45,9 @@ const BranchChat = (props) => {
     option4: false,
   });
   useEffect(() => {
+    getUnseenChat();
+    getUnseenChatCashier();
+    getUnseenChatCustomer();
     if (socket) {
       socket.emit("get-active-user-by-branch", { user }, (data) => {
         setCashiers(data.customer);
@@ -54,6 +68,29 @@ const BranchChat = (props) => {
         }
       });
     }
+    if (location) {
+      if (location.pathname) {
+        if (
+          location.pathname.toLocaleLowerCase() === "/jarm-chat-system/admin"
+        ) {
+          setOption({
+            option1: false,
+            option2: false,
+            option3: false,
+            option4: true,
+          });
+        }
+        if (location.pathname.includes("/jarm-chat-system/customer")) {
+          setOption({
+            option1: false,
+            option2: false,
+            option3: true,
+            option4: false,
+          });
+        }
+      }
+    }
+
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
@@ -85,6 +122,7 @@ const BranchChat = (props) => {
       socket.on("new-message-send-by-cashier", async (data) => {
         let audio = new Audio(boopSfx);
         audio.play();
+        getUnseenChatCashier();
       });
       socket.on("disconnected-customer-from-server", (data) => {
         socket.emit("get-active-branch-customer", { user }, (data) => {
@@ -101,11 +139,43 @@ const BranchChat = (props) => {
       socket.on("new-message-send-by-customer", async (data) => {
         let audio = new Audio(boopSfx);
         audio.play();
+        getUnseenChatCustomer();
+      });
+      socket.on("new-message-send-by-admin", async (data) => {
+        let audio = new Audio(boopSfx);
+        audio.play();
+        getUnseenChat();
+      });
+      socket.on("update-seen-admin-chat", async (data) => {
+        getUnseenChat();
       });
     }
     // eslint-disable-next-line
   }, [socket]);
-
+  const getUnseenChat = async () => {
+    try {
+      const res = await axiosInstance.get("/get-unseen-chat-admin-details");
+      if (res.status === 200) {
+        setUnseenAdmin(res.data);
+      }
+    } catch (e) {}
+  };
+  const getUnseenChatCustomer = async () => {
+    try {
+      const res = await axiosInstance.get("/get-unseen-chat-customer-details");
+      if (res.status === 200) {
+        setUnseenCustomer(res.data);
+      }
+    } catch (e) {}
+  };
+  const getUnseenChatCashier = async () => {
+    try {
+      const res = await axiosInstance.get("/get-unseen-chat-cashier-details");
+      if (res.status === 200) {
+        setUnseenCashier(res.data);
+      }
+    } catch (e) {}
+  };
   return (
     <div className="branch-chat-container">
       <div className="branch-chat-heading shadow">
@@ -137,23 +207,12 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option1} />
+              {unseenCashier > 0 ? (
+                <div className="status-check">
+                  <span>{unseenCashier}</span>
+                </div>
+              ) : null}
             </div>
-            {/* <div
-              className={`list-option-info ${
-                option.option2 ? "active-option" : ""
-              }`}
-              onClick={() => {
-                setOption({
-                  option1: false,
-                  option2: true,
-                  option3: false,
-                  option4: false,
-                });
-                history.push("/jarm-chat-system/branch");
-              }}
-            >
-              <img alt="cashier-logo" src={option2} />
-            </div> */}
             <div
               className={`list-option-info ${
                 option.option3 ? "active-option" : ""
@@ -169,6 +228,11 @@ const BranchChat = (props) => {
               }}
             >
               <img alt="cashier-logo" src={option3} />
+              {unseenCustomer > 0 ? (
+                <div className="status-check">
+                  <span>{unseenCustomer}</span>
+                </div>
+              ) : null}
             </div>
             <div
               className={`list-option-info ${
@@ -182,9 +246,15 @@ const BranchChat = (props) => {
                   option4: true,
                 });
                 history.push("/jarm-chat-system/admin");
+                getUnseenChat();
               }}
             >
               <img alt="cashier-logo" src={option4} />
+              {unseenAdmin > 0 ? (
+                <div className="status-check">
+                  <span>{unseenAdmin}</span>
+                </div>
+              ) : null}
             </div>
           </div>
 
