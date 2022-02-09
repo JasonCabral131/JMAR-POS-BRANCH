@@ -28,7 +28,7 @@ const CreateBrand = ({
               <input
                 value={brandName}
                 type="text"
-                className="form-control inputvalue"
+                className=" inputvalue"
                 placeholder="Input Brand Name"
                 onChange={(e) => setBrandName(e.target.value)}
               />

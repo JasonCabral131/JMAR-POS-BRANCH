@@ -7,7 +7,7 @@ import Select from "react-select";
 import { Editor } from "react-draft-wysiwyg";
 import { convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteProductImage,
   updateProductInfo,
@@ -35,6 +35,7 @@ const UpdateProductInformation = ({
   setSelectSub,
 }) => {
   const dispatch = useDispatch();
+  const { socket } = useSelector((state) => state.socket);
   const handleSubmit = () => {
     setUpdatingLoading(true);
     const { _id, product, productId, quantity, price } = updateProduct;
@@ -60,15 +61,15 @@ const UpdateProductInformation = ({
       setUpdatingLoading(false);
       return;
     }
-    if (quantity === "" || parseFloat(quantity) < 10) {
-      Swal.fire({
-        icon: "error",
-        text: "Quantity Required!",
-        timer: 3000,
-      });
-      setUpdatingLoading(false);
-      return;
-    }
+    // if (quantity === "" || parseFloat(quantity) < 10) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     text: "Quantity Required!",
+    //     timer: 3000,
+    //   });
+    //   setUpdatingLoading(false);
+    //   return;
+    // }
     if (productId === "") {
       Swal.fire({
         icon: "error",
@@ -119,6 +120,13 @@ const UpdateProductInformation = ({
           setUpdatingLoading(false);
           setAddingUpdateImages([]);
           setupdateModal(false);
+          if (socket) {
+            socket.emit(
+              "update-socket-product-store",
+              { description: "asdasd" },
+              (data) => {}
+            );
+          }
           return;
         }
         Swal.fire({
@@ -177,6 +185,13 @@ const UpdateProductInformation = ({
             allowOutsideClick: false,
             timer: 2500,
           });
+          if (socket) {
+            socket.emit(
+              "update-socket-product-store",
+              { description: "asdasd" },
+              (data) => {}
+            );
+          }
           return;
         }
         Swal.fire({
@@ -282,7 +297,7 @@ const UpdateProductInformation = ({
                       }}
                       type="text"
                       name="product"
-                      className="form-control inputvalue"
+                      className=" inputvalue"
                       placeholder="Input product name"
                     />
                   </div>
@@ -298,7 +313,7 @@ const UpdateProductInformation = ({
                         })
                       }
                       type="number"
-                      className="form-control inputvalue"
+                      className=" inputvalue"
                       min="1"
                       name="quantity"
                       max="50000"
@@ -309,6 +324,7 @@ const UpdateProductInformation = ({
                           theEvent.preventDefault();
                         }
                       }}
+                      disabled={true}
                     />
                   </div>
                 </div>
@@ -325,7 +341,7 @@ const UpdateProductInformation = ({
                       type="number"
                       min="1"
                       name="price"
-                      className="form-control inputvalue"
+                      className=" inputvalue"
                       onKeyPress={(e) => {
                         const theEvent = e || window.event;
                         if (e.target.value.length === 0 && e.which === 48) {
@@ -347,7 +363,7 @@ const UpdateProductInformation = ({
                         })
                       }
                       type="number"
-                      className="form-control inputvalue"
+                      className=" inputvalue"
                       placeholder="Input product name"
                     />
                   </div>

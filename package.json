@@ -21,6 +21,7 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.4",
     "@react-page/editor": "^4.5.0",
+    "@react-page/plugins-background": "^4.5.1",
     "@react-page/plugins-divider": "^4.5.0",
     "@react-page/plugins-image": "^4.5.0",
     "@react-page/plugins-slate": "^4.5.0",

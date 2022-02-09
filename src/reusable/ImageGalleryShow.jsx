@@ -1,6 +1,15 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Carousel, {
+  Modal as ReactImagesModal,
+  ModalGateway,
+} from "react-images";
 const ImageGalleryShow = ({ images, setImages }) => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
   const handleShowImage = (index) => {
     const updated = images.map((data, breakpoint) => {
       if (breakpoint === index) {
@@ -12,10 +21,33 @@ const ImageGalleryShow = ({ images, setImages }) => {
   };
   return (
     <div className="image-gallery-container">
+      <ModalGateway>
+        {isViewerOpen ? (
+          <ReactImagesModal onClose={closeLightbox}>
+            <Carousel
+              currentIndex={currentImage}
+              views={images.map((data) => {
+                return { source: data.url };
+              })}
+            />
+          </ReactImagesModal>
+        ) : null}
+      </ModalGateway>
       <div className="image-gallery-view">
         {images.map((image, index) => {
           if (image.active) {
-            return <img key={index} alt="gallery view" src={image.url} />;
+            return (
+              <img
+                key={index}
+                alt="gallery view"
+                src={image.url}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  setIsViewerOpen(true);
+                  setCurrentImage(index);
+                }}
+              />
+            );
           }
           return null;
         })}

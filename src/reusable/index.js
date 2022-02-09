@@ -51,7 +51,12 @@ export const getBase64 = (file) => {
 };
 const ImageGallery = ({ images, setImages }) => {
   const imageRef = useRef();
-
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
   const handleImageChange = async (e) => {
     const files = e.target.files;
     for (let file of files) {
@@ -102,7 +107,17 @@ const ImageGallery = ({ images, setImages }) => {
         {Array.isArray(images) && images.length > 0 ? (
           images.map((image, index) => {
             if (image.active) {
-              return <img key={index} alt="gallery view" src={image.dataUrl} />;
+              return (
+                <img
+                  key={index}
+                  alt="gallery view"
+                  src={image.dataUrl}
+                  onClick={() => {
+                    setIsViewerOpen(true);
+                    setCurrentImage(index);
+                  }}
+                />
+              );
             }
             return null;
           })
@@ -157,6 +172,18 @@ const ImageGallery = ({ images, setImages }) => {
           </div>
         )}
       </div>
+      <ModalGateway>
+        {isViewerOpen ? (
+          <ReactImagesModal onClose={closeLightbox}>
+            <Carousel
+              currentIndex={currentImage}
+              views={images.map((data) => {
+                return { source: data.dataUrl };
+              })}
+            />
+          </ReactImagesModal>
+        ) : null}
+      </ModalGateway>
     </div>
   );
 };

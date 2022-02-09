@@ -36,7 +36,7 @@ const CreateSubcategory = ({
                 value={subcategoryName}
                 onChange={(e) => setSubcategoryName(e.target.value)}
                 type="text"
-                className="form-control inputvalue"
+                className=" inputvalue"
                 placeholder="Input Subcategory"
               />
             </div>

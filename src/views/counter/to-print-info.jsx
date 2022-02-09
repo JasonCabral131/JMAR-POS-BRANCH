@@ -12,17 +12,19 @@ const BarcodeInformation = ({ salesId }) => {
   return (
     <div
       style={{
-        width: "245px",
+        width: "250px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        padding: 0,
+        margin: 0,
       }}
     >
       <canvas
         ref={inputRef}
         style={{
-          width: "200px",
-          height: "90px",
+          width: "100%",
+          height: "110px",
           display: "flex",
           alignSelf: "center",
         }}
@@ -254,15 +256,7 @@ const ToPrintContainer = React.forwardRef(
             THANK YOU FOR YOUR PURCHASE
           </p>
         </div>
-        <div
-          style={{
-            width: "245px",
-            height: "90px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <div className="barcode-container">
           <BarcodeInformation salesId={salesId} />
         </div>
       </div>

@@ -13,7 +13,7 @@ const BarcodeInformation = ({ salesId }) => {
   return (
     <div
       style={{
-        width: "245px",
+        width: "250px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -24,8 +24,8 @@ const BarcodeInformation = ({ salesId }) => {
       <canvas
         ref={inputRef}
         style={{
-          width: "200px",
-          height: "90px",
+          width: "100%",
+          height: "110px",
           display: "flex",
           alignSelf: "center",
         }}
@@ -264,17 +264,7 @@ const PrintTransaction = React.forwardRef(({ transaction, user }, ref) => {
           THANK YOU FOR YOUR PURCHASE
         </p>
       </div>
-      <div
-        style={{
-          width: "245px",
-          height: "90px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          margin: 0,
-          padding: 0,
-        }}
-      >
+      <div className="barcode-container">
         <BarcodeInformation salesId={transaction?.salesId} />
       </div>
     </div>

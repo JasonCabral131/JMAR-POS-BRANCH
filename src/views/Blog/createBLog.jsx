@@ -10,7 +10,8 @@ import Skeleton from "react-loading-skeleton";
 import spacer from "@react-page/plugins-spacer";
 import divider from "@react-page/plugins-divider";
 import image from "@react-page/plugins-image";
-const cellPlugins = [slate(), image, spacer, divider];
+import background from "@react-page/plugins-background";
+const cellPlugins = [slate(), image, spacer, divider, background];
 const CreateBlogInfo = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();

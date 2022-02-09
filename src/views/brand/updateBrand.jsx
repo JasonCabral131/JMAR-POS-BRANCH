@@ -37,7 +37,7 @@ const UpdateBrand = ({
               <input
                 value={updateBrand.brand}
                 type="text"
-                className="form-control inputvalue"
+                className=" inputvalue"
                 placeholder="Input Brand Name"
                 onChange={(e) =>
                   setUpdateBrand((prev) => {

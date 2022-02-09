@@ -8,7 +8,7 @@ import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
 import Select from "react-select";
 import Swal from "sweetalert2";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   createProductInfo,
   getProductByBrandOwner,
@@ -25,13 +25,14 @@ const CreateProduct = ({
   const dispatch = useDispatch();
   const [images, setImages] = useState([]);
   const [product, setProduct] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState(0);
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [editorState, setEditorState] = useState(null);
   const [selectSubcategory, setSelectSubcategory] = useState([]);
   const [selectBrand, setSelectBrand] = useState(null);
   const [subcatSelect, setSubcatSelect] = useState(null);
+  const { socket } = useSelector((state) => state.socket);
   const handleReset = () => {
     const html = "<span></span>";
     const contentBlock = htmlToDraft(html);
@@ -47,7 +48,7 @@ const CreateProduct = ({
     setSelectSubcategory([]);
     setProductId("");
     setPrice("");
-    setQuantity("");
+    setQuantity(0);
     setProduct("");
     setImages([]);
   };
@@ -77,15 +78,15 @@ const CreateProduct = ({
       setAddingLoading(false);
       return;
     }
-    if (quantity === "" || parseFloat(quantity) < 10) {
-      Swal.fire({
-        icon: "warning",
-        text: "Quantity Required!",
-        timer: 3000,
-      });
-      setAddingLoading(false);
-      return;
-    }
+    // if (quantity === "" || parseFloat(quantity) < 10) {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     text: "Quantity Required!",
+    //     timer: 3000,
+    //   });
+    //   setAddingLoading(false);
+    //   return;
+    // }
     if (productId === "") {
       Swal.fire({
         icon: "warning",
@@ -126,7 +127,7 @@ const CreateProduct = ({
     data.append("description", description);
     data.append("product", product);
     data.append("price", price);
-    data.append("quantity", quantity);
+    data.append("quantity", quantity ? quantity : 0);
     data.append("productId", productId);
     data.append("brandsubcat", subcatSelect.value._id);
     for (let file of images) {
@@ -144,6 +145,13 @@ const CreateProduct = ({
       dispatch(getProductByBrandOwner());
       handleReset();
       setAddingLoading(false);
+      if (socket) {
+        socket.emit(
+          "update-socket-product-store",
+          { description },
+          (data) => {}
+        );
+      }
       return;
     }
     Swal.fire({
@@ -229,12 +237,12 @@ const CreateProduct = ({
                         value={product}
                         onChange={(e) => setProduct(e.target.value)}
                         type="text"
-                        className="form-control inputvalue"
+                        className=" inputvalue"
                         placeholder="Input product name"
                       />
                     </div>
                   </div>
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <div className="form-group">
                       <label className="label-name">Product Quantity</label>
                       <input
@@ -253,7 +261,7 @@ const CreateProduct = ({
                         }}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="label-name">Product Price</label>
@@ -262,7 +270,7 @@ const CreateProduct = ({
                         min="1"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
-                        className="form-control inputvalue"
+                        className=" inputvalue"
                         onKeyPress={(e) => {
                           const theEvent = e || window.event;
                           if (e.target.value.length === 0 && e.which === 48) {
@@ -282,7 +290,7 @@ const CreateProduct = ({
                         type="number"
                         value={productId}
                         onChange={(e) => setProductId(e.target.value)}
-                        className="form-control inputvalue"
+                        className="inputvalue"
                         placeholder="product barcode number"
                       />
                     </div>
@@ -290,7 +298,6 @@ const CreateProduct = ({
                 </div>
                 <div className="form-group">
                   <label className="label-name">Product Description</label>
-
                   <Editor
                     editorState={editorState}
                     onEditorStateChange={(content) => setEditorState(content)}

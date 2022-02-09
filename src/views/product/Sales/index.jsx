@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProductSalesInfo } from "src/redux/action/product.action";
 import { LoaderSpinner, toCapitalized } from "src/reusable";
-import { ProductCarouselInfo } from "./sales.widget";
+//import { ProductCarouselInfo } from "./sales.widget";
 import dLogo from "src/assets/icons/Daily.gif";
 import wLogo from "src/assets/icons/wlogo.gif";
 import mLogo from "src/assets/icons/Monthly.gif";
@@ -56,7 +56,7 @@ const ProductSalesInformation = (props) => {
     </div>
   ) : product ? (
     <div className="w-100">
-      <ProductCarouselInfo product={product} />
+      {/* <ProductCarouselInfo product={product} /> */}
       <div className="row mt-2">
         <div className="col-md-3 p-1  d-flex justify-content-center">
           <img

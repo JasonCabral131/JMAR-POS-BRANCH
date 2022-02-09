@@ -50,7 +50,7 @@ const UpdateSubcategory = ({
               <input
                 value={updateSubBrand ? updateSubBrand.subBrand : ""}
                 type="text"
-                className="form-control inputvalue"
+                className=" inputvalue"
                 placeholder="Input Brand Name"
                 onChange={(e) => {
                   setUpdateSubBrand((prev) => {
