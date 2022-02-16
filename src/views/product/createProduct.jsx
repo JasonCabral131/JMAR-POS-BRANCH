@@ -242,14 +242,14 @@ const CreateProduct = ({
                       />
                     </div>
                   </div>
-                  {/* <div className="col-md-6">
+                  <div className="col-md-6">
                     <div className="form-group">
                       <label className="label-name">Product Quantity</label>
                       <input
                         type="number"
                         value={quantity}
                         onChange={(e) => setQuantity(e.target.value)}
-                        className="form-control inputvalue"
+                        className=" inputvalue"
                         min="1"
                         max="50000"
                         placeholder="Input product name"
@@ -261,7 +261,7 @@ const CreateProduct = ({
                         }}
                       />
                     </div>
-                  </div> */}
+                  </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="label-name">Product Price</label>

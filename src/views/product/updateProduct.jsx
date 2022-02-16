@@ -93,7 +93,7 @@ const UpdateProductInformation = ({
     data.append("description", description);
     data.append("product", product);
     data.append("price", price);
-    data.append("quantity", quantity);
+    data.append("quantity", quantity ? quantity : 0);
     data.append("productId", productId);
     data.append("brandsubcat", updateSubBrand.value._id);
     for (let file of addingUpdateImages) {
@@ -324,7 +324,6 @@ const UpdateProductInformation = ({
                           theEvent.preventDefault();
                         }
                       }}
-                      disabled={true}
                     />
                   </div>
                 </div>

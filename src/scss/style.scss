@@ -414,6 +414,9 @@
   color: #333;
   letter-spacing: 0.5px;
   padding: 14px 20px;
+  &:focus {
+    border-bottom: 3px solid rgb(80, 240, 6);
+  }
 }
 .inputvalue[type="text"],
 .inputvalue[type="number"],
