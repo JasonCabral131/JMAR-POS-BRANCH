@@ -12,7 +12,7 @@ const BarcodeInformation = ({ salesId }) => {
   return (
     <div
       style={{
-        width: "250px",
+        width: "240px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -23,8 +23,8 @@ const BarcodeInformation = ({ salesId }) => {
       <canvas
         ref={inputRef}
         style={{
-          width: "100%",
-          height: "110px",
+          width: "80%",
+          height: "120px",
           display: "flex",
           alignSelf: "center",
         }}
