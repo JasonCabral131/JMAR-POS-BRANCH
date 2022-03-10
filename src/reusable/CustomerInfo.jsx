@@ -49,7 +49,13 @@ const CustomerInfo = ({
       <div className="profile-backgroundx">
         <img alt="background-img" src={background} />
         <h1 className="branch-namex">
-          {user ? `${user.branch_name} Store` : null}
+          {user
+            ? `${
+                user.status === "owner"
+                  ? user.branch_name
+                  : user.branch.branch_name
+              } Store`
+            : null}
         </h1>
         <div className="lining-stylex" />
         <div className="avatar-containerx">
