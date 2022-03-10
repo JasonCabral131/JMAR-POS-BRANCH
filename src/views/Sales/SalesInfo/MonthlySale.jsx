@@ -18,6 +18,7 @@ import { GrDocumentCsv } from "react-icons/gr";
 import { CSVLink } from "react-csv";
 const MonthlySale = ({ user }) => {
   const history = useHistory();
+
   const monthlySaleRef = useRef();
   const { sales, loading } = useSelector((state) => state.sales);
   const [chartState, setChartState] = useState([]);
@@ -220,33 +221,37 @@ const MonthlySale = ({ user }) => {
                       <h4 className="ml-2">{item.date + " List Of Sales"}</h4>
 
                       <div className="card shadow p-2">
-                        <Chart
-                          height="500px"
-                          chartType="LineChart"
-                          data={[
-                            ["Product", "Quantity Sale", "Total Sale"],
-                            ...item.ProductSale.map((prod) => {
-                              return [
-                                prod.product,
-                                prod.TotalQuantity,
-                                prod.totalSale,
-                              ];
-                            }),
-                          ]}
-                          legendToggle
-                          options={{
-                            // Material design options
-                            chart: {
-                              title: `${item.date} Product Sale  Performance`,
-                            },
-                            vAxis: {
-                              title: `${item.date} Sale `,
-                            },
-                            series: {
-                              0: { curveType: "function" },
-                            },
-                          }}
-                        />
+                        {user ? (
+                          user.status === "owner" ? (
+                            <Chart
+                              height="500px"
+                              chartType="LineChart"
+                              data={[
+                                ["Product", "Quantity Sale", "Total Sale"],
+                                ...item?.ProductSale?.map((prod) => {
+                                  return [
+                                    prod.product,
+                                    prod.TotalQuantity,
+                                    prod.totalSale,
+                                  ];
+                                }),
+                              ]}
+                              legendToggle
+                              options={{
+                                // Material design options
+                                chart: {
+                                  title: `${item.date} Product Sale  Performance`,
+                                },
+                                vAxis: {
+                                  title: `${item.date} Sale `,
+                                },
+                                series: {
+                                  0: { curveType: "function" },
+                                },
+                              }}
+                            />
+                          ) : null
+                        ) : null}
                         <div className="print-left-info">
                           <CSVLink
                             data={getMonthSale(item.ProductSale, item.date)}

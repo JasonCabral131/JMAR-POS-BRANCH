@@ -35,6 +35,8 @@ const AllSalesInformation = (props) => {
           return [data.brand, data.brandSale];
         });
         setBrandSales([["Brand", "Sale"], ...bSale]);
+      } else {
+        setBrandSales([]);
       }
     }
   };
